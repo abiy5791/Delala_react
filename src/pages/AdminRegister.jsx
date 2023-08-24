@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useAuthContext from "../context/AuthContext";
 import CircularProgress from "../components/CircularProgress";
 
-const Register = () => {
+const AdminRegister = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
@@ -15,7 +15,7 @@ const Register = () => {
 
   const handleRegister = async (event) => {
     event.preventDefault();
-    register({ name, email, password, password_confirmation, role });
+    register({ name, email, role, password, password_confirmation });
   };
 
   return (
@@ -172,7 +172,7 @@ const Register = () => {
                       <option value="" disabled defaultValue>
                         Select an option
                       </option>
-
+                      <option value="admin">Admin</option>
                       <option value="delala">Delala</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -186,6 +186,7 @@ const Register = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="mb-10">
                   {isLoading ? (
                     <div className="flex justify-center">
@@ -224,4 +225,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default AdminRegister;

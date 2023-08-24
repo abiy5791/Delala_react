@@ -32,11 +32,14 @@ export const AuthProvider = ({ children }) => {
     try {
       await axios.post("/login", data);
       await getUser();
-      navigate("/");
-    } catch (e) {
-      if (e.response.status === 422) {
-        setErrors(e.response.data.errors);
+      console.log(user.role);
+      if (user.role === "admin") {
+        navigate("/admin_dashboard");
+      } else {
+        navigate("/delala_dashboard");
       }
+    } catch (e) {
+      console.log("not authorized");
     } finally {
       // Stop loading
       setIsLoading(false);
@@ -49,8 +52,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
     try {
       await axios.post("/register", data);
-      await getUser();
-      navigate("/");
+      data.role === "delala" ? navigate("/approval") : await getUser();
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors);

@@ -1,13 +1,16 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AuthLayout from "./layouts/AuthLayout";
 import GuestLayout from "./layouts/GuestLayout";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import AdminRegister from "./pages/AdminRegister";
 import Alert from "./components/Alert";
 import { useEffect, useState } from "react";
+import Dashboard from "./pages/Dashboard";
+import DelalaBoard from "./pages/DelalaBoard";
+import Approval from "./pages/Approval";
 
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -27,19 +30,23 @@ const App = () => {
   }, []);
 
   return (
-    <div className="bg-slate-100 min-h-screen">
+    <div className="bg-slate-100 min-h-screen dark:bg-gray-900 dark:text-white">
       {!isOnline && (
         <Alert AlertMessage={<b>Oops! No internet connection.</b>}></Alert>
       )}
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/admin_dashboard" element={<Dashboard />} />
+          <Route path="/delala_dashboard" element={<DelalaBoard />} />
         </Route>
 
         <Route element={<GuestLayout />}>
           <Route path="/login" element={<Login />} />
+
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/AdminRegister" element={<AdminRegister />} />
+          <Route path="/approval" element={<Approval />} />
           <Route path="/password-reset/:token" element={<ResetPassword />} />
         </Route>
       </Routes>

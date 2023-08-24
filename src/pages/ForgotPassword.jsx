@@ -29,12 +29,13 @@ const ForgotPassword = () => {
   };
 
   return (
-    <section className="bg-[#F4F7FF] py-20 lg:py-[120px]">
+    <section className="bg-[#F4F7FF] py-20 lg:py-[120px] dark:bg-gray-900 dark:text-white">
       <div className="container mx-auto">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">
             <div
               className="
+              dark:bg-gray-900 dark:text-white
           relative
           mx-auto
           max-w-[525px]

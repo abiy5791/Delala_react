@@ -2,6 +2,7 @@ import { Outlet, Navigate, Link } from "react-router-dom";
 import useAuthContext from "../context/AuthContext";
 import { MenuIcon, XIcon } from "@heroicons/react/solid";
 import { useState } from "react";
+import DarkModeToggle from "../components/DarkModeToggle";
 
 const AuthLayout = () => {
   const { user, logout } = useAuthContext();
@@ -10,14 +11,29 @@ const AuthLayout = () => {
     <>
       <nav className="bg-white shadow-lg">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
+            <DarkModeToggle />
             <div className="flex space-x-7">
               <div>
-                <Link to="/categories" className="flex items-center py-2 px-2">
-                  <span className="font-semibold text-gray-500 text-lg">
-                    Delala
-                  </span>
-                </Link>
+                {user.role === "admin" ? (
+                  <Link
+                    to="/admin_dashboard"
+                    className="flex items-center py-2 px-2"
+                  >
+                    <span className="font-semibold text-gray-500 text-lg">
+                      Admin
+                    </span>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/delala_dashboard"
+                    className="flex items-center py-2 px-2"
+                  >
+                    <span className="font-semibold text-gray-500 text-lg">
+                      Delala
+                    </span>
+                  </Link>
+                )}
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-1">
@@ -36,6 +52,7 @@ const AuthLayout = () => {
                 Logout
               </button>
             </div>
+
             <div className="md:hidden flex items-center">
               <button
                 className="outline-none mobile-menu-button"
