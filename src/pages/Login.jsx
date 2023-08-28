@@ -36,8 +36,15 @@ const Login = () => {
               md:px-[60px]
             "
             >
-              <div className="mb-10 text-center md:mb-16">
-                <h1>Login</h1>
+              <div className="mb-10 text-center md:mb-5">
+                <h1 className="text-3xl font-bold">Login</h1>
+                {errors.status && (
+                  <div className="flex justify-center items-center">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.status[0]}
+                    </span>
+                  </div>
+                )}
               </div>
               <form onSubmit={handleLogin}>
                 <div className="mb-4">
@@ -51,10 +58,12 @@ const Login = () => {
                     w-full
                     rounded-md
                     border
-                    bg-[#FCFDFE]
+                    bg-transparent
                     py-3
                     px-5
                     text-base text-body-color
+                    dark:text-gray-300
+                    font-medium
                     placeholder-[#ACB6BE]
                     outline-none
                     focus:border-primary
@@ -80,7 +89,9 @@ const Login = () => {
                     w-full
                     rounded-md
                     border
-                    bg-[#FCFDFE]
+                    bg-transparent
+                    dark:text-gray-300
+                    font-medium
                     py-3
                     px-5
                     text-base text-body-color
@@ -92,7 +103,7 @@ const Login = () => {
                   />
                   <button
                     type="button"
-                    className="absolute top-1/2 right-3 transform -translate-y-1/2 text-primary focus:outline-none"
+                    className="absolute top-6 right-3 transform -translate-y-1/2 text-primary focus:outline-none"
                     onClick={() => setShowPassword(!showPassword)} // Toggle showPassword state
                   >
                     {showPassword ? "Hide" : "Show"}
@@ -106,31 +117,59 @@ const Login = () => {
                   )}
                 </div>
                 <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                  <label className="block dark:text-gray-300 text-sm font-bold mb-2">
                     Select Role:
                   </label>
-                  <div className="relative inline-block w-full text-gray-700">
+                  <div
+                    className="relative inline-block w-full  dark:text-gray-300
+                    font-medium"
+                  >
                     <select
                       value={role}
                       onChange={(e) => setRole(e.target.value)}
-                      className="block appearance-none w-full bg-white border border-gray-300 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500"
+                      className="block appearance-none w-full bg-transparent border border-gray-300 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500"
                     >
-                      <option value="" disabled defaultValue>
+                      <option
+                        value=""
+                        disabled
+                        defaultValue
+                        className=" text-gray-500
+                    font-medium"
+                      >
                         Select an option
                       </option>
-                      <option value="admin">Admin</option>
-                      <option value="delala">Delala</option>
+                      <option
+                        value="admin"
+                        className=" text-gray-800
+                    font-medium"
+                      >
+                        Admin
+                      </option>
+                      <option
+                        className=" text-gray-800
+                    font-medium"
+                        value="delala"
+                      >
+                        Delala
+                      </option>
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                      <svg
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 ">
+                      {/* <svg
                         className="fill-current h-4 w-4"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                       >
                         <path d="M6.293 9.293a1 1 0 011.414 0L10 10.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" />
-                      </svg>
+                      </svg> */}
                     </div>
                   </div>
+                  {errors.role && (
+                    <div className="flex">
+                      <span className="text-red-400 text-sm m-2 p-2">
+                        {errors.role[0]}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="mb-10">

@@ -1,15 +1,15 @@
 import { Outlet, Navigate, Link } from "react-router-dom";
 import useAuthContext from "../context/AuthContext";
-import { MenuIcon, XIcon } from "@heroicons/react/solid";
-import { useState } from "react";
-import DarkModeToggle from "../components/DarkModeToggle";
+// import { MenuIcon, XIcon } from "@heroicons/react/solid";
+// import { useState } from "react";
+// import DarkModeToggle from "../components/DarkModeToggle";
 
 const AuthLayout = () => {
-  const { user, logout } = useAuthContext();
-  const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuthContext();
+  // const [isOpen, setIsOpen] = useState(false);
   return user ? (
     <>
-      <nav className="bg-white shadow-lg">
+      {/* <nav className="bg-white shadow-lg">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between items-center">
             <DarkModeToggle />
@@ -86,7 +86,7 @@ const AuthLayout = () => {
           </div>
         )}
       </nav>
-
+ */}
       <Outlet />
     </>
   ) : (

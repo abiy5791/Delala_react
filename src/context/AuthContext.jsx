@@ -39,7 +39,9 @@ export const AuthProvider = ({ children }) => {
         navigate("/delala_dashboard");
       }
     } catch (e) {
-      console.log("not authorized");
+      if (e.response.status === 422) {
+        setErrors(e.response.data.errors);
+      }
     } finally {
       // Stop loading
       setIsLoading(false);

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AuthLayout from "./layouts/AuthLayout";
@@ -7,10 +7,17 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import AdminRegister from "./pages/AdminRegister";
 import Alert from "./components/Alert";
-import { useEffect, useState } from "react";
-import Dashboard from "./pages/Dashboard";
+import { useEffect, useState, React } from "react";
+// import DashboardA from "./pages/DashboardA";
 import DelalaBoard from "./pages/DelalaBoard";
 import Approval from "./pages/Approval";
+
+import "./css/style.css";
+
+import "./charts/ChartjsConfig";
+
+// Import pages
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -29,6 +36,14 @@ const App = () => {
     };
   }, []);
 
+  const location = useLocation();
+
+  useEffect(() => {
+    document.querySelector("html").style.scrollBehavior = "auto";
+    window.scroll({ top: 0 });
+    document.querySelector("html").style.scrollBehavior = "";
+  }, [location.pathname]); // triggered on route change
+
   return (
     <div className="bg-slate-100 min-h-screen dark:bg-gray-900 dark:text-white">
       {!isOnline && (
@@ -36,7 +51,8 @@ const App = () => {
       )}
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route path="/admin_dashboard" element={<Dashboard />} />
+          <Route exact path="/admin_dashboard" element={<Dashboard />} />
+          <Route path="/" />
           <Route path="/delala_dashboard" element={<DelalaBoard />} />
         </Route>
 
