@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await axios.post("/login", data);
       await getUser();
-      console.log(user.role);
+      console.log(user);
       if (user.role === "admin") {
         navigate("/admin_dashboard");
       } else {
@@ -52,9 +52,28 @@ export const AuthProvider = ({ children }) => {
     await fetchCsrfToken();
     setErrors([]);
     setIsLoading(true);
+    console.log(data);
     try {
       await axios.post("/register", data);
-      data.role === "delala" ? navigate("/approval") : await getUser();
+      navigate("/approval");
+    } catch (e) {
+      if (e.response.status === 422) {
+        setErrors(e.response.data.errors);
+      }
+    } finally {
+      // Stop loading
+      setIsLoading(false);
+    }
+  };
+
+  const Userregister = async ({ ...data }) => {
+    await fetchCsrfToken();
+    setErrors([]);
+    setIsLoading(true);
+    console.log(data);
+    try {
+      await axios.post("/user_register", data);
+      navigate("/admin_dashboard");
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors);
@@ -85,6 +104,7 @@ export const AuthProvider = ({ children }) => {
         getUser,
         login,
         register,
+        Userregister,
         logout,
         fetchCsrfToken,
         isLoading,

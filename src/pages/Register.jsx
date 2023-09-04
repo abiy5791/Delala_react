@@ -6,7 +6,7 @@ import CircularProgress from "../components/CircularProgress";
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
+
   const [password, setPassword] = useState("");
   const [password_confirmation, setPassword_confirmation] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -15,7 +15,7 @@ const Register = () => {
 
   const handleRegister = async (event) => {
     event.preventDefault();
-    register({ name, email, password, password_confirmation, role });
+    register({ name, email, password, password_confirmation });
   };
 
   return (
@@ -159,40 +159,7 @@ const Register = () => {
                 "
                   />
                 </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Select Role:
-                  </label>
-                  <div className="relative inline-block w-full text-gray-700">
-                    <select
-                      value={role}
-                      onChange={(e) => setRole(e.target.value)}
-                      className="block appearance-none w-full bg-white border border-gray-300 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500"
-                    >
-                      <option value="" disabled defaultValue>
-                        Select an option
-                      </option>
 
-                      <option value="delala">Delala</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                      {/* <svg
-                        className="fill-current h-4 w-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M6.293 9.293a1 1 0 011.414 0L10 10.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" />
-                      </svg> */}
-                    </div>
-                  </div>
-                  {errors.role && (
-                    <div className="flex">
-                      <span className="text-red-400 text-sm m-2 p-2">
-                        {errors.role[0]}
-                      </span>
-                    </div>
-                  )}
-                </div>
                 <div className="mb-10">
                   {isLoading ? (
                     <div className="flex justify-center">

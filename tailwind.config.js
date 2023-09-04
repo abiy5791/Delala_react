@@ -1,7 +1,11 @@
 const plugin = require("tailwindcss/plugin");
 
 module.exports = {
-  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/flowbite/**/*.js",
+  ],
   darkMode: "class",
   theme: {
     extend: {
@@ -56,6 +60,7 @@ module.exports = {
   plugins: [
     // eslint-disable-next-line global-require
     require("@tailwindcss/forms"),
+    require("daisyui"),
     // add custom variant for expanding sidebar
     plugin(({ addVariant, e }) => {
       addVariant("sidebar-expanded", ({ modifySelectors, separator }) => {

@@ -6,18 +6,17 @@ import GuestLayout from "./layouts/GuestLayout";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import AdminRegister from "./pages/AdminRegister";
+import Dashboard from "./pages/Dashboard";
+import Detail from "./partials/dashboard/details";
+import Update_user from "./partials/dashboard/update_user";
+import Addusers from "./partials/dashboard/addusers";
 import Alert from "./components/Alert";
 import { useEffect, useState, React } from "react";
 // import DashboardA from "./pages/DashboardA";
 import DelalaBoard from "./pages/DelalaBoard";
 import Approval from "./pages/Approval";
-
 import "./css/style.css";
-
 import "./charts/ChartjsConfig";
-
-// Import pages
-import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -54,14 +53,17 @@ const App = () => {
           <Route exact path="/admin_dashboard" element={<Dashboard />} />
           <Route path="/" />
           <Route path="/delala_dashboard" element={<DelalaBoard />} />
+          <Route path="user/:id" element={<Detail />} />
+          <Route path="/add_user" element={<Addusers />} />
+          <Route path="/Update_user/:id" element={<Update_user />} />
         </Route>
 
         <Route element={<GuestLayout />}>
           <Route path="/login" element={<Login />} />
-
+          <Route path="/AdminRegister" element={<AdminRegister />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/AdminRegister" element={<AdminRegister />} />
+
           <Route path="/approval" element={<Approval />} />
           <Route path="/password-reset/:token" element={<ResetPassword />} />
         </Route>
