@@ -17,6 +17,8 @@ import DelalaBoard from "./pages/DelalaBoard";
 import Approval from "./pages/Approval";
 import "./css/style.css";
 import "./charts/ChartjsConfig";
+import CarDetails from "./partials/dashboard/CarDetails";
+import AddNewCars from "./partials/dashboard/AddNewCars";
 
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -55,6 +57,8 @@ const App = () => {
           <Route path="/delala_dashboard" element={<DelalaBoard />} />
           <Route path="user/:id" element={<Detail />} />
           <Route path="/add_user" element={<Addusers />} />
+          <Route path="/add_cars" element={<AddNewCars />} />
+          <Route path="/view_cars" element={<CarDetails />} />
           <Route path="/Update_user/:id" element={<Update_user />} />
         </Route>
 
