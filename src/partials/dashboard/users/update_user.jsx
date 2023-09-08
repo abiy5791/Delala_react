@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {} from "react";
-import Sidebar from "../Sidebar";
-import Header from "../Header";
+import Sidebar from "../../Sidebar";
+import Header from "../../Header";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "../../api/axios";
+import axios from "../../../api/axios";
 export default function Update_user() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userinfos, setUserinfos] = useState({});

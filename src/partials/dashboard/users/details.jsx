@@ -1,9 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import Sidebar from "../Sidebar";
-import Header from "../Header";
-import axios from "../../api/axios";
+import Sidebar from "../../Sidebar";
+import Header from "../../Header";
+import axios from "../../../api/axios";
 
 export default function Detail() {
   const params = useParams();

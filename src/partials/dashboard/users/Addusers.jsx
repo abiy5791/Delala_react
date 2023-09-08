@@ -1,10 +1,10 @@
 import React from "react";
 import { useState } from "react";
-import Sidebar from "../Sidebar";
-import Header from "../Header";
+import Sidebar from "../../Sidebar";
+import Header from "../../Header";
 import { useNavigate } from "react-router-dom";
-import useAuthContext from "../../context/AuthContext";
-import CircularProgress from "../../components/CircularProgress";
+import useAuthContext from "../../../context/AuthContext";
+import CircularProgress from "../../../components/CircularProgress";
 
 const Addusers = () => {
   const navigate = useNavigate();
