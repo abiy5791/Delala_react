@@ -19,6 +19,13 @@ import "./css/style.css";
 import "./charts/ChartjsConfig";
 import CarDetails from "./partials/dashboard/CarDetails";
 import AddNewCars from "./partials/dashboard/AddNewCars";
+import AdminHome from "./pages/AdminHome";
+
+import House from "./partials/dashboard/Properties/House";
+import Car from "./partials/dashboard/Properties/Car";
+import Labour from "./partials/dashboard/Properties/Labour";
+import Other from "./partials/dashboard/Properties/Other";
+import Users from "./partials/dashboard/users/Users";
 
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -52,9 +59,17 @@ const App = () => {
       )}
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route exact path="/admin_dashboard" element={<Dashboard />} />
+          <Route exact path="/admin_dashboard" element={<Dashboard />}>
+            <Route path="users" element={<Users />} />
+            <Route index element={<AdminHome />} />
+            <Route path="house" element={<House />} />
+            <Route path="cars" element={<Car />} />
+            <Route path="labour" element={<Labour />} />
+            <Route path="others" element={<Other />} />
+          </Route>
           <Route path="/" />
           <Route path="/delala_dashboard" element={<DelalaBoard />} />
+
           <Route path="user/:id" element={<Detail />} />
           <Route path="/add_user" element={<Addusers />} />
           <Route path="/add_cars" element={<AddNewCars />} />
