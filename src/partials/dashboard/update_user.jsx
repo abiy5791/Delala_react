@@ -18,13 +18,12 @@ export default function Update_user() {
 
   function handlechange(e) {
     var { name, value, checked } = e.target;
-    if (type === "checkbox") {
-      if (checked) {
-        value = "admin";
-      } else {
-        value = "delala";
-      }
+    if (checked) {
+      value = "admin";
+    } else {
+      value = "delala";
     }
+
     setUserinfos((previnfo) => {
       return {
         ...previnfo,

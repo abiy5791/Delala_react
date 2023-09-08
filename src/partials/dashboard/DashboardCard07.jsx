@@ -1,18 +1,13 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "../../api/axios";
 import { useState } from "react";
 function DashboardCard07({ users }) {
-  
-
-  
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className="col-span-full xl:col-span-8 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
       <header className="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
         <h2 className="font-semibold text-slate-800 dark:text-slate-100">
-          Top Channels
+          Users
         </h2>
       </header>
       <div className="p-3">
@@ -42,7 +37,7 @@ function DashboardCard07({ users }) {
               {/* Row */}
               {users.map((user) => {
                 return (
-                  <tr key={users.id}>
+                  <tr key={user.id}>
                     <td className="p-2">
                       <div className="flex items-center">
                         <svg
@@ -66,9 +61,13 @@ function DashboardCard07({ users }) {
                       <div className="text-center">{user.email}</div>
                     </td>
                     <td className="p-2">
-                      <div className="text-center text-emerald-500">
-                        {user.role}
-                      </div>
+                      {user.role === "admin" ? (
+                        <div className="text-center text-emerald-500">
+                          Admin
+                        </div>
+                      ) : (
+                        <div className="text-center text-blue-500">Delala</div>
+                      )}
                     </td>
 
                     <td className="p-2">
@@ -77,8 +76,8 @@ function DashboardCard07({ users }) {
                           Approved
                         </span>
                       ) : (
-                        <span className="hidden xs:block ml-2 text-red-700">
-                          pending
+                        <span className="hidden xs:block ml-2 text-red-500">
+                          pending ...
                         </span>
                       )}
                     </td>
@@ -95,6 +94,28 @@ function DashboardCard07({ users }) {
                   <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                 </svg>
                 <span className="hidden xs:block ml-2">Add New</span>
+              </button>
+            </Link>
+            <Link to="/view_cars">
+              <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                <svg
+                  className="w-4 h-4 fill-current opacity-50 shrink-0"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                </svg>
+                <span className="hidden xs:block ml-2">view cars</span>
+              </button>
+            </Link>
+            <Link to="/add_cars">
+              <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                <svg
+                  className="w-4 h-4 fill-current opacity-50 shrink-0"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                </svg>
+                <span className="hidden xs:block ml-2">Add cars</span>
               </button>
             </Link>
           </table>

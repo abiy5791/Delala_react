@@ -7,7 +7,6 @@ import CircularProgress from "../components/CircularProgress";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [role, setRole] = useState("");
   const { login, errors, isLoading } = useAuthContext();
   const [showPassword, setShowPassword] = useState(false); // Add a state for showing/hiding password
   const navigate = useNavigate();
@@ -40,6 +39,10 @@ const Login = () => {
               <div className="mb-10 text-center md:mb-5">
                 <h1 className="text-3xl font-bold">Login</h1>
                 {errors.status && navigate("/approval")}
+
+                <span className="text-red-400 text-sm m-2 p-2">
+                  {errors.email_password_error}
+                </span>
               </div>
               <form onSubmit={handleLogin}>
                 <div className="mb-4">
