@@ -87,6 +87,7 @@ const AuthLayout = () => {
         )}
       </nav>
  */}
+
       <Outlet />
     </>
   ) : (

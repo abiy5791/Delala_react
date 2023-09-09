@@ -1,65 +1,361 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
+import useAuthContext from "../../context/AuthContext";
 
 function CarDetails() {
   const [carData, setCarData] = useState([]);
-  const [user, setUser] = useState([]);
 
-  const getCar = async () => {
-    await axios.get("api/car").then((response) => {
-      setCarData(response.data);
-    });
+  const { user } = useAuthContext();
+
+  const getCarData = async () => {
+    try {
+      const response = await axios.get("api/car");
+      setCarData(
+        response.data.map((car) => ({
+          ...car,
+          showAllImages: false,
+          selectedImage: null,
+          expandedDetails: false,
+        }))
+      );
+    } catch (error) {
+      console.error("Failed to fetch car data:", error);
+    }
   };
+
   useEffect(() => {
-    getCar();
+    getCarData();
   }, []);
 
-  const getUser = async () => {
-    await axios.get(`api/users/`).then((response) => {
-      setUser(response.data);
+  const handleImageClick = (carIndex, imageIndex) => {
+    setCarData((prevCarData) => {
+      const updatedCarData = [...prevCarData];
+      updatedCarData[carIndex].selectedImage = imageIndex;
+      return updatedCarData;
     });
   };
-  useEffect(() => {
-    getUser();
-  }, []);
+
+  const handleViewMore = (carIndex) => {
+    setCarData((prevCarData) => {
+      const updatedCarData = [...prevCarData];
+      updatedCarData[carIndex].showAllImages = true;
+      return updatedCarData;
+    });
+  };
+
+  const handleDetailsToggle = (carId) => {
+    setCarData((prevCarData) => {
+      const updatedCarData = prevCarData.map((car) => {
+        if (car.id === carId) {
+          return {
+            ...car,
+            expandedDetails: !car.expandedDetails,
+          };
+        }
+        return car;
+      });
+      return updatedCarData;
+    });
+  };
+
+  const renderCarDetails = (car) => {
+    const detailsLimit = 100;
+    const shouldTruncate = car.details.length > detailsLimit;
+
+    return (
+      <div className="mb-2">
+        <strong className="text-gray-700">Details:</strong>{" "}
+        <span className="text-gray-800">
+          {shouldTruncate && !car.expandedDetails
+            ? `${car.details.slice(0, detailsLimit)}...`
+            : car.details}
+          {shouldTruncate && (
+            <span
+              className="text-blue-500 cursor-pointer"
+              onClick={() => handleDetailsToggle(car.id)}
+            >
+              {car.expandedDetails ? "See Less" : "See More"}
+            </span>
+          )}
+        </span>
+      </div>
+    );
+  };
 
   return (
-    <div>
-      {carData.map((car) => (
-        <div key={car.id}>
-          <h2 className="font-bold border-b-3 border-cyan-600">{car.title}</h2>
-          <p>Make: {car.make}</p>
-          <p>Model: {car.model}</p>
-          <p>Year: {car.year}</p>
-          {/* Render other car details */}
-          <div>
-            {car.image.split("|").map((imageUrl, imageIndex) => (
-              <img
-                width={100}
-                height={100}
-                key={imageIndex}
-                src={`http://127.0.0.1:8000/${imageUrl}`}
-                alt={`Car Image ${imageIndex}`}
-              />
-            ))}
+    <div className="p-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {carData.map((car, index) => (
+          <div key={car.id} className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex items-center mb-4">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center bg-blue-500 text-white font-bold text-lg">
+                {user.name.charAt(0)}
+              </div>
+              <div className="ml-2">
+                <p className="font-bold text-gray-800">{user.name}</p>
+                <p className="text-gray-600 text-sm">{user.email}</p>
+              </div>
+              <p className="text-gray-600 text-sm ml-auto">Posted by</p>
+            </div>
+            <h2 className="text-2xl font-bold mb-4 text-blue-900">
+              {car.title}
+            </h2>
+            <div className="mb-4 grid grid-cols-3 gap-2">
+              {car.image.split("|").map((imageUrl, imageIndex) => {
+                const showImage =
+                  imageIndex < 3 ||
+                  car.showAllImages ||
+                  car.selectedImage === imageIndex;
+
+                return (
+                  showImage && (
+                    <div
+                      key={imageIndex}
+                      className={`relative rounded-md overflow-hidden ${
+                        car.selectedImage === imageIndex ? "opacity-50" : ""
+                      }`}
+                    >
+                      <img
+                        className="w-full h-36 object-cover"
+                        src={`http://127.0.0.1:8000/${imageUrl}`}
+                        alt={`Car Image ${imageIndex}`}
+                        onClick={() => handleImageClick(index, imageIndex)}
+                      />
+                      {car.image.split("|").length > 3 &&
+                        imageIndex === 2 &&
+                        !car.showAllImages && (
+                          <div
+                            className="absolute inset-0 flex items-center justify-center text-white bg-black bg-opacity-50 text-lg font-bold cursor-pointer"
+                            onClick={() => handleViewMore(index)}
+                          >
+                            +{car.image.split("|").length - 3}
+                          </div>
+                        )}
+                    </div>
+                  )
+                );
+              })}
+            </div>
+            <div className="mb-2">
+              <strong className="text-gray-700">Make:</strong>{" "}
+              <span className="text-gray-800">{car.make}</span>
+            </div>
+            <div className="mb-2">
+              <strong className="text-gray-700">Model:</strong>{" "}
+              <span className="text-gray-800">{car.model}</span>
+            </div>
+            <div className="mb-2">
+              <strong className="text-gray-700">Year:</strong>{" "}
+              <span className="text-gray-800">{car.year}</span>
+            </div>
+            <div className="mb-2">
+              <strong className="text-gray-700">Mileage:</strong>{" "}
+              <span className="text-gray-800">{car.mileage}</span>
+            </div>
+            <div className="mb-2">
+              <strong className="text-gray-700">FuelType:</strong>{" "}
+              <span className="text-gray-800">{car.fueltype}</span>
+            </div>
+            <div className="mb-2">
+              <strong className="text-gray-700">Color:</strong>{" "}
+              <span className="text-gray-800">{car.color}</span>
+            </div>
+            <div className="mb-2">
+              <strong className="text-gray-700">Price:</strong>{" "}
+              <span className="text-gray-800">{car.price}</span>
+            </div>
+            {renderCarDetails(car)}
           </div>
-          <div>
-            Posted_By_Delala
-            {user.map((person) => (
-              <p key={person.id}>
-                {person.id === car.delala_id && person.name}
-              </p>
-            ))}
-          </div>
-          <p>Mileage: {car.mileage}</p>
-          <p>FuelType: {car.fueltype}</p>
-          <p>Color: {car.color}</p>
-          <p>Price: {car.price}</p>
-          <p>Details: {car.details}</p>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
 
 export default CarDetails;
+
+// import React, { useEffect, useState } from "react";
+// import axios from "../../api/axios";
+// import useAuthContext from "../../context/AuthContext";
+// import { Resizer, Compressor } from "react-image-file-resizer";
+
+// function CarDetails() {
+//   const [carData, setCarData] = useState([]);
+
+//   const { user } = useAuthContext();
+
+//   const getCarData = async () => {
+//     try {
+//       const response = await axios.get("api/car");
+//       setCarData(
+//         response.data.map((car) => ({
+//           ...car,
+//           showAllImages: false,
+//           selectedImage: null,
+//           expandedDetails: false,
+//         }))
+//       );
+//     } catch (error) {
+//       console.error("Failed to fetch car data:", error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     getCarData();
+//   }, []);
+
+//   const handleImageClick = (carIndex, imageIndex) => {
+//     setCarData((prevCarData) => {
+//       const updatedCarData = [...prevCarData];
+//       updatedCarData[carIndex].selectedImage = imageIndex;
+//       return updatedCarData;
+//     });
+//   };
+
+//   const handleViewMore = (carIndex) => {
+//     setCarData((prevCarData) => {
+//       const updatedCarData = [...prevCarData];
+//       updatedCarData[carIndex].showAllImages = true;
+//       return updatedCarData;
+//     });
+//   };
+
+//   const handleDetailsToggle = (carId) => {
+//     setCarData((prevCarData) => {
+//       const updatedCarData = prevCarData.map((car) => {
+//         if (car.id === carId) {
+//           return {
+//             ...car,
+//             expandedDetails: !car.expandedDetails,
+//           };
+//         }
+//         return car;
+//       });
+//       return updatedCarData;
+//     });
+//   };
+
+//   const renderCarDetails = (car) => {
+//     const detailsLimit = 100;
+//     const shouldTruncate = car.details.length > detailsLimit;
+
+//     return (
+//       <div className="mb-2">
+//         <strong className="text-gray-700">Details:</strong>{" "}
+//         <span className="text-gray-800">
+//           {shouldTruncate && !car.expandedDetails
+//             ? `${car.details.slice(0, detailsLimit)}...`
+//             : car.details}
+//           {shouldTruncate && (
+//             <span
+//               className="text-blue-500 cursor-pointer"
+//               onClick={() => handleDetailsToggle(car.id)}
+//             >
+//               {car.expandedDetails ? "See Less" : "See More"}
+//             </span>
+//           )}
+//         </span>
+//       </div>
+//     );
+//   };
+
+//   const compressAndResizeImage = async (imageFile, maxWidth, maxHeight) => {
+//     return new Promise((resolve, reject) => {
+//       Resizer.imageFileResizer(
+//         imageFile,
+//         maxWidth,
+//         maxHeight,
+//         "JPEG",
+//         70,
+//         0,
+//         (resizedImage) => {
+//           resolve(resizedImage);
+//         },
+//         "blob"
+//       );
+//     });
+//   };
+
+//   const processImage = async (imageFile, maxWidth, maxHeight) => {
+//     const resizedImage = await compressAndResizeImage(
+//       imageFile,
+//       maxWidth,
+//       maxHeight
+//     );
+//     const compressedImage = await Compressor.imageFileResizer(
+//       resizedImage,
+//       1024,
+//       1024,
+//       "JPEG",
+//       70,
+//       0,
+//       (resizedImage) => {
+//         return resizedImage;
+//       },
+//       "blob"
+//     );
+//     return compressedImage;
+//   };
+
+//   const renderCarImages = (car, carIndex) => {
+//     const images = car.image.split("|");
+//     const showAllImages =
+//       images.length <= 3 || car.showAllImages || car.selectedImage !== null;
+
+//     return (
+//       <div className="mb-4 grid grid-cols-3 gap-2">
+//         {images.map((imageUrl, imageIndex) => {
+//           if (showAllImages || imageIndex < 3) {
+//             return (
+//               <div
+//                 key={imageIndex}
+//                 className={`relative rounded-md overflow-hidden ${
+//                   car.selectedImage === imageIndex ? "opacity-50" : ""
+//                 }`}
+//               >
+//                 <img
+//                   className="w-full h-36 object-cover"
+//                   src={`http://127.0.0.1:8000/${imageUrl}`}
+//                   alt={`Car Image ${imageIndex}`}
+//                 />
+//                 <div
+//                   className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300"
+//                   onClick={() => handleImageClick(carIndex, imageIndex)}
+//                 >
+//                   <span className="text-white text-lg font-bold">View</span>
+//                 </div>
+//               </div>
+//             );
+//           }
+//           return null;
+//         })}
+//         {images.length > 3 && !showAllImages && (
+//           <div className="relativerounded-md overflow-hidden">
+//             <div
+//               className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 cursor-pointer"
+//               onClick={() => handleViewMore(carIndex)}
+//             >
+//               <span className="text-white text-lg font-bold">
+//                 +{images.length - 3}
+//               </span>
+//             </div>
+//           </div>
+//         )}
+//       </div>
+//     );
+//   };
+
+//   return (
+//     <div>
+//       {carData.map((car, carIndex) => (
+//         <div key={car.id} className="mb-8">
+//           <h2 className="text-2xl font-bold">{car.name}</h2>
+//           {renderCarImages(car, carIndex)}
+//           {renderCarDetails(car)}
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }
+
+// export default CarDetails;

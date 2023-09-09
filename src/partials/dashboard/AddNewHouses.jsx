@@ -7,23 +7,20 @@ import CircularProgress from "../../components/CircularProgress";
 import axios from "../../api/axios";
 import useAuthContext from "../../context/AuthContext";
 
-const AddNewCars = () => {
+const AddNewHouse = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuthContext();
   const [errors, setErrors] = useState([]);
   const [image, setImage] = useState(null);
-  const [CarDetails, setCarDetails] = useState({
+  const [HouseDetails, setHouseDetails] = useState({
     title: "",
-    make: "",
     delala_id: user.id,
-    model: "",
-    year: "",
-    mileage: "",
-    fueltype: "",
-    color: "",
+    status: "",
     price: "",
+    area: "",
+    location: "",
     details: "",
   });
 
@@ -32,14 +29,14 @@ const AddNewCars = () => {
       const selectedFile = e.target.files;
       setImage(selectedFile);
     } else {
-      setCarDetails((prevInfo) => ({
+      setHouseDetails((prevInfo) => ({
         ...prevInfo,
         [e.target.name]: e.target.value,
       }));
     }
   }
 
-  const add_new_car = async (event) => {
+  const Add_New_House = async (event) => {
     event.preventDefault();
 
     setErrors([]);
@@ -48,29 +45,21 @@ const AddNewCars = () => {
     try {
       const formData = new FormData();
       // Append fields to formData
-      formData.append("title", CarDetails.title);
-      formData.append("make", CarDetails.make);
-      formData.append("model", CarDetails.model);
-      formData.append("delala_id", CarDetails.delala_id);
-      formData.append("year", CarDetails.year);
-      formData.append("mileage", CarDetails.mileage);
-      formData.append("fueltype", CarDetails.fueltype);
-      formData.append("color", CarDetails.color);
-      formData.append("price", CarDetails.price);
-      formData.append("details", CarDetails.details);
-      // formData.append("image[]", image);
+      formData.append("title", HouseDetails.title);
+      formData.append("status", HouseDetails.status);
+      formData.append("price", HouseDetails.price);
+      formData.append("delala_id", HouseDetails.delala_id);
+      formData.append("area", HouseDetails.area);
+      formData.append("location", HouseDetails.location);
+      formData.append("details", HouseDetails.details);
       for (let i = 0; i < image.length; i++) {
         formData.append("image[]", image[i]);
       }
 
-      // for (const value of formData.values()) {
-      //   console.log(typeof value);
-      // }
-
-      await axios.post("api/car", formData).then(function (response) {
+      await axios.post("api/house", formData).then(function (response) {
         console.log(response);
       });
-      navigate("/view_cars");
+      navigate("/view_houses");
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors);
@@ -91,11 +80,11 @@ const AddNewCars = () => {
             <div className="relative flex flex-col justify-center min-h-screen overflow-hidden ">
               <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl shadow-rose-600/40 ring-2 ring-indigo-600 lg:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-indigo-700  uppercase decoration-wavy">
-                  Car Register Form
+                  House Register Form
                 </h1>
                 <form
                   className="mt-6"
-                  onSubmit={add_new_car}
+                  onSubmit={Add_New_House}
                   encType="multipart/form-data"
                 >
                   <div className="mb-2">
@@ -105,7 +94,7 @@ const AddNewCars = () => {
                         type="text"
                         name="title"
                         onChange={handlechange}
-                        value={CarDetails.title}
+                        value={HouseDetails.title}
                         className="
 
             w-full
@@ -131,12 +120,12 @@ const AddNewCars = () => {
                   </div>
                   <div className="mb-2">
                     <label>
-                      <span className="text-gray-700">Make</span>
+                      <span className="text-gray-700">Status</span>
                       <input
                         type="text"
-                        name="make"
+                        name="status"
                         onChange={handlechange}
-                        value={CarDetails.make}
+                        value={HouseDetails.status}
                         className="
 
             w-full
@@ -149,7 +138,7 @@ const AddNewCars = () => {
             focus:ring-indigo-200
             focus:ring-opacity-50
           "
-                        placeholder="Make"
+                        placeholder="Status"
                       />
                     </label>
                     {errors.name && (
@@ -162,12 +151,12 @@ const AddNewCars = () => {
                   </div>
                   <div className="mb-2">
                     <label>
-                      <span className="text-gray-700">Model</span>
+                      <span className="text-gray-700">Area</span>
                       <input
                         type="text"
-                        name="model"
+                        name="area"
                         onChange={handlechange}
-                        value={CarDetails.model}
+                        value={HouseDetails.area}
                         className="
 
             w-full
@@ -180,7 +169,7 @@ const AddNewCars = () => {
             focus:ring-indigo-200
             focus:ring-opacity-50
           "
-                        placeholder="Model"
+                        placeholder="Area Size"
                       />
                     </label>
                     {errors.name && (
@@ -193,12 +182,12 @@ const AddNewCars = () => {
                   </div>
                   <div className="mb-2">
                     <label>
-                      <span className="text-gray-700">Year</span>
+                      <span className="text-gray-700">Location</span>
                       <input
                         type="text"
-                        name="year"
+                        name="location"
                         onChange={handlechange}
-                        value={CarDetails.year}
+                        value={HouseDetails.location}
                         className="
 
             w-full
@@ -211,100 +200,7 @@ const AddNewCars = () => {
             focus:ring-indigo-200
             focus:ring-opacity-50
           "
-                        placeholder="Year"
-                      />
-                    </label>
-                    {errors.name && (
-                      <div className="flex">
-                        <span className="text-red-400 text-sm m-2 p-2">
-                          {errors.name[0]}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label>
-                      <span className="text-gray-700">Mileage</span>
-                      <input
-                        type="text"
-                        name="mileage"
-                        onChange={handlechange}
-                        value={CarDetails.mileage}
-                        className="
-
-            w-full
-            block px-2 py-2 mt-2
-            border-gray-300
-            rounded-md
-            shadow-sm
-            focus:border-indigo-300
-            focus:ring
-            focus:ring-indigo-200
-            focus:ring-opacity-50
-          "
-                        placeholder="Mileage"
-                      />
-                    </label>
-                    {errors.name && (
-                      <div className="flex">
-                        <span className="text-red-400 text-sm m-2 p-2">
-                          {errors.name[0]}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label>
-                      <span className="text-gray-700">FuelType</span>
-                      <input
-                        type="text"
-                        name="fueltype"
-                        onChange={handlechange}
-                        value={CarDetails.fueltype}
-                        className="
-
-            w-full
-            block px-2 py-2 mt-2
-            border-gray-300
-            rounded-md
-            shadow-sm
-            focus:border-indigo-300
-            focus:ring
-            focus:ring-indigo-200
-            focus:ring-opacity-50
-          "
-                        placeholder="Fueltype"
-                      />
-                    </label>
-                    {errors.name && (
-                      <div className="flex">
-                        <span className="text-red-400 text-sm m-2 p-2">
-                          {errors.name[0]}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label>
-                      <span className="text-gray-700">Car Color</span>
-                      <input
-                        type="text"
-                        name="color"
-                        onChange={handlechange}
-                        value={CarDetails.color}
-                        className="
-
-            w-full
-            block px-2 py-2 mt-2
-            border-gray-300
-            rounded-md
-            shadow-sm
-            focus:border-indigo-300
-            focus:ring
-            focus:ring-indigo-200
-            focus:ring-opacity-50
-          "
-                        placeholder="Car Color"
+                        placeholder="Location of the house"
                       />
                     </label>
                     {errors.name && (
@@ -322,7 +218,7 @@ const AddNewCars = () => {
                         type="number"
                         name="price"
                         onChange={handlechange}
-                        value={CarDetails.price}
+                        value={HouseDetails.price}
                         className="
 
             w-full
@@ -348,7 +244,7 @@ const AddNewCars = () => {
                   </div>
                   <div className="mb-2">
                     <label>
-                      <span className="text-gray-700">Car Images</span>
+                      <span className="text-gray-700">House Images</span>
                       <input
                         type="file"
                         name="image"
@@ -383,7 +279,7 @@ const AddNewCars = () => {
                       <textarea
                         name="details"
                         onChange={handlechange}
-                        value={CarDetails.details}
+                        value={HouseDetails.details}
                         className="
             block
             w-full
@@ -433,4 +329,4 @@ const AddNewCars = () => {
   );
 };
 
-export default AddNewCars;
+export default AddNewHouse;
