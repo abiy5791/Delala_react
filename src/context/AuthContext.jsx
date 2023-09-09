@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
     console.log(data);
     try {
       await axios.post("/user_register", data);
-      navigate("/admin_dashboard");
+      navigate("/admin_dashboard/users");
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors);

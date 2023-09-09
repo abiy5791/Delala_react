@@ -7,9 +7,9 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import AdminRegister from "./pages/AdminRegister";
 import Dashboard from "./pages/Dashboard";
-import Detail from "./partials/dashboard/details";
-import Update_user from "./partials/dashboard/update_user";
-import Addusers from "./partials/dashboard/addusers";
+import Detail from "./partials/dashboard/users/details";
+import Update_user from "./partials/dashboard/users/update_user";
+import Addusers from "./partials/dashboard/users/Addusers";
 import Alert from "./components/Alert";
 import { useEffect, useState, React } from "react";
 // import DashboardA from "./pages/DashboardA";
@@ -17,7 +17,7 @@ import DelalaBoard from "./pages/DelalaBoard";
 import Approval from "./pages/Approval";
 import "./css/style.css";
 import "./charts/ChartjsConfig";
-import CarDetails from "./partials/dashboard/CarDetails";
+import CarDetails from "./partials/dashboard/Properties/CarDetails";
 import AddNewCars from "./partials/dashboard/AddNewCars";
 import AdminHome from "./pages/AdminHome";
 
@@ -66,14 +66,15 @@ const App = () => {
             <Route path="cars" element={<Car />} />
             <Route path="labour" element={<Labour />} />
             <Route path="others" element={<Other />} />
+            <Route path="add_user" element={<Addusers />} />
           </Route>
           <Route path="/" />
           <Route path="/delala_dashboard" element={<DelalaBoard />} />
-
           <Route path="user/:id" element={<Detail />} />
+          <Route path="car/:id" element={<CarDetails />} />
           <Route path="/add_user" element={<Addusers />} />
           <Route path="/add_cars" element={<AddNewCars />} />
-          <Route path="/view_cars" element={<CarDetails />} />
+          <Route path="car/:id" element={<CarDetails />} />
           <Route path="/Update_user/:id" element={<Update_user />} />
         </Route>
 

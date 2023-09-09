@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {} from "react";
-import Sidebar from "../Sidebar";
-import Header from "../Header";
+import Sidebar from "../../Sidebar";
+import Header from "../../Header";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "../../api/axios";
+import axios from "../../../api/axios";
 export default function Update_user() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userinfos, setUserinfos] = useState({});
@@ -33,11 +33,11 @@ export default function Update_user() {
       };
     });
   }
-  console.log(userinfos);
+
   const update_user = async (e) => {
     e.preventDefault();
     await axios.put(`api/users/${params.id}`, userinfos).then(() => {
-      navigate("/admin_dashboard");
+      navigate("/admin_dashboard/users");
     });
   };
 
