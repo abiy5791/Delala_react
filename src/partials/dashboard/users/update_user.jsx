@@ -17,11 +17,13 @@ export default function Update_user() {
   }, []);
 
   function handlechange(e) {
-    var { name, value, checked } = e.target;
-    if (checked) {
-      value = "admin";
-    } else {
-      value = "delala";
+    var { name, value, checked, type } = e.target;
+    if (type === "checkbox") {
+      if (checked) {
+        value = "admin";
+      } else {
+        value = "delala";
+      }
     }
 
     setUserinfos((previnfo) => {
@@ -31,11 +33,11 @@ export default function Update_user() {
       };
     });
   }
-  console.log(userinfos);
+
   const update_user = async (e) => {
     e.preventDefault();
     await axios.put(`api/users/${params.id}`, userinfos).then(() => {
-      navigate("/admin_dashboard");
+      navigate("/admin_dashboard/users");
     });
   };
 

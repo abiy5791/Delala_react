@@ -30,7 +30,6 @@ const Addusers = () => {
   }
   const add_user = async (event) => {
     event.preventDefault();
-    console.log("heasfskjd");
     Userregister(userinfo);
   };
 

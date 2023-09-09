@@ -27,13 +27,13 @@ export default function Detail() {
 
   const deleteUser = async (id) => {
     await axios.delete(`api/users/${params.id}`).then((response) => {
-      navigate("/admin_dashboard");
+      navigate("/admin_dashboard/users");
     });
   };
 
   const update_user = async (id) => {
     await axios.put(`api/users/${id}`, status).then((response) => {
-      navigate("/admin_dashboard");
+      navigate("/admin_dashboard/users");
       console.log(response.data);
     });
   };
