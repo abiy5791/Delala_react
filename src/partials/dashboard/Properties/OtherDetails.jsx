@@ -1,40 +1,44 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import axios from "../../../api/axios";
+import useAuthContext from "../../../context/AuthContext";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
-export default function Detail() {
-  const params = useParams();
-  const [user, setUser] = useState([]);
+const OthersDetail = () => {
+  const [OthersData, setOthersData] = useState({});
+  const param = useParams();
   const navigate = useNavigate();
-  const [status, setStatus] = useState({ status: 0 });
-  const getUser = async () => {
-    await axios.get(`api/users/${params.id}`).then((response) => {
-      setUser(response.data);
-      if (response.data.status === 0) {
-        setStatus({ status: 1 });
+  const [approval, setApproval] = useState({ approval: 0 });
+  const { user } = useAuthContext();
+
+  const getOthersData = async () => {
+    try {
+      const response = await axios.get(`api/other/${param.id}`);
+      setOthersData(response.data);
+      if (response.data.approval === 0) {
+        setApproval({ approval: 1 });
       } else {
-        setStatus({ status: 0 });
+        setApproval({ approval: 0 });
       }
-    });
+    } catch (error) {
+      console.error("Failed to fetch labour data:", error);
+    }
   };
+
   useEffect(() => {
-    getUser();
+    getOthersData();
   }, []);
 
-  const deleteUser = async (id) => {
-    await axios.delete(`api/users/${params.id}`).then((response) => {
-      navigate("/admin_dashboard/users");
+  const deleteothers = async () => {
+    await axios.delete(`api/other/${param.id}`).then((response) => {
+      navigate("/admin_dashboard/others");
     });
   };
 
-  const update_user = async (id) => {
-    await axios.put(`api/users/${id}`, status).then((response) => {
-      navigate("/admin_dashboard/users");
-      console.log(response.data);
+  const update_others = async (id) => {
+    await axios.put(`api/other/${id}`, approval).then((response) => {
+      navigate("/admin_dashboard/others");
     });
   };
-
   return (
     <main>
       <div className="p-10">
@@ -48,30 +52,46 @@ export default function Detail() {
           </div>
 
           <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
-            {user.name}
+            {OthersData.title}
           </h1>
           <h3 className="text-gray-600 font-lg text-semibold leading-6">
-            {user.email}
+            {OthersData.price}
           </h3>
           <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non
-            deserunt
+            {OthersData.details}
+          </p>
+          <div className="flex flex-wrap -mx-2 mb-4">
+            {OthersData.image &&
+              OthersData.image.split("|").map((imageUrl, imageIndex) => (
+                <div
+                  className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 px-2 mb-4"
+                  key={imageIndex}
+                >
+                  <img
+                    className="w-full h-40 object-cover rounded-lg shadow-md"
+                    src={`http://127.0.0.1:8000/${imageUrl}`}
+                    alt={`OthersData Image ${imageIndex}`}
+                  />
+                </div>
+              ))}
+          </div>
+          <p className="text-gray-600 mb-2">
+            Posted by: {user.id === OthersData.delala_id && user.name}
           </p>
           <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
             <li className="flex items-center py-3">
-              <span>Status</span>
+              <span>Approval</span>
               <span className="ml-auto">
-                {user.status ? (
+                {OthersData.approval ? (
                   <button
-                    onClick={() => update_user(user.id)}
+                    onClick={() => update_others(OthersData.id)}
                     className="bg-green-500 py-1 px-2 rounded text-white text-sm"
                   >
-                    Active
+                    Approved
                   </button>
                 ) : (
                   <button
-                    onClick={() => update_user(user.id)}
+                    onClick={() => update_others(OthersData.id)}
                     className="bg-red-400 py-1 px-2 rounded text-white text-sm"
                   >
                     pending...
@@ -80,8 +100,8 @@ export default function Detail() {
               </span>
             </li>
             <li className="flex items-center py-3">
-              <span>Member since</span>
-              <span className="ml-auto">{user.created_at}</span>
+              <span>location</span>
+              <span className="ml-auto">location</span>
             </li>
           </ul>
         </div>
@@ -110,7 +130,7 @@ export default function Detail() {
             <div className="grid md:grid-cols-2 text-sm">
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">First Name</div>
-                <div className="px-4 py-2">{user.name}</div>
+                <div className="px-4 py-2">{OthersData.title}</div>
               </div>
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Last Name</div>
@@ -136,7 +156,7 @@ export default function Detail() {
                 <div className="px-4 py-2 font-semibold">Email.</div>
                 <div className="px-4 py-2">
                   <a className="text-blue-800" href="mailto:jane@example.com">
-                    {user.email}
+                    {OthersData.price}
                   </a>
                 </div>
               </div>
@@ -147,11 +167,11 @@ export default function Detail() {
             </div>
           </div>
           <div className="inline-flex">
-            <Link to={`update`}>
-              <button className="block w-full text-blue-800 text-sm font-semibold rounded-sm hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
-                Edit
-              </button>
-            </Link>
+            {/* <Link to={`/Update_user/${user.id}`}> */}
+            <button className="block w-full text-blue-800 text-sm font-semibold rounded-sm hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
+              Edit
+            </button>
+            {/* </Link> */}
 
             <button
               onClick={() => window.my_modal_5.showModal()}
@@ -172,7 +192,7 @@ export default function Detail() {
                   {/* if there is a button in form, it will close the modal */}
                   <button className="btn">Close</button>
                   <button
-                    onClick={() => deleteUser()}
+                    onClick={() => deleteothers()}
                     className="btn btn-danger"
                   >
                     Delete
@@ -185,4 +205,6 @@ export default function Detail() {
       </div>
     </main>
   );
-}
+};
+
+export default OthersDetail;

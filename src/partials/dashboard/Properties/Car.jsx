@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 import axios from "../../../api/axios";
+import useAuthContext from "../../../context/AuthContext";
 function Car() {
   const [cars, setCars] = useState([]);
+  const { user } = useAuthContext();
   const getCars = async () => {
     await axios.get("api/car").then((response) => {
       setCars(response.data);
@@ -13,8 +15,8 @@ function Car() {
   useEffect(() => {
     getCars();
   }, []);
-  console.log(cars);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  // console.log(cars);
+
   return (
     <div className="col-span-full xl:col-span-8 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
       <header className="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
@@ -30,17 +32,23 @@ function Car() {
             <thead className="text-xs uppercase text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm">
               <tr>
                 <th className="p-2">
-                  <div className="font-semibold text-left">make</div>
+                  <div className="font-semibold text-left">Title</div>
                 </th>
                 <th className="p-2">
-                  <div className="font-semibold text-center">model</div>
+                  <div className="font-semibold text-center">Model</div>
                 </th>
                 <th className="p-2">
-                  <div className="font-semibold text-center">year</div>
+                  <div className="font-semibold text-center">Year</div>
                 </th>
 
                 <th className="p-2">
-                  <div className="font-semibold text-center">color</div>
+                  <div className="font-semibold text-center">Color</div>
+                </th>
+                <th className="p-2">
+                  <div className="font-semibold text-center">Posted_By</div>
+                </th>
+                <th className="p-2">
+                  <div className="font-semibold text-center">Approval</div>
                 </th>
               </tr>
             </thead>
@@ -65,7 +73,7 @@ function Car() {
                           />
                         </svg>
                         <div className="text-slate-800 dark:text-slate-100">
-                          <Link to={`/car/${car.id}`}>{car.make}</Link>
+                          <Link to={`${car.id}`}>{car.title}</Link>
                         </div>
                       </div>
                     </td>
@@ -79,22 +87,30 @@ function Car() {
                     <td className="p-2">
                       <div className="text-center">{car.color}</div>
                     </td>
+                    <td className="p-2">
+                      <div className="text-center">
+                        {user.id === car.delala_id && user.name}
+                      </div>
+                    </td>
+                    <td className="p-2">
+                      {car.approval ? (
+                        <span className="text-center hidden xs:block ml-2 text-green-500">
+                          Approved
+                        </span>
+                      ) : (
+                        <span className="text-center hidden xs:block ml-2 text-red-500">
+                          pending ...
+                        </span>
+                      )}
+                    </td>
                   </tr>
                 );
               })}
             </tbody>
-            <Link to="/add_user">
-              <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                <svg
-                  className="w-4 h-4 fill-current opacity-50 shrink-0"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg>
-                <span className="hidden xs:block ml-2">Add New</span>
-              </button>
-            </Link>
-            <Link to="/view_cars">
+          </table>
+
+          <div className="space-x-2">
+            {/* <Link to="/view_cars">
               <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
                 <svg
                   className="w-4 h-4 fill-current opacity-50 shrink-0"
@@ -104,8 +120,8 @@ function Car() {
                 </svg>
                 <span className="hidden xs:block ml-2">view cars</span>
               </button>
-            </Link>
-            <Link to="/add_cars">
+            </Link> */}
+            <Link to="add_cars">
               <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
                 <svg
                   className="w-4 h-4 fill-current opacity-50 shrink-0"
@@ -113,10 +129,10 @@ function Car() {
                 >
                   <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                 </svg>
-                <span className="hidden xs:block ml-2">Add cars</span>
+                <span className="hidden xs:block ml-2">Add</span>
               </button>
             </Link>
-          </table>
+          </div>
         </div>
       </div>
     </div>
