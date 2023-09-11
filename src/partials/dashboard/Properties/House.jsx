@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../../api/axios";
-import useAuthContext from "../../../context/AuthContext";
 
 const House = () => {
   const [Houses, setHouses] = useState([]);
-  const { user } = useAuthContext();
+  const [users, setUsers] = useState(null);
+
+  const getUser = async () => {
+    await axios.get("api/users").then((response) => {
+      setUsers(response.data);
+    });
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
+
   const getHouse = async () => {
     await axios.get("api/house").then((response) => {
       setHouses(response.data);
@@ -86,9 +95,13 @@ const House = () => {
                       <div className="text-center">{house.price}</div>
                     </td>
                     <td className="p-2">
-                      <div className="text-center">
-                        {user.id === house.delala_id && user.name}
-                      </div>
+                      {users.map((user) => {
+                        return (
+                          <div className="text-center">
+                            {user.id === house.delala_id && user.name}
+                          </div>
+                        );
+                      })}
                     </td>
                     <td className="p-2">
                       {house.approval ? (
