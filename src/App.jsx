@@ -33,6 +33,7 @@ import AddCar from "./partials/dashboard/Properties/AddCar";
 import AddHouse from "./partials/dashboard/Properties/AddHouse";
 import AddLabour from "./partials/dashboard/Properties/AddLabour";
 import AddOthers from "./partials/dashboard/Properties/AddOthers";
+import Home from "./partials/dashboard/Properties/Home";
 
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -99,11 +100,12 @@ const App = () => {
 
             <Route path="add_user" element={<Addusers />} />
           </Route>
-          <Route path="/" />
+
           <Route path="/delala_dashboard" element={<DelalaBoard />} />
         </Route>
 
         <Route element={<GuestLayout />}>
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/AdminRegister" element={<AdminRegister />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
