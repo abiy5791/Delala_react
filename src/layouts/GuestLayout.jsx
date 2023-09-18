@@ -9,7 +9,7 @@ const GuestLayout = () => {
   ) : user.role === "admin" ? (
     <Navigate to="/admin_dashboard" />
   ) : (
-    <Navigate to="/delala_dashboard" />
+    <Navigate to="/" />
   );
 };
 

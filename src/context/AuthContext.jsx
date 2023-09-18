@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
       if (user.role === "admin") {
         navigate("/admin_dashboard");
       } else {
-        navigate("/delala_dashboard");
+        navigate("/");
       }
     } catch (e) {
       if (e.response.status === 422) {

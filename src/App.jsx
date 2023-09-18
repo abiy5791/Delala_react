@@ -33,7 +33,7 @@ import AddCar from "./partials/dashboard/Properties/AddCar";
 import AddHouse from "./partials/dashboard/Properties/AddHouse";
 import AddLabour from "./partials/dashboard/Properties/AddLabour";
 import AddOthers from "./partials/dashboard/Properties/AddOthers";
-import Home from "./partials/dashboard/Properties/Home";
+import Home from "./pages/Home";
 
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -66,6 +66,7 @@ const App = () => {
         <Alert AlertMessage={<b>Oops! No internet connection.</b>}></Alert>
       )}
       <Routes>
+        <Route path="/" exact element={<Home />} />
         <Route element={<AuthLayout />}>
           <Route exact path="/admin_dashboard" element={<Dashboard />}>
             <Route index element={<AdminHome />} />
@@ -101,11 +102,16 @@ const App = () => {
             <Route path="add_user" element={<Addusers />} />
           </Route>
 
-          <Route path="/delala_dashboard" element={<DelalaBoard />} />
+          <Route path="/delala_dashboard" element={<DelalaBoard />}>
+            <Route index />
+            <Route path="addCar" element={<AddCar />} />
+            <Route path="addHouse" element={<AddHouse />} />
+            <Route path="addLabour" element={<AddLabour />} />
+            <Route path="addOther" element={<AddOthers />} />
+          </Route>
         </Route>
 
         <Route element={<GuestLayout />}>
-          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/AdminRegister" element={<AdminRegister />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
