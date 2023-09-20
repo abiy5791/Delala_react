@@ -1,33 +1,64 @@
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import useAuthContext from "../../../context/AuthContext";
+import React, { useState, useEffect } from "react";
+import {} from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "../../../api/axios";
 import CircularProgress from "../../../components/CircularProgress";
-
-const Addusers = () => {
+export default function UpdateOthers() {
+  const [otherinfo, setOtherinfo] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [image, setImage] = useState(null);
+  const params = useParams();
   const navigate = useNavigate();
-
-  const [userinfo, setUserinfo] = useState({
-    email: "",
-    name: "",
-    password: "",
-    password_confirmation: "",
-    role: "delala",
-  });
-
-  const { Userregister, errors, isLoading } = useAuthContext();
+  useEffect(() => {
+    axios
+      .get(`/api/other/${params.id}`)
+      .then((response) => setOtherinfo(response.data));
+  }, []);
 
   function handlechange(e) {
-    setUserinfo((prevInfo) => {
-      return {
+    if (e.target.type === "file") {
+      const selectedFile = e.target.files;
+      setImage(selectedFile);
+    } else {
+      setOtherinfo((prevInfo) => ({
         ...prevInfo,
         [e.target.name]: e.target.value,
-      };
-    });
+      }));
+    }
   }
-  const add_user = async (event) => {
+  const update_other = async (event) => {
     event.preventDefault();
-    Userregister(userinfo);
+
+    setErrors([]);
+    setIsLoading(true);
+
+    try {
+      const formData = new FormData();
+      // Append fields to formData
+      formData.append("title", otherinfo.title);
+      formData.append("price", otherinfo.price);
+      formData.append("delala_id", otherinfo.delala_id);
+      formData.append("details", otherinfo.details);
+      formData.append("_method", "put");
+
+      if (image !== null) {
+        for (let i = 0; i < image.length; i++) {
+          formData.append("image[]", image[i]);
+        }
+      }
+
+      await axios.post(`api/other/${params.id}`, formData).then((response) => {
+        navigate(-1);
+      });
+    } catch (e) {
+      if (e.response.status === 422) {
+        setErrors(e.response.data.errors);
+      }
+    } finally {
+      // Stop loading
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -36,17 +67,21 @@ const Addusers = () => {
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden ">
           <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl shadow-rose-600/40 ring-2 ring-indigo-600 lg:max-w-xl">
             <h1 className="text-3xl font-semibold text-center text-indigo-700  uppercase decoration-wavy">
-              Register Form
+              Other Update Form
             </h1>
-            <form className="mt-6" onSubmit={add_user}>
+            <form
+              className="mt-6"
+              onSubmit={update_other}
+              encType="multipart/form-data"
+            >
               <div className="mb-2">
                 <label>
-                  <span className="text-gray-700">Your name</span>
+                  <span className="text-gray-700">Title</span>
                   <input
                     type="text"
-                    name="name"
+                    name="title"
                     onChange={handlechange}
-                    value={userinfo.name}
+                    value={otherinfo.title}
                     className="
 
             w-full
@@ -59,7 +94,39 @@ const Addusers = () => {
             focus:ring-indigo-200
             focus:ring-opacity-50
           "
-                    placeholder="Name"
+                    placeholder="Title"
+                  />
+                </label>
+                {errors.name && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.name[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Price</span>
+                  <input
+                    type="number"
+                    name="price"
+                    onChange={handlechange}
+                    value={otherinfo.price}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Price"
                   />
                 </label>
                 {errors.name && (
@@ -72,12 +139,12 @@ const Addusers = () => {
               </div>
               <div className="mb-2">
                 <label>
-                  <span className="text-gray-700">password</span>
+                  <span className="text-gray-700">Other Images</span>
                   <input
-                    type="password"
-                    name="password"
+                    type="file"
+                    name="image"
                     onChange={handlechange}
-                    value={userinfo.password}
+                    multiple
                     className="
 
             w-full
@@ -90,53 +157,28 @@ const Addusers = () => {
             focus:ring-indigo-200
             focus:ring-opacity-50
           "
-                    placeholder="password"
                   />
                 </label>
-                {errors.password && (
+                {errors.name && (
                   <div className="flex">
                     <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.password[0]}
+                      {errors.name[0]}
                     </span>
                   </div>
                 )}
               </div>
-              <div className="mb-2">
-                <label>
-                  <span className="text-gray-700">confirm password</span>
-                  <input
-                    type="password"
-                    name="password_confirmation"
-                    value={userinfo.password_confirmation}
-                    onChange={handlechange}
-                    className="
 
-            w-full
-            block px-2 py-2 mt-2
-            border-gray-300
-            rounded-md
-            shadow-sm
-            focus:border-indigo-300
-            focus:ring
-            focus:ring-indigo-200
-            focus:ring-opacity-50
-          "
-                    placeholder="confirm password"
-                  />
-                </label>
-              </div>
               <div className="mb-2">
                 <label>
-                  <span className="text-gray-700">Email address</span>
-                  <input
-                    name="email"
-                    type="email"
-                    value={userinfo.email}
+                  <span class="text-gray-700">Other Details</span>
+                  <textarea
+                    name="details"
                     onChange={handlechange}
+                    value={otherinfo.details}
                     className="
             block
             w-full
-            mt-2 px-2 py-2
+            mt-2 px-16 py-8
             border-gray-300
             rounded-md
             shadow-sm
@@ -145,17 +187,9 @@ const Addusers = () => {
             focus:ring-indigo-200
             focus:ring-opacity-50
           "
-                    placeholder="john.cooks@example.com"
-                    required
-                  />
+                    rows="5"
+                  ></textarea>
                 </label>
-                {errors.email && (
-                  <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.email[0]}
-                    </span>
-                  </div>
-                )}
               </div>
 
               <div className="mb-10">
@@ -176,7 +210,7 @@ const Addusers = () => {
                   text-white
                 "
                   >
-                    Register
+                    Update
                   </button>
                 )}
               </div>
@@ -186,6 +220,4 @@ const Addusers = () => {
       </div>
     </main>
   );
-};
-
-export default Addusers;
+}

@@ -47,7 +47,7 @@ function Dashboard() {
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         <Outlet />
-        <Banner />
+        {/* <Banner /> */}
       </div>
     </div>
   );

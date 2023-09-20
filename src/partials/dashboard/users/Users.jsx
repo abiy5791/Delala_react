@@ -14,7 +14,6 @@ function Users() {
     getUser();
   }, []);
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className="col-span-full xl:col-span-8 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
       <header className="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
@@ -65,7 +64,7 @@ function Users() {
                           />
                         </svg>
                         <div className="text-slate-800 dark:text-slate-100">
-                          <Link to={`/user/${user.id}`}>{user.name}</Link>
+                          <Link to={`${user.id}`}>{user.name}</Link>
                         </div>
                       </div>
                     </td>
@@ -84,11 +83,11 @@ function Users() {
 
                     <td className="p-2">
                       {user.status ? (
-                        <span className="hidden xs:block ml-2 text-green-500">
+                        <span className="hidden text-center xs:block ml-2 text-green-500">
                           Approved
                         </span>
                       ) : (
-                        <span className="hidden xs:block ml-2 text-red-500">
+                        <span className="hidden text-center xs:block ml-2 text-red-500">
                           pending ...
                         </span>
                       )}
@@ -97,7 +96,7 @@ function Users() {
                 );
               })}
             </tbody>
-            <Link to="/add_user">
+            <Link to="add_user">
               <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
                 <svg
                   className="w-4 h-4 fill-current opacity-50 shrink-0"
@@ -105,29 +104,7 @@ function Users() {
                 >
                   <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                 </svg>
-                <span className="hidden xs:block ml-2">Add New</span>
-              </button>
-            </Link>
-            <Link to="/view_cars">
-              <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                <svg
-                  className="w-4 h-4 fill-current opacity-50 shrink-0"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg>
-                <span className="hidden xs:block ml-2">view cars</span>
-              </button>
-            </Link>
-            <Link to="/add_cars">
-              <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                <svg
-                  className="w-4 h-4 fill-current opacity-50 shrink-0"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg>
-                <span className="hidden xs:block ml-2">Add cars</span>
+                <span className="hidden xs:block ml-2">Add</span>
               </button>
             </Link>
           </table>

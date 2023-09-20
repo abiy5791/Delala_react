@@ -18,7 +18,6 @@ import Approval from "./pages/Approval";
 import "./css/style.css";
 import "./charts/ChartjsConfig";
 import CarDetails from "./partials/dashboard/Properties/CarDetails";
-import AddNewCars from "./partials/dashboard/AddNewCars";
 import AdminHome from "./pages/AdminHome";
 
 import House from "./partials/dashboard/Properties/House";
@@ -26,6 +25,14 @@ import Car from "./partials/dashboard/Properties/Car";
 import Labour from "./partials/dashboard/Properties/Labour";
 import Other from "./partials/dashboard/Properties/Other";
 import Users from "./partials/dashboard/users/Users";
+import ProLayout from "./layouts/ProLayout";
+import HouseDetails from "./partials/dashboard/Properties/HouseDetails";
+import LabourDetails from "./partials/dashboard/Properties/LabourDetails";
+import OthersDetail from "./partials/dashboard/Properties/OtherDetails";
+import AddCar from "./partials/dashboard/Properties/AddCar";
+import AddHouse from "./partials/dashboard/Properties/AddHouse";
+import AddLabour from "./partials/dashboard/Properties/AddLabour";
+import AddOthers from "./partials/dashboard/Properties/AddOthers";
 
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -60,25 +67,56 @@ const App = () => {
       <Routes>
         <Route element={<AuthLayout />}>
           <Route exact path="/admin_dashboard" element={<Dashboard />}>
-            <Route path="users" element={<Users />} />
             <Route index element={<AdminHome />} />
-            <Route path="house" element={<House />} />
-            <Route path="cars" element={<Car />} />
-            <Route path="labour" element={<Labour />} />
-            <Route path="others" element={<Other />} />
+            <Route path="users" element={<ProLayout />}>
+              <Route index element={<Users />} />
+              <Route path=":id" element={<ProLayout />}>
+                <Route index element={<Detail />} />
+                <Route path="update" element={<Update_user />} />
+              </Route>
+              <Route path="add_user" element={<Addusers />} />
+            </Route>
+            <Route path="cars" element={<ProLayout />}>
+              <Route index element={<Car />} />
+              <Route path=":id" element={<ProLayout />}>
+                <Route index element={<CarDetails />} />
+                <Route path="update" element={<UpdateCars />} />
+              </Route>
+              <Route path="add_cars" element={<AddCar />} />
+            </Route>
+            <Route path="house" element={<ProLayout />}>
+              <Route index element={<House />} />
+              <Route path=":id" element={<ProLayout />}>
+                <Route index element={<HouseDetails />} />
+                <Route path="update" element={<UpdateHouses />} />
+              </Route>
+              <Route path="add_houses" element={<AddHouse />} />
+            </Route>
+            <Route path="labour" element={<ProLayout />}>
+              <Route index element={<Labour />} />
+              <Route path=":id" element={<ProLayout />}>
+                <Route index element={<LabourDetails />} />
+                <Route path="update" element={<UpdateLabours />} />
+              </Route>
+              <Route path="add_labours" element={<AddLabour />} />
+            </Route>
+            <Route path="others" element={<ProLayout />}>
+              <Route index element={<Other />} />
+              <Route path=":id" element={<ProLayout />}>
+                <Route index element={<OthersDetail />} />
+                <Route path="update" element={<UpdateOthers />} />
+              </Route>
+              <Route path="add_others" element={<AddOthers />} />
+            </Route>
+
             <Route path="add_user" element={<Addusers />} />
           </Route>
-          <Route path="/" />
+
           <Route path="/delala_dashboard" element={<DelalaBoard />} />
-          <Route path="user/:id" element={<Detail />} />
-          <Route path="car/:id" element={<CarDetails />} />
-          <Route path="/add_user" element={<Addusers />} />
-          <Route path="/add_cars" element={<AddNewCars />} />
-          <Route path="car/:id" element={<CarDetails />} />
-          <Route path="/Update_user/:id" element={<Update_user />} />
         </Route>
 
         <Route element={<GuestLayout />}>
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/AdminRegister" element={<AdminRegister />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

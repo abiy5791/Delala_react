@@ -3,44 +3,43 @@ import axios from "../../../api/axios";
 import useAuthContext from "../../../context/AuthContext";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-function CarDetails() {
-  const [carData, setCarData] = useState({});
+const LabourDetails = () => {
+  const [LabourData, setLabourData] = useState({});
   const param = useParams();
   const navigate = useNavigate();
   const [approval, setApproval] = useState({ approval: 0 });
   const { user } = useAuthContext();
 
-  const getCarData = async () => {
+  const getLabourData = async () => {
     try {
-      const response = await axios.get(`api/car/${param.id}`);
-      setCarData(response.data);
+      const response = await axios.get(`api/labour/${param.id}`);
+      setLabourData(response.data);
       if (response.data.approval === 0) {
         setApproval({ approval: 1 });
       } else {
         setApproval({ approval: 0 });
       }
     } catch (error) {
-      console.error("Failed to fetch car data:", error);
+      console.error("Failed to fetch labour data:", error);
     }
   };
 
   useEffect(() => {
-    getCarData();
+    getLabourData();
   }, []);
 
-  const deletecar = async () => {
-    await axios.delete(`api/car/${param.id}`).then((response) => {
-      navigate("/admin_dashboard/cars");
+  const deletelabour = async () => {
+    await axios.delete(`api/labour/${param.id}`).then((response) => {
+      navigate("/admin_dashboard/labour");
     });
   };
 
-  const update_car = async (id) => {
-    await axios.put(`api/car/${id}`, approval).then((response) => {
-      navigate("/admin_dashboard/cars");
+  const update_labour = async (id) => {
+    await axios.put(`api/labour/${id}`, approval).then((response) => {
+      navigate("/admin_dashboard/labour");
       console.log(response);
     });
   };
-
   return (
     <main>
       <div className="p-10">
@@ -54,17 +53,17 @@ function CarDetails() {
           </div>
 
           <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
-            {carData.title}
+            {LabourData.title}
           </h1>
           <h3 className="text-gray-600 font-lg text-semibold leading-6">
-            {carData.make}
+            {LabourData.area}
           </h3>
           <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
-            {carData.details}
+            {LabourData.details}
           </p>
           <div className="flex flex-wrap -mx-2 mb-4">
-            {carData.image &&
-              carData.image.split("|").map((imageUrl, imageIndex) => (
+            {LabourData.image &&
+              LabourData.image.split("|").map((imageUrl, imageIndex) => (
                 <div
                   className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 px-2 mb-4"
                   key={imageIndex}
@@ -72,28 +71,28 @@ function CarDetails() {
                   <img
                     className="w-full h-40 object-cover rounded-lg shadow-md"
                     src={`http://127.0.0.1:8000/${imageUrl}`}
-                    alt={`carData Image ${imageIndex}`}
+                    alt={`LabourData Image ${imageIndex}`}
                   />
                 </div>
               ))}
           </div>
           <p className="text-gray-600 mb-2">
-            Posted by: {user.id === carData.delala_id && user.name}
+            Posted by: {user.id === LabourData.delala_id && user.name}
           </p>
           <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
             <li className="flex items-center py-3">
               <span>Approval</span>
               <span className="ml-auto">
-                {carData.approval ? (
+                {LabourData.approval ? (
                   <button
-                    onClick={() => update_car(carData.id)}
+                    onClick={() => update_labour(LabourData.id)}
                     className="bg-green-500 py-1 px-2 rounded text-white text-sm"
                   >
                     Approved
                   </button>
                 ) : (
                   <button
-                    onClick={() => update_car(carData.id)}
+                    onClick={() => update_labour(LabourData.id)}
                     className="bg-red-400 py-1 px-2 rounded text-white text-sm"
                   >
                     pending...
@@ -102,8 +101,8 @@ function CarDetails() {
               </span>
             </li>
             <li className="flex items-center py-3">
-              <span>Year</span>
-              <span className="ml-auto">{carData.year}</span>
+              <span>location</span>
+              <span className="ml-auto">{LabourData.location}</span>
             </li>
           </ul>
         </div>
@@ -132,7 +131,7 @@ function CarDetails() {
             <div className="grid md:grid-cols-2 text-sm">
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">First Name</div>
-                <div className="px-4 py-2">{carData.title}</div>
+                <div className="px-4 py-2">{LabourData.title}</div>
               </div>
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Last Name</div>
@@ -158,7 +157,7 @@ function CarDetails() {
                 <div className="px-4 py-2 font-semibold">Email.</div>
                 <div className="px-4 py-2">
                   <a className="text-blue-800" href="mailto:jane@example.com">
-                    {carData.color}
+                    {LabourData.price}
                   </a>
                 </div>
               </div>
@@ -194,7 +193,7 @@ function CarDetails() {
                   {/* if there is a button in form, it will close the modal */}
                   <button className="btn">Close</button>
                   <button
-                    onClick={() => deletecar()}
+                    onClick={() => deletelabour()}
                     className="btn btn-danger"
                   >
                     Delete
@@ -207,6 +206,6 @@ function CarDetails() {
       </div>
     </main>
   );
-}
+};
 
-export default CarDetails;
+export default LabourDetails;

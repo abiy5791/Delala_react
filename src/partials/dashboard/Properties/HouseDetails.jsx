@@ -3,48 +3,47 @@ import axios from "../../../api/axios";
 import useAuthContext from "../../../context/AuthContext";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-function CarDetails() {
-  const [carData, setCarData] = useState({});
+const HouseDetails = () => {
+  const [HouseData, seHouseData] = useState({});
   const param = useParams();
   const navigate = useNavigate();
   const [approval, setApproval] = useState({ approval: 0 });
   const { user } = useAuthContext();
 
-  const getCarData = async () => {
+  const getHouseData = async () => {
     try {
-      const response = await axios.get(`api/car/${param.id}`);
-      setCarData(response.data);
+      const response = await axios.get(`api/house/${param.id}`);
+      seHouseData(response.data);
       if (response.data.approval === 0) {
         setApproval({ approval: 1 });
       } else {
         setApproval({ approval: 0 });
       }
     } catch (error) {
-      console.error("Failed to fetch car data:", error);
+      console.error("Failed to fetch house data:", error);
     }
   };
 
   useEffect(() => {
-    getCarData();
+    getHouseData();
   }, []);
 
-  const deletecar = async () => {
-    await axios.delete(`api/car/${param.id}`).then((response) => {
-      navigate("/admin_dashboard/cars");
+  const deletehouse = async () => {
+    await axios.delete(`api/house/${param.id}`).then((response) => {
+      navigate("/admin_dashboard/house");
     });
   };
 
-  const update_car = async (id) => {
-    await axios.put(`api/car/${id}`, approval).then((response) => {
-      navigate("/admin_dashboard/cars");
+  const update_house = async (id) => {
+    await axios.put(`api/house/${id}`, approval).then((response) => {
+      navigate("/admin_dashboard/house");
       console.log(response);
     });
   };
-
   return (
     <main>
       <div className="p-10">
-        <div className="bg-white p-3 border-t-4 border-blue-300">
+        <div className="bg-white p-3 border-t-4 border-blue-300 dark:bg-slate-800">
           <div className="image overflow-hidden">
             <img
               className="h-auto w-full mx-auto"
@@ -53,18 +52,18 @@ function CarDetails() {
             ></img>
           </div>
 
-          <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
-            {carData.title}
+          <h1 className="text-gray-900 font-bold text-xl leading-8 my-1 dark:text-slate-100">
+            {HouseData.title}
           </h1>
-          <h3 className="text-gray-600 font-lg text-semibold leading-6">
-            {carData.make}
+          <h3 className="text-gray-600 font-lg text-semibold leading-6 dark:text-slate-100">
+            {HouseData.area}
           </h3>
-          <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
-            {carData.details}
+          <p className="text-sm text-gray-500 hover:text-gray-600 leading-6 dark:text-slate-100">
+            {HouseData.details}
           </p>
-          <div className="flex flex-wrap -mx-2 mb-4">
-            {carData.image &&
-              carData.image.split("|").map((imageUrl, imageIndex) => (
+          <div className="flex flex-wrap -mx-2 mb-4 dark:bg-slate-800">
+            {HouseData.image &&
+              HouseData.image.split("|").map((imageUrl, imageIndex) => (
                 <div
                   className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 px-2 mb-4"
                   key={imageIndex}
@@ -72,28 +71,28 @@ function CarDetails() {
                   <img
                     className="w-full h-40 object-cover rounded-lg shadow-md"
                     src={`http://127.0.0.1:8000/${imageUrl}`}
-                    alt={`carData Image ${imageIndex}`}
+                    alt={`HouseData Image ${imageIndex}`}
                   />
                 </div>
               ))}
           </div>
-          <p className="text-gray-600 mb-2">
-            Posted by: {user.id === carData.delala_id && user.name}
+          <p className="text-gray-600 mb-2 dark:text-slate-100">
+            Posted by: {user.id === HouseData.delala_id && user.name}
           </p>
-          <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
+          <ul className="bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-100 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
             <li className="flex items-center py-3">
               <span>Approval</span>
               <span className="ml-auto">
-                {carData.approval ? (
+                {HouseData.approval ? (
                   <button
-                    onClick={() => update_car(carData.id)}
+                    onClick={() => update_house(HouseData.id)}
                     className="bg-green-500 py-1 px-2 rounded text-white text-sm"
                   >
                     Approved
                   </button>
                 ) : (
                   <button
-                    onClick={() => update_car(carData.id)}
+                    onClick={() => update_house(HouseData.id)}
                     className="bg-red-400 py-1 px-2 rounded text-white text-sm"
                   >
                     pending...
@@ -102,13 +101,13 @@ function CarDetails() {
               </span>
             </li>
             <li className="flex items-center py-3">
-              <span>Year</span>
-              <span className="ml-auto">{carData.year}</span>
+              <span>location</span>
+              <span className="ml-auto">{HouseData.location}</span>
             </li>
           </ul>
         </div>
 
-        <div className="bg-white p-3 shadow-sm rounded-sm">
+        <div className="bg-white p-3 shadow-sm rounded-sm dark:bg-slate-800">
           <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
             <span clas="text-green-500">
               <svg
@@ -126,13 +125,13 @@ function CarDetails() {
                 />
               </svg>
             </span>
-            <span className="tracking-wide">About</span>
+            <span className="tracking-wide dark:text-slate-100">About</span>
           </div>
-          <div className="text-gray-700">
+          <div className="text-gray-700 dark:text-slate-100">
             <div className="grid md:grid-cols-2 text-sm">
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">First Name</div>
-                <div className="px-4 py-2">{carData.title}</div>
+                <div className="px-4 py-2">{HouseData.title}</div>
               </div>
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Last Name</div>
@@ -158,7 +157,7 @@ function CarDetails() {
                 <div className="px-4 py-2 font-semibold">Email.</div>
                 <div className="px-4 py-2">
                   <a className="text-blue-800" href="mailto:jane@example.com">
-                    {carData.color}
+                    {HouseData.price}
                   </a>
                 </div>
               </div>
@@ -194,7 +193,7 @@ function CarDetails() {
                   {/* if there is a button in form, it will close the modal */}
                   <button className="btn">Close</button>
                   <button
-                    onClick={() => deletecar()}
+                    onClick={() => deletehouse()}
                     className="btn btn-danger"
                   >
                     Delete
@@ -207,6 +206,6 @@ function CarDetails() {
       </div>
     </main>
   );
-}
+};
 
-export default CarDetails;
+export default HouseDetails;
