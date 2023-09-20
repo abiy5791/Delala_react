@@ -33,7 +33,11 @@ import AddCar from "./partials/dashboard/Properties/AddCar";
 import AddHouse from "./partials/dashboard/Properties/AddHouse";
 import AddLabour from "./partials/dashboard/Properties/AddLabour";
 import AddOthers from "./partials/dashboard/Properties/AddOthers";
-
+import UpdateOthers from "./partials/dashboard/Properties/Update_Others";
+import UpdateHouses from "./partials/dashboard/Properties/Update_Houses";
+import UpdateCars from "./partials/dashboard/Properties/Update_Cars";
+import UpdateLabours from "./partials/dashboard/Properties/Update_Labours";
+import Home from "./partials/dashboard/Properties/Home";
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   useEffect(() => {
