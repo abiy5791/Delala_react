@@ -34,8 +34,7 @@ import AddLabour from "./partials/dashboard/Properties/AddLabour";
 import AddOthers from "./partials/dashboard/Properties/AddOthers";
 import Home from "./pages/Home";
 import Text from "./pages/Text";
-import AddTest from "./partials/dashboard/Properties/AddTest";
-import Test from "./Test";
+
 
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -107,7 +106,7 @@ const App = () => {
           <Route path="/delala_dashboard" element={<DelalaBoard />}>
             <Route index element={<Text />} />
             <Route path="addCar" element={<AddCar />} />
-            <Route path="addHouse" element={<AddTest />} />
+            <Route path="addHouse" element={<AddHouse />} />
             <Route path="addLabour" element={<AddLabour />} />
             <Route path="addOther" element={<AddOthers />} />
           </Route>
