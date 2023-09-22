@@ -1,39 +1,35 @@
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import CircularProgress from "../../../components/CircularProgress";
+import React, { useState, useEffect } from "react";
+import {} from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../../api/axios";
-import useAuthContext from "../../../context/AuthContext";
-
-const AddOthers = () => {
-  const navigate = useNavigate();
-
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
+import CircularProgress from "../../../components/CircularProgress";
+export default function UpdateLabours() {
+  const [labourinfos, setLabourinfos] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useAuthContext();
   const [errors, setErrors] = useState([]);
   const [image, setImage] = useState(null);
-  const [OthersDetail, setOthersDetail] = useState({
-    title: "",
-    delala_id: user.id,
-    price: "",
-    details: "",
-  });
+  const params = useParams();
+  const navigate = useNavigate();
+  useEffect(() => {
+    axios
+      .get(`/api/labour/${params.id}`)
+      .then((response) => setLabourinfos(response.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   function handlechange(e) {
     if (e.target.type === "file") {
       const selectedFile = e.target.files;
       setImage(selectedFile);
     } else {
-      setOthersDetail((prevInfo) => ({
+      setLabourinfos((prevInfo) => ({
         ...prevInfo,
         [e.target.name]: e.target.value,
       }));
     }
   }
 
-  const Add_New_Other = async (event) => {
+  const update_labour = async (event) => {
     event.preventDefault();
 
     setErrors([]);
@@ -42,18 +38,30 @@ const AddOthers = () => {
     try {
       const formData = new FormData();
       // Append fields to formData
-      formData.append("title", OthersDetail.title);
-      formData.append("price", OthersDetail.price);
-      formData.append("delala_id", OthersDetail.delala_id);
-      formData.append("details", OthersDetail.details);
-      for (let i = 0; i < image.length; i++) {
-        formData.append("image[]", image[i]);
+      formData.append("title", labourinfos.title);
+      formData.append("name", labourinfos.name);
+      formData.append("skills", labourinfos.skills);
+      formData.append("delala_id", labourinfos.delala_id);
+      formData.append("type", labourinfos.type);
+      formData.append("salary", labourinfos.salary);
+      formData.append("details", labourinfos.details);
+      formData.append("_method", "put");
+
+      if (image !== null) {
+        for (let i = 0; i < image.length; i++) {
+          formData.append("image[]", image[i]);
+        }
       }
 
-      await axios.post("api/other", formData).then(function (response) {
-        console.log(response);
-      });
-      navigate("/admin_dashboard/others");
+      await axios
+        .post(`api/labour/${params.id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          navigate(-1);
+        });
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors);
@@ -63,18 +71,17 @@ const AddOthers = () => {
       setIsLoading(false);
     }
   };
-
   return (
     <main>
       <div className="p-10">
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden ">
           <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl shadow-rose-600/40 ring-2 ring-indigo-600 lg:max-w-xl">
             <h1 className="text-3xl font-semibold text-center text-indigo-700  uppercase decoration-wavy">
-              Other Register Form
+              Labour Update Form
             </h1>
             <form
               className="mt-6"
-              onSubmit={Add_New_Other}
+              onSubmit={update_labour}
               encType="multipart/form-data"
             >
               <div className="mb-2">
@@ -84,7 +91,7 @@ const AddOthers = () => {
                     type="text"
                     name="title"
                     onChange={handlechange}
-                    value={OthersDetail.title}
+                    value={labourinfos.title}
                     className="
 
             w-full
@@ -108,15 +115,14 @@ const AddOthers = () => {
                   </div>
                 )}
               </div>
-
               <div className="mb-2">
                 <label>
-                  <span className="text-gray-700">Price</span>
+                  <span className="text-gray-700">Name</span>
                   <input
-                    type="number"
-                    name="price"
+                    type="text"
+                    name="name"
                     onChange={handlechange}
-                    value={OthersDetail.price}
+                    value={labourinfos.name}
                     className="
 
             w-full
@@ -129,7 +135,7 @@ const AddOthers = () => {
             focus:ring-indigo-200
             focus:ring-opacity-50
           "
-                    placeholder="Price"
+                    placeholder="FullName"
                   />
                 </label>
                 {errors.name && (
@@ -142,7 +148,100 @@ const AddOthers = () => {
               </div>
               <div className="mb-2">
                 <label>
-                  <span className="text-gray-700">Other Images</span>
+                  <span className="text-gray-700">Type</span>
+                  <input
+                    type="text"
+                    name="type"
+                    onChange={handlechange}
+                    value={labourinfos.type}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Type of the labour"
+                  />
+                </label>
+                {errors.name && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.name[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Salary</span>
+                  <input
+                    type="number"
+                    name="salary"
+                    onChange={handlechange}
+                    value={labourinfos.salary}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="salary of the labour"
+                  />
+                </label>
+                {errors.name && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.name[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Skills</span>
+                  <input
+                    type="text"
+                    name="skills"
+                    onChange={handlechange}
+                    value={labourinfos.skills}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Skills"
+                  />
+                </label>
+                {errors.name && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.name[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Labour Images</span>
                   <input
                     type="file"
                     name="image"
@@ -177,7 +276,7 @@ const AddOthers = () => {
                   <textarea
                     name="details"
                     onChange={handlechange}
-                    value={OthersDetail.details}
+                    value={labourinfos.details}
                     className="
             block
             w-full
@@ -213,7 +312,7 @@ const AddOthers = () => {
                   text-white
                 "
                   >
-                    Register
+                    Update
                   </button>
                 )}
               </div>
@@ -223,6 +322,4 @@ const AddOthers = () => {
       </div>
     </main>
   );
-};
-
-export default AddOthers;
+}

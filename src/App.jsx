@@ -32,6 +32,12 @@ import AddCar from "./partials/dashboard/Properties/AddCar";
 import AddHouse from "./partials/dashboard/Properties/AddHouse";
 import AddLabour from "./partials/dashboard/Properties/AddLabour";
 import AddOthers from "./partials/dashboard/Properties/AddOthers";
+
+import UpdateOthers from "./partials/dashboard/Properties/Update_Others";
+import UpdateHouses from "./partials/dashboard/Properties/Update_Houses";
+import UpdateCars from "./partials/dashboard/Properties/Update_Cars";
+import UpdateLabours from "./partials/dashboard/Properties/Update_Labours";
+
 import Home from "./pages/Home";
 import Text from "./pages/Text";
 
@@ -81,27 +87,48 @@ const App = () => {
             </Route>
             <Route path="cars" element={<ProLayout />}>
               <Route index element={<Car />} />
-              <Route path=":id" element={<CarDetails />} />
+              <Route path=":id" element={<ProLayout />}>
+                <Route index element={<CarDetails />} />
+                <Route path="update" element={<UpdateCars />} />
+              </Route>
+
               <Route path="add_cars" element={<AddCar />} />
             </Route>
             <Route path="house" element={<ProLayout />}>
               <Route index element={<House />} />
-              <Route path=":id" element={<HouseDetails />} />
+
+              <Route path=":id" element={<ProLayout />}>
+                <Route index element={<HouseDetails />} />
+                <Route path="update" element={<UpdateHouses />} />
+              </Route>
+
               <Route path="add_houses" element={<AddHouse />} />
             </Route>
             <Route path="labour" element={<ProLayout />}>
               <Route index element={<Labour />} />
-              <Route path=":id" element={<LabourDetails />} />
+
+              <Route path=":id" element={<ProLayout />}>
+                <Route index element={<LabourDetails />} />
+                <Route path="update" element={<UpdateLabours />} />
+              </Route>
+
+
               <Route path="add_labours" element={<AddLabour />} />
             </Route>
             <Route path="others" element={<ProLayout />}>
               <Route index element={<Other />} />
-              <Route path=":id" element={<OthersDetail />} />
+
+              <Route path=":id" element={<ProLayout />}>
+                <Route index element={<OthersDetail />} />
+                <Route path="update" element={<UpdateOthers />} />
+              </Route>
+
               <Route path="add_others" element={<AddOthers />} />
             </Route>
 
             <Route path="add_user" element={<Addusers />} />
           </Route>
+
 
           <Route path="/delala_dashboard" element={<DelalaBoard />}>
             <Route index element={<Text />} />
@@ -110,9 +137,11 @@ const App = () => {
             <Route path="addLabour" element={<AddLabour />} />
             <Route path="addOther" element={<AddOthers />} />
           </Route>
+
         </Route>
 
         <Route element={<GuestLayout />}>
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/AdminRegister" element={<AdminRegister />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

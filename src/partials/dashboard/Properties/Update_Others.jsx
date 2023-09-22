@@ -1,39 +1,33 @@
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import CircularProgress from "../../../components/CircularProgress";
+import React, { useState, useEffect } from "react";
+import {} from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../../api/axios";
-import useAuthContext from "../../../context/AuthContext";
-
-const AddOthers = () => {
-  const navigate = useNavigate();
-
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
+import CircularProgress from "../../../components/CircularProgress";
+export default function UpdateOthers() {
+  const [otherinfo, setOtherinfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useAuthContext();
   const [errors, setErrors] = useState([]);
   const [image, setImage] = useState(null);
-  const [OthersDetail, setOthersDetail] = useState({
-    title: "",
-    delala_id: user.id,
-    price: "",
-    details: "",
-  });
+  const params = useParams();
+  const navigate = useNavigate();
+  useEffect(() => {
+    axios
+      .get(`/api/other/${params.id}`)
+      .then((response) => setOtherinfo(response.data));
+  }, []);
 
   function handlechange(e) {
     if (e.target.type === "file") {
       const selectedFile = e.target.files;
       setImage(selectedFile);
     } else {
-      setOthersDetail((prevInfo) => ({
+      setOtherinfo((prevInfo) => ({
         ...prevInfo,
         [e.target.name]: e.target.value,
       }));
     }
   }
-
-  const Add_New_Other = async (event) => {
+  const update_other = async (event) => {
     event.preventDefault();
 
     setErrors([]);
@@ -42,18 +36,21 @@ const AddOthers = () => {
     try {
       const formData = new FormData();
       // Append fields to formData
-      formData.append("title", OthersDetail.title);
-      formData.append("price", OthersDetail.price);
-      formData.append("delala_id", OthersDetail.delala_id);
-      formData.append("details", OthersDetail.details);
-      for (let i = 0; i < image.length; i++) {
-        formData.append("image[]", image[i]);
+      formData.append("title", otherinfo.title);
+      formData.append("price", otherinfo.price);
+      formData.append("delala_id", otherinfo.delala_id);
+      formData.append("details", otherinfo.details);
+      formData.append("_method", "put");
+
+      if (image !== null) {
+        for (let i = 0; i < image.length; i++) {
+          formData.append("image[]", image[i]);
+        }
       }
 
-      await axios.post("api/other", formData).then(function (response) {
-        console.log(response);
+      await axios.post(`api/other/${params.id}`, formData).then((response) => {
+        navigate(-1);
       });
-      navigate("/admin_dashboard/others");
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors);
@@ -70,11 +67,11 @@ const AddOthers = () => {
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden ">
           <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl shadow-rose-600/40 ring-2 ring-indigo-600 lg:max-w-xl">
             <h1 className="text-3xl font-semibold text-center text-indigo-700  uppercase decoration-wavy">
-              Other Register Form
+              Other Update Form
             </h1>
             <form
               className="mt-6"
-              onSubmit={Add_New_Other}
+              onSubmit={update_other}
               encType="multipart/form-data"
             >
               <div className="mb-2">
@@ -84,7 +81,7 @@ const AddOthers = () => {
                     type="text"
                     name="title"
                     onChange={handlechange}
-                    value={OthersDetail.title}
+                    value={otherinfo.title}
                     className="
 
             w-full
@@ -116,7 +113,7 @@ const AddOthers = () => {
                     type="number"
                     name="price"
                     onChange={handlechange}
-                    value={OthersDetail.price}
+                    value={otherinfo.price}
                     className="
 
             w-full
@@ -177,7 +174,7 @@ const AddOthers = () => {
                   <textarea
                     name="details"
                     onChange={handlechange}
-                    value={OthersDetail.details}
+                    value={otherinfo.details}
                     className="
             block
             w-full
@@ -213,7 +210,7 @@ const AddOthers = () => {
                   text-white
                 "
                   >
-                    Register
+                    Update
                   </button>
                 )}
               </div>
@@ -223,6 +220,4 @@ const AddOthers = () => {
       </div>
     </main>
   );
-};
-
-export default AddOthers;
+}

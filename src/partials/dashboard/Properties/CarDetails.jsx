@@ -169,11 +169,13 @@ function CarDetails() {
             </div>
           </div>
           <div className="inline-flex">
-            {/* <Link to={`/Update_user/${user.id}`}> */}
-            <button className="block w-full text-blue-800 text-sm font-semibold rounded-sm hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
-              Edit
-            </button>
-            {/* </Link> */}
+
+            <Link to={`update`}>
+              <button className="block w-full text-blue-800 text-sm font-semibold rounded-sm hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
+                Edit
+              </button>
+            </Link>
+
 
             <button
               onClick={() => window.my_modal_5.showModal()}

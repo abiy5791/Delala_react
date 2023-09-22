@@ -1,39 +1,33 @@
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import CircularProgress from "../../../components/CircularProgress";
+import React, { useState, useEffect } from "react";
+import {} from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../../api/axios";
-import useAuthContext from "../../../context/AuthContext";
-
-const AddOthers = () => {
-  const navigate = useNavigate();
-
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
+import CircularProgress from "../../../components/CircularProgress";
+export default function UpdateHouses() {
+  const [houseinfos, setHouseinfos] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useAuthContext();
   const [errors, setErrors] = useState([]);
   const [image, setImage] = useState(null);
-  const [OthersDetail, setOthersDetail] = useState({
-    title: "",
-    delala_id: user.id,
-    price: "",
-    details: "",
-  });
+  const params = useParams();
+  const navigate = useNavigate();
+  useEffect(() => {
+    axios
+      .get(`/api/house/${params.id}`)
+      .then((response) => setHouseinfos(response.data));
+  }, []);
 
   function handlechange(e) {
     if (e.target.type === "file") {
       const selectedFile = e.target.files;
       setImage(selectedFile);
     } else {
-      setOthersDetail((prevInfo) => ({
+      setHouseinfos((prevInfo) => ({
         ...prevInfo,
         [e.target.name]: e.target.value,
       }));
     }
   }
-
-  const Add_New_Other = async (event) => {
+  const update_house = async (event) => {
     event.preventDefault();
 
     setErrors([]);
@@ -42,18 +36,23 @@ const AddOthers = () => {
     try {
       const formData = new FormData();
       // Append fields to formData
-      formData.append("title", OthersDetail.title);
-      formData.append("price", OthersDetail.price);
-      formData.append("delala_id", OthersDetail.delala_id);
-      formData.append("details", OthersDetail.details);
-      for (let i = 0; i < image.length; i++) {
-        formData.append("image[]", image[i]);
+      formData.append("title", houseinfos.title);
+      formData.append("status", houseinfos.status);
+      formData.append("price", houseinfos.price);
+      formData.append("area", houseinfos.area);
+      formData.append("location", houseinfos.location);
+      formData.append("details", houseinfos.details);
+      formData.append("_method", "put");
+
+      if (image !== null) {
+        for (let i = 0; i < image.length; i++) {
+          formData.append("image[]", image[i]);
+        }
       }
 
-      await axios.post("api/other", formData).then(function (response) {
-        console.log(response);
+      await axios.post(`api/house/${params.id}`, formData).then(() => {
+        navigate(-1);
       });
-      navigate("/admin_dashboard/others");
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors);
@@ -70,11 +69,11 @@ const AddOthers = () => {
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden ">
           <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl shadow-rose-600/40 ring-2 ring-indigo-600 lg:max-w-xl">
             <h1 className="text-3xl font-semibold text-center text-indigo-700  uppercase decoration-wavy">
-              Other Register Form
+              House update Form
             </h1>
             <form
               className="mt-6"
-              onSubmit={Add_New_Other}
+              onSubmit={update_house}
               encType="multipart/form-data"
             >
               <div className="mb-2">
@@ -84,7 +83,7 @@ const AddOthers = () => {
                     type="text"
                     name="title"
                     onChange={handlechange}
-                    value={OthersDetail.title}
+                    value={houseinfos.title}
                     className="
 
             w-full
@@ -108,7 +107,99 @@ const AddOthers = () => {
                   </div>
                 )}
               </div>
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Status</span>
+                  <input
+                    type="text"
+                    name="status"
+                    onChange={handlechange}
+                    value={houseinfos.status}
+                    className="
 
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Status"
+                  />
+                </label>
+                {errors.name && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.name[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Area</span>
+                  <input
+                    type="text"
+                    name="area"
+                    onChange={handlechange}
+                    value={houseinfos.area}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Area Size"
+                  />
+                </label>
+                {errors.name && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.name[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Location</span>
+                  <input
+                    type="text"
+                    name="location"
+                    onChange={handlechange}
+                    value={houseinfos.location}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Location of the house"
+                  />
+                </label>
+                {errors.name && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.name[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
               <div className="mb-2">
                 <label>
                   <span className="text-gray-700">Price</span>
@@ -116,7 +207,7 @@ const AddOthers = () => {
                     type="number"
                     name="price"
                     onChange={handlechange}
-                    value={OthersDetail.price}
+                    value={houseinfos.price}
                     className="
 
             w-full
@@ -142,7 +233,7 @@ const AddOthers = () => {
               </div>
               <div className="mb-2">
                 <label>
-                  <span className="text-gray-700">Other Images</span>
+                  <span className="text-gray-700">House Images</span>
                   <input
                     type="file"
                     name="image"
@@ -177,7 +268,7 @@ const AddOthers = () => {
                   <textarea
                     name="details"
                     onChange={handlechange}
-                    value={OthersDetail.details}
+                    value={houseinfos.details}
                     className="
             block
             w-full
@@ -213,7 +304,7 @@ const AddOthers = () => {
                   text-white
                 "
                   >
-                    Register
+                    update
                   </button>
                 )}
               </div>
@@ -223,6 +314,4 @@ const AddOthers = () => {
       </div>
     </main>
   );
-};
-
-export default AddOthers;
+}
