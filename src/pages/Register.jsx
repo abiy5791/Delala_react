@@ -6,6 +6,10 @@ import CircularProgress from "../components/CircularProgress";
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [avatar, setAvatar] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [KebelleId, setKebelleId] = useState("");
 
   const [password, setPassword] = useState("");
   const [password_confirmation, setPassword_confirmation] = useState("");
@@ -15,7 +19,16 @@ const Register = () => {
 
   const handleRegister = async (event) => {
     event.preventDefault();
-    register({ name, email, password, password_confirmation });
+    register({
+      name,
+      email,
+      password,
+      password_confirmation,
+      avatar,
+      address,
+      phone,
+      KebelleId,
+    });
   };
 
   return (
@@ -42,7 +55,7 @@ const Register = () => {
               <div className="mb-10 text-center md:mb-5">
                 <h1 className="text-3xl font-bold">Register</h1>
               </div>
-              <form onSubmit={handleRegister}>
+              <form onSubmit={handleRegister} encType="multipart/form-data">
                 <div className="mb-4">
                   <input
                     type="text"
@@ -158,6 +171,127 @@ const Register = () => {
                   focus-visible:shadow-none
                 "
                   />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="">Your Profile Picture</label>
+                  <input
+                    type="file"
+                    placeholder="Profile picture"
+                    onChange={(e) => setAvatar(e.target.files)}
+                    className="
+                  bordder-[#E9EDF4]
+                  w-full
+                  rounded-md
+                  border
+                  bg-[#FCFDFE]
+                  py-3
+                  px-5
+                  text-base text-body-color
+                  placeholder-[#ACB6BE]
+                  outline-none
+                  focus:border-primary
+                  focus-visible:shadow-none
+                "
+                  />
+                  {errors.name && (
+                    <div className="flex">
+                      <span className="text-red-400 text-sm m-2 p-2">
+                        {errors.name[0]}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor="">Address</label>
+                  <input
+                    type="text"
+                    placeholder="Address"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    className="
+                  bordder-[#E9EDF4]
+                  w-full
+                  rounded-md
+                  border
+                  bg-[#FCFDFE]
+                  py-3
+                  px-5
+                  text-base text-body-color
+                  placeholder-[#ACB6BE]
+                  outline-none
+                  focus:border-primary
+                  focus-visible:shadow-none
+                "
+                  />
+                  {errors.name && (
+                    <div className="flex">
+                      <span className="text-red-400 text-sm m-2 p-2">
+                        {errors.name[0]}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor="">Insert your kebelle Id</label>
+                  <input
+                    type="file"
+                    placeholder="Kebelle_id"
+                    onChange={(e) => setKebelleId(e.target.files)}
+                    className="
+                  bordder-[#E9EDF4]
+                  w-full
+                  rounded-md
+                  border
+                  bg-[#FCFDFE]
+                  py-3
+                  px-5
+                  text-base text-body-color
+                  placeholder-[#ACB6BE]
+                  outline-none
+                  focus:border-primary
+                  focus-visible:shadow-none
+                "
+                  />
+                  {errors.name && (
+                    <div className="flex">
+                      <span className="text-red-400 text-sm m-2 p-2">
+                        {errors.name[0]}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor="">Phone Number</label>
+                  <input
+                    type="text"
+                    placeholder="091120..."
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="
+                  bordder-[#E9EDF4]
+                  w-full
+                  rounded-md
+                  border
+                  bg-[#FCFDFE]
+                  py-3
+                  px-5
+                  text-base text-body-color
+                  placeholder-[#ACB6BE]
+                  outline-none
+                  focus:border-primary
+                  focus-visible:shadow-none
+                "
+                  />
+                  {errors.name && (
+                    <div className="flex">
+                      <span className="text-red-400 text-sm m-2 p-2">
+                        {errors.name[0]}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="mb-10">

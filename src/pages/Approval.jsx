@@ -11,6 +11,7 @@ const Approval = () => {
           <div className="text-4xl mt-4">
             Please Be Patient & Wait For Approval!
           </div>
+          <div className="text-lg underline font-thin">Go Back Home</div>
         </div>
       </Link>
     </div>
