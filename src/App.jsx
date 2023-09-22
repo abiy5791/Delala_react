@@ -12,7 +12,6 @@ import Update_user from "./partials/dashboard/users/update_user";
 import Addusers from "./partials/dashboard/users/Addusers";
 import Alert from "./components/Alert";
 import { useEffect, useState, React } from "react";
-// import DashboardA from "./pages/DashboardA";
 import DelalaBoard from "./pages/DelalaBoard";
 import Approval from "./pages/Approval";
 import "./css/style.css";
@@ -34,6 +33,9 @@ import AddHouse from "./partials/dashboard/Properties/AddHouse";
 import AddLabour from "./partials/dashboard/Properties/AddLabour";
 import AddOthers from "./partials/dashboard/Properties/AddOthers";
 import Home from "./pages/Home";
+import Text from "./pages/Text";
+import AddTest from "./partials/dashboard/Properties/AddTest";
+import Test from "./Test";
 
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -103,9 +105,9 @@ const App = () => {
           </Route>
 
           <Route path="/delala_dashboard" element={<DelalaBoard />}>
-            <Route index />
+            <Route index element={<Text />} />
             <Route path="addCar" element={<AddCar />} />
-            <Route path="addHouse" element={<AddHouse />} />
+            <Route path="addHouse" element={<AddTest />} />
             <Route path="addLabour" element={<AddLabour />} />
             <Route path="addOther" element={<AddOthers />} />
           </Route>

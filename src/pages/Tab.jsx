@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Tab = () => {
-  const [open, setOpen] = useState("home");
+  const [open, setOpen] = useState("");
 
   const handleTabOpen = (tabCategory) => {
     setOpen(tabCategory);
@@ -27,6 +27,7 @@ const Tab = () => {
                   </Link>
                   <Link
                     to="addCar"
+                    onClick={() => handleTabOpen("about")}
                     className={`rounded-md py-3 px-4 text-sm font-medium md:text-base lg:px-6 hover:bg-gray-500 hover:text-white transition-all delay-75 cursor-pointer ${
                       open === "about" ? "bg-gray-800 text-white" : " "
                     }`}
@@ -52,28 +53,6 @@ const Tab = () => {
                     For Others
                   </Link>
                 </div>
-                {/* <TabContent
-                  details=" Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia nisi, doloribus nulla cumque molestias corporis eaque harum vero! Quas sit odit optio debitis nulla quisquam, dolorum quaerat animi iusto quod."
-                  tabCategory="home"
-                  open={open}
-                />
-                <TabContent
-                  details=" Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia nisi, doloribus nulla cumque molestias corporis eaque harum vero! "
-                  tabCategory="about"
-                  open={open}
-                />
-                <TabContent
-                  details="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia nisi, doloribus nulla cumque molestias corporis eaque harum vero! Quas sit odit optio debitis nulla quisquam, dolorum quaerat animi iusto quod.
-
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit mollitia nam eligendi reprehenderit reiciendis saepe laboriosam maiores voluptas. Quo, culpa amet fugiat ipsam sed quod hic, veritatis ducimus recusandae repellat quasi eaque, suscipit praesentium totam?"
-                  tabCategory="team"
-                  open={open}
-                />
-                <TabContent
-                  details="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia nisi, doloribus nulla cumque molestias corporis eaque harum vero! Quas sit odit optio debitis nulla quisquam, dolorum quaerat animi iusto quod."
-                  tabCategory="company"
-                  open={open}
-                /> */}
               </div>
             </div>
           </div>
@@ -84,17 +63,3 @@ const Tab = () => {
 };
 
 export default Tab;
-
-// const TabContent = ({ open, tabCategory, details }) => {
-//   return (
-//     <div>
-//       <div
-//         className={`p-6 text-base leading-relaxed text-body-color ${
-//           open === tabCategory ? "block" : "hidden"
-//         } `}
-//       >
-//         {details}
-//       </div>
-//     </div>
-//   );
-// };
