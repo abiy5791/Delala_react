@@ -12,7 +12,6 @@ import Update_user from "./partials/dashboard/users/update_user";
 import Addusers from "./partials/dashboard/users/Addusers";
 import Alert from "./components/Alert";
 import { useEffect, useState, React } from "react";
-// import DashboardA from "./pages/DashboardA";
 import DelalaBoard from "./pages/DelalaBoard";
 import Approval from "./pages/Approval";
 import "./css/style.css";
@@ -33,11 +32,16 @@ import AddCar from "./partials/dashboard/Properties/AddCar";
 import AddHouse from "./partials/dashboard/Properties/AddHouse";
 import AddLabour from "./partials/dashboard/Properties/AddLabour";
 import AddOthers from "./partials/dashboard/Properties/AddOthers";
+
 import UpdateOthers from "./partials/dashboard/Properties/Update_Others";
 import UpdateHouses from "./partials/dashboard/Properties/Update_Houses";
 import UpdateCars from "./partials/dashboard/Properties/Update_Cars";
 import UpdateLabours from "./partials/dashboard/Properties/Update_Labours";
-import Home from "./partials/dashboard/Properties/Home";
+
+import Home from "./pages/Home";
+import Text from "./pages/Text";
+
+
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   useEffect(() => {
@@ -69,6 +73,7 @@ const App = () => {
         <Alert AlertMessage={<b>Oops! No internet connection.</b>}></Alert>
       )}
       <Routes>
+        <Route path="/" exact element={<Home />} />
         <Route element={<AuthLayout />}>
           <Route exact path="/admin_dashboard" element={<Dashboard />}>
             <Route index element={<AdminHome />} />
@@ -86,37 +91,53 @@ const App = () => {
                 <Route index element={<CarDetails />} />
                 <Route path="update" element={<UpdateCars />} />
               </Route>
+
               <Route path="add_cars" element={<AddCar />} />
             </Route>
             <Route path="house" element={<ProLayout />}>
               <Route index element={<House />} />
+
               <Route path=":id" element={<ProLayout />}>
                 <Route index element={<HouseDetails />} />
                 <Route path="update" element={<UpdateHouses />} />
               </Route>
+
               <Route path="add_houses" element={<AddHouse />} />
             </Route>
             <Route path="labour" element={<ProLayout />}>
               <Route index element={<Labour />} />
+
               <Route path=":id" element={<ProLayout />}>
                 <Route index element={<LabourDetails />} />
                 <Route path="update" element={<UpdateLabours />} />
               </Route>
+
+
               <Route path="add_labours" element={<AddLabour />} />
             </Route>
             <Route path="others" element={<ProLayout />}>
               <Route index element={<Other />} />
+
               <Route path=":id" element={<ProLayout />}>
                 <Route index element={<OthersDetail />} />
                 <Route path="update" element={<UpdateOthers />} />
               </Route>
+
               <Route path="add_others" element={<AddOthers />} />
             </Route>
 
             <Route path="add_user" element={<Addusers />} />
           </Route>
 
-          <Route path="/delala_dashboard" element={<DelalaBoard />} />
+
+          <Route path="/delala_dashboard" element={<DelalaBoard />}>
+            <Route index element={<Text />} />
+            <Route path="addCar" element={<AddCar />} />
+            <Route path="addHouse" element={<AddHouse />} />
+            <Route path="addLabour" element={<AddLabour />} />
+            <Route path="addOther" element={<AddOthers />} />
+          </Route>
+
         </Route>
 
         <Route element={<GuestLayout />}>

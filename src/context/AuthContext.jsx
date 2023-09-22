@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
       if (user.role === "admin") {
         navigate("/admin_dashboard");
       } else {
-        navigate("/delala_dashboard");
+        navigate("/");
       }
     } catch (e) {
       if (e.response.status === 422) {
@@ -52,9 +52,25 @@ export const AuthProvider = ({ children }) => {
     await fetchCsrfToken();
     setErrors([]);
     setIsLoading(true);
+
     console.log(data);
+
     try {
-      await axios.post("/register", data);
+      const formData = new FormData();
+      // Append fields to formData
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      formData.append("password_confirmation", data.password_confirmation);
+      formData.append("address", data.address);
+      formData.append("avatar", data.avatar[0]);
+      formData.append("kebelleId", data.KebelleId[0]);
+      formData.append("phone", data.phone);
+
+      console.log(Object.fromEntries(formData));
+      await axios.post("/register", formData).then((res) => {
+        console.log(res);
+      });
       navigate("/approval");
     } catch (e) {
       if (e.response.status === 422) {

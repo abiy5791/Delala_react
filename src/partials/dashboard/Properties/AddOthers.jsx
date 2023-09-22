@@ -7,6 +7,9 @@ import useAuthContext from "../../../context/AuthContext";
 
 const AddOthers = () => {
   const navigate = useNavigate();
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuthContext();
   const [errors, setErrors] = useState([]);
