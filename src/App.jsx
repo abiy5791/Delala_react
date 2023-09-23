@@ -37,7 +37,9 @@ import UpdateOthers from "./partials/dashboard/Properties/Update_Others";
 import UpdateHouses from "./partials/dashboard/Properties/Update_Houses";
 import UpdateCars from "./partials/dashboard/Properties/Update_Cars";
 import UpdateLabours from "./partials/dashboard/Properties/Update_Labours";
-import Home from "./partials/dashboard/Properties/Home";
+import MainHome from "./partials/MainHome";
+import Home from "./pages/Home";
+import PropsDetail from "./pages/PropsDetail";
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   useEffect(() => {
@@ -66,10 +68,9 @@ const App = () => {
   return (
     <div className="bg-slate-100 min-h-screen dark:bg-gray-900 dark:text-white">
       {!isOnline && (
-        <Alert AlertMessage={<b>Oops! No internet connection.</b>}></Alert>
+        <Alert AlertMessage={<b>Oops! No internet connection.</b>} />
       )}
       <Routes>
-        <Route path="/" exact element={<Home />} />
         <Route element={<AuthLayout />}>
           <Route exact path="/admin_dashboard" element={<Dashboard />}>
             <Route index element={<AdminHome />} />
@@ -87,43 +88,34 @@ const App = () => {
                 <Route index element={<CarDetails />} />
                 <Route path="update" element={<UpdateCars />} />
               </Route>
-
               <Route path="add_cars" element={<AddCar />} />
             </Route>
             <Route path="house" element={<ProLayout />}>
               <Route index element={<House />} />
-
               <Route path=":id" element={<ProLayout />}>
                 <Route index element={<HouseDetails />} />
                 <Route path="update" element={<UpdateHouses />} />
               </Route>
-
               <Route path="add_houses" element={<AddHouse />} />
             </Route>
             <Route path="labour" element={<ProLayout />}>
               <Route index element={<Labour />} />
-
               <Route path=":id" element={<ProLayout />}>
                 <Route index element={<LabourDetails />} />
                 <Route path="update" element={<UpdateLabours />} />
               </Route>
-
               <Route path="add_labours" element={<AddLabour />} />
             </Route>
             <Route path="others" element={<ProLayout />}>
               <Route index element={<Other />} />
-
               <Route path=":id" element={<ProLayout />}>
                 <Route index element={<OthersDetail />} />
                 <Route path="update" element={<UpdateOthers />} />
               </Route>
-
               <Route path="add_others" element={<AddOthers />} />
             </Route>
-
             <Route path="add_user" element={<Addusers />} />
           </Route>
-
           <Route path="/delala_dashboard" element={<DelalaBoard />}>
             <Route index element={<Text />} />
             <Route path="addCar" element={<AddCar />} />
@@ -132,23 +124,19 @@ const App = () => {
             <Route path="addOther" element={<AddOthers />} />
           </Route>
         </Route>
-
         <Route element={<GuestLayout />}>
-          <Route exact path="/" element={<MainHome />}>
-            <Route index element={<Home />} />
-            <Route path=":model_type/:id" element={<ProLayout />}>
-              <Route index element={<PropsDetail />} />
-            </Route>
+          <Route exact path="/" element={<MainHome />} />
+          <Route index element={<Home />} />
+          <Route path=":model_type/:id" element={<ProLayout />}>
+            <Route index element={<PropsDetail />} />
           </Route>
-
-          <Route path="/login" element={<Login />} />
-          <Route path="/AdminRegister" element={<AdminRegister />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/register" element={<Register />} />
-
-          <Route path="/approval" element={<Approval />} />
-          <Route path="/password-reset/:token" element={<ResetPassword />} />
         </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/AdminRegister" element={<AdminRegister />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/approval" element={<Approval />} />
+        <Route path="/password-reset/:token" element={<ResetPassword />} />
       </Routes>
     </div>
   );
