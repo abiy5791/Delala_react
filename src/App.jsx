@@ -71,6 +71,12 @@ const App = () => {
         <Alert AlertMessage={<b>Oops! No internet connection.</b>} />
       )}
       <Routes>
+        <Route exact path="/" element={<MainHome />}>
+          <Route index element={<Home />} />
+          <Route path=":model_type/:id" element={<ProLayout />}>
+            <Route index element={<PropsDetail />} />
+          </Route>
+        </Route>
         <Route element={<AuthLayout />}>
           <Route exact path="/admin_dashboard" element={<Dashboard />}>
             <Route index element={<AdminHome />} />
@@ -125,18 +131,13 @@ const App = () => {
           </Route>
         </Route>
         <Route element={<GuestLayout />}>
-          <Route exact path="/" element={<MainHome />} />
-          <Route index element={<Home />} />
-          <Route path=":model_type/:id" element={<ProLayout />}>
-            <Route index element={<PropsDetail />} />
-          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/AdminRegister" element={<AdminRegister />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/approval" element={<Approval />} />
+          <Route path="/password-reset/:token" element={<ResetPassword />} />
         </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/AdminRegister" element={<AdminRegister />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/approval" element={<Approval />} />
-        <Route path="/password-reset/:token" element={<ResetPassword />} />
       </Routes>
     </div>
   );
