@@ -19,6 +19,8 @@ const AddLabour = () => {
     type: "",
     salary: "",
     details: "",
+    Gender: "",
+    age: "",
   });
 
   function handlechange(e) {
@@ -49,6 +51,8 @@ const AddLabour = () => {
       formData.append("type", LabourDetails.type);
       formData.append("salary", LabourDetails.salary);
       formData.append("details", LabourDetails.details);
+      formData.append("Gender", LabourDetails.Gender);
+      formData.append("age", LabourDetails.age);
       for (let i = 0; i < image.length; i++) {
         formData.append("image[]", image[i]);
       }
@@ -66,7 +70,7 @@ const AddLabour = () => {
       setIsLoading(false);
     }
   };
-
+  // console.log(LabourDetails);
   return (
     <main>
       <div className="p-10">
@@ -132,6 +136,69 @@ const AddLabour = () => {
             focus:ring-opacity-50
           "
                     placeholder="FullName"
+                  />
+                </label>
+                {errors.name && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.name[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Age</span>
+                  <input
+                    type="number"
+                    name="age"
+                    onChange={handlechange}
+                    value={LabourDetails.age}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="age"
+                  />
+                </label>
+                {errors.name && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.name[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Gender</span>
+                  <input
+                    type="text"
+                    name="Gender"
+                    onChange={handlechange}
+                    value={LabourDetails.Gender}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Gender"
                   />
                 </label>
                 {errors.name && (

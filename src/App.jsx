@@ -37,7 +37,9 @@ import UpdateOthers from "./partials/dashboard/Properties/Update_Others";
 import UpdateHouses from "./partials/dashboard/Properties/Update_Houses";
 import UpdateCars from "./partials/dashboard/Properties/Update_Cars";
 import UpdateLabours from "./partials/dashboard/Properties/Update_Labours";
-import Home from "./partials/dashboard/Properties/Home";
+import Home from "./pages/Home";
+import PropsDetail from "./pages/PropsDetail";
+import MainHome from "./partials/MainHome";
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   useEffect(() => {
@@ -120,7 +122,13 @@ const App = () => {
         </Route>
 
         <Route element={<GuestLayout />}>
-          <Route path="/" element={<Home />} />
+          <Route exact path="/" element={<MainHome />}>
+            <Route index element={<Home />} />
+            <Route path=":model_type/:id" element={<ProLayout />}>
+              <Route index element={<PropsDetail />} />
+            </Route>
+          </Route>
+
           <Route path="/login" element={<Login />} />
           <Route path="/AdminRegister" element={<AdminRegister />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

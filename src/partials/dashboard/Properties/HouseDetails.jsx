@@ -55,9 +55,7 @@ const HouseDetails = () => {
           <h1 className="text-gray-900 font-bold text-xl leading-8 my-1 dark:text-slate-100">
             {HouseData.title}
           </h1>
-          <h3 className="text-gray-600 font-lg text-semibold leading-6 dark:text-slate-100">
-            {HouseData.area}
-          </h3>
+
           <p className="text-sm text-gray-500 hover:text-gray-600 leading-6 dark:text-slate-100">
             {HouseData.details}
           </p>
@@ -130,22 +128,22 @@ const HouseDetails = () => {
           <div className="text-gray-700 dark:text-slate-100">
             <div className="grid md:grid-cols-2 text-sm">
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">First Name</div>
-                <div className="px-4 py-2">{HouseData.title}</div>
+                <div className="px-4 py-2 font-semibold">Area</div>
+                <div className="px-4 py-2">{HouseData.area}</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Last Name</div>
-                <div className="px-4 py-2">Doe</div>
+                <div className="px-4 py-2 font-semibold">Location</div>
+                <div className="px-4 py-2">{HouseData.location}</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Gender</div>
-                <div className="px-4 py-2">Female</div>
+                <div className="px-4 py-2 font-semibold">Status</div>
+                <div className="px-4 py-2">{HouseData.status}</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Contact No.</div>
-                <div className="px-4 py-2">+11 998001001</div>
+                <div className="px-4 py-2 font-semibold">Price</div>
+                <div className="px-4 py-2">{HouseData.price}</div>
               </div>
-              <div className="grid grid-cols-2">
+              {/* <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Current Address</div>
                 <div className="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
               </div>
@@ -164,7 +162,7 @@ const HouseDetails = () => {
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Birthday</div>
                 <div className="px-4 py-2">Feb 06, 1998</div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="inline-flex">

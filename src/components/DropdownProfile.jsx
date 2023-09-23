@@ -37,8 +37,7 @@ function DropdownProfile({ align }) {
   });
 
   const { logout } = useAuthContext();
-  const {user} = useAuthContext();
-  console.log(user);
+  const { user } = useAuthContext();
 
   return (
     <div className="relative inline-flex">

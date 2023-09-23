@@ -55,9 +55,7 @@ const LabourDetails = () => {
           <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
             {LabourData.title}
           </h1>
-          <h3 className="text-gray-600 font-lg text-semibold leading-6">
-            {LabourData.area}
-          </h3>
+
           <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
             {LabourData.details}
           </p>
@@ -100,10 +98,6 @@ const LabourDetails = () => {
                 )}
               </span>
             </li>
-            <li className="flex items-center py-3">
-              <span>location</span>
-              <span className="ml-auto">{LabourData.location}</span>
-            </li>
           </ul>
         </div>
 
@@ -130,30 +124,30 @@ const LabourDetails = () => {
           <div className="text-gray-700">
             <div className="grid md:grid-cols-2 text-sm">
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">First Name</div>
-                <div className="px-4 py-2">{LabourData.title}</div>
+                <div className="px-4 py-2 font-semibold">Name</div>
+                <div className="px-4 py-2">{LabourData.name}</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Last Name</div>
-                <div className="px-4 py-2">Doe</div>
+                <div className="px-4 py-2 font-semibold">Salary</div>
+                <div className="px-4 py-2">{LabourData.salary}</div>
               </div>
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Gender</div>
-                <div className="px-4 py-2">Female</div>
+                <div className="px-4 py-2">{LabourData.Gender}</div>
               </div>
-              <div className="grid grid-cols-2">
+              {/* <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Contact No.</div>
                 <div className="px-4 py-2">+11 998001001</div>
+              </div> */}
+              <div className="grid grid-cols-2">
+                <div className="px-4 py-2 font-semibold">Skills</div>
+                <div className="px-4 py-2">{LabourData.skills}</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Current Address</div>
-                <div className="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
+                <div className="px-4 py-2 font-semibold">Age</div>
+                <div className="px-4 py-2">{LabourData.age}</div>
               </div>
-              <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Permanant Address</div>
-                <div className="px-4 py-2">Arlington Heights, IL, Illinois</div>
-              </div>
-              <div className="grid grid-cols-2">
+              {/* <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Email.</div>
                 <div className="px-4 py-2">
                   <a className="text-blue-800" href="mailto:jane@example.com">
@@ -164,7 +158,7 @@ const LabourDetails = () => {
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Birthday</div>
                 <div className="px-4 py-2">Feb 06, 1998</div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="inline-flex">

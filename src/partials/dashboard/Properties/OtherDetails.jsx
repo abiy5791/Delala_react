@@ -54,9 +54,7 @@ const OthersDetail = () => {
           <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
             {OthersData.title}
           </h1>
-          <h3 className="text-gray-600 font-lg text-semibold leading-6">
-            {OthersData.price}
-          </h3>
+
           <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
             {OthersData.details}
           </p>
@@ -99,10 +97,6 @@ const OthersDetail = () => {
                 )}
               </span>
             </li>
-            <li className="flex items-center py-3">
-              <span>location</span>
-              <span className="ml-auto">location</span>
-            </li>
           </ul>
         </div>
 
@@ -129,14 +123,14 @@ const OthersDetail = () => {
           <div className="text-gray-700">
             <div className="grid md:grid-cols-2 text-sm">
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">First Name</div>
-                <div className="px-4 py-2">{OthersData.title}</div>
+                <div className="px-4 py-2 font-semibold">Price</div>
+                <div className="px-4 py-2">{OthersData.price}</div>
               </div>
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Last Name</div>
                 <div className="px-4 py-2">Doe</div>
               </div>
-              <div className="grid grid-cols-2">
+              {/* <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Gender</div>
                 <div className="px-4 py-2">Female</div>
               </div>
@@ -163,7 +157,7 @@ const OthersDetail = () => {
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Birthday</div>
                 <div className="px-4 py-2">Feb 06, 1998</div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="inline-flex">
