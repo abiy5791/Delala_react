@@ -56,9 +56,6 @@ function CarDetails() {
           <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
             {carData.title}
           </h1>
-          <h3 className="text-gray-600 font-lg text-semibold leading-6">
-            {carData.make}
-          </h3>
           <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
             {carData.details}
           </p>
@@ -101,10 +98,6 @@ function CarDetails() {
                 )}
               </span>
             </li>
-            <li className="flex items-center py-3">
-              <span>Year</span>
-              <span className="ml-auto">{carData.year}</span>
-            </li>
           </ul>
         </div>
 
@@ -131,40 +124,36 @@ function CarDetails() {
           <div className="text-gray-700">
             <div className="grid md:grid-cols-2 text-sm">
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">First Name</div>
-                <div className="px-4 py-2">{carData.title}</div>
+                <div className="px-4 py-2 font-semibold">Make</div>
+                <div className="px-4 py-2">{carData.make}</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Last Name</div>
-                <div className="px-4 py-2">Doe</div>
+                <div className="px-4 py-2 font-semibold">Model</div>
+                <div className="px-4 py-2">{carData.model}</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Gender</div>
-                <div className="px-4 py-2">Female</div>
+                <div className="px-4 py-2 font-semibold">year</div>
+                <div className="px-4 py-2">{carData.year}</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Contact No.</div>
-                <div className="px-4 py-2">+11 998001001</div>
+                <div className="px-4 py-2 font-semibold">Color</div>
+                <div className="px-4 py-2">{carData.color}</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Current Address</div>
-                <div className="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
+                <div className="px-4 py-2 font-semibold">MileAge</div>
+                <div className="px-4 py-2">{carData.mileage}</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Permanant Address</div>
-                <div className="px-4 py-2">Arlington Heights, IL, Illinois</div>
+                <div className="px-4 py-2 font-semibold">FuelType</div>
+                <div className="px-4 py-2">{carData.fueltype}</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Email.</div>
+                <div className="px-4 py-2 font-semibold">Price</div>
                 <div className="px-4 py-2">
                   <a className="text-blue-800" href="mailto:jane@example.com">
-                    {carData.color}
+                    {carData.price}
                   </a>
                 </div>
-              </div>
-              <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Birthday</div>
-                <div className="px-4 py-2">Feb 06, 1998</div>
               </div>
             </div>
           </div>
