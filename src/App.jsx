@@ -88,7 +88,7 @@ const App = () => {
               </Route>
               <Route path="add_user" element={<Addusers />} />
             </Route>
-            <Route path="cars" element={<ProLayout />}>
+            <Route path="car" element={<ProLayout />}>
               <Route index element={<Car />} />
               <Route path=":id" element={<ProLayout />}>
                 <Route index element={<CarDetails />} />
@@ -112,7 +112,7 @@ const App = () => {
               </Route>
               <Route path="add_labours" element={<AddLabour />} />
             </Route>
-            <Route path="others" element={<ProLayout />}>
+            <Route path="other" element={<ProLayout />}>
               <Route index element={<Other />} />
               <Route path=":id" element={<ProLayout />}>
                 <Route index element={<OthersDetail />} />

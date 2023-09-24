@@ -5,6 +5,7 @@ import axios from "../../../api/axios";
 const House = () => {
   const [Houses, setHouses] = useState([]);
   const [users, setUsers] = useState(null);
+  const [search, setSearch] = useState("");
 
   const getUser = async () => {
     await axios.get("api/users").then((response) => {
@@ -31,6 +32,16 @@ const House = () => {
           Houses
         </h2>
       </header>
+      <form onChange={(e) => setSearch(e.target.value)}>
+        <div class="mb-6">
+          <input
+            type="text"
+            id="password"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="search house"
+          />
+        </div>
+      </form>
       {Houses.length > 0 ? (
         <div className="p-3">
           {/* Table */}
@@ -63,7 +74,15 @@ const House = () => {
               {/* Table body */}
               <tbody className="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
                 {/* Row */}
-                {Houses.map((house) => {
+                {Houses.filter((house) => {
+                  return search.toLowerCase() === ""
+                    ? house
+                    : house.title?.toLowerCase().includes(search) ||
+                        house.location?.toLowerCase().includes(search) ||
+                        house.area?.toLowerCase().includes(search) ||
+                        house.price?.toString().includes(search) ||
+                        house.status?.toLowerCase().includes(search);
+                }).map((house) => {
                   return (
                     <tr key={house.id}>
                       <td className="p-2">

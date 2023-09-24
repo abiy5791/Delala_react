@@ -6,6 +6,7 @@ import axios from "../../../api/axios";
 import useAuthContext from "../../../context/AuthContext";
 function Car() {
   const [cars, setCars] = useState([]);
+  const [search, setSearch] = useState("");
   const { user } = useAuthContext();
   const getCars = async () => {
     await axios.get("api/car").then((response) => {
@@ -24,6 +25,18 @@ function Car() {
           Cars
         </h2>
       </header>
+
+      <form onChange={(e) => setSearch(e.target.value)}>
+        <div class="mb-6">
+          <input
+            type="text"
+            id="password"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="search Cars"
+          />
+        </div>
+      </form>
+
       {cars.length > 0 ? (
         <div className="p-3">
           {/* Table */}
@@ -56,57 +69,68 @@ function Car() {
               {/* Table body */}
               <tbody className="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
                 {/* Row */}
-                {cars.map((car) => {
-                  return (
-                    <tr key={car.id}>
-                      <td className="p-2">
-                        <div className="flex items-center">
-                          <svg
-                            className="shrink-0 mr-2 sm:mr-3"
-                            width="36"
-                            height="36"
-                            viewBox="0 0 36 36"
-                          >
-                            <circle fill="#24292E" cx="18" cy="18" r="18" />
-                            <path
-                              d="M18 10.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V24c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z"
-                              fill="#FFF"
-                            />
-                          </svg>
-                          <div className="text-slate-800 dark:text-slate-100">
-                            <Link to={`${car.id}`}>{car.title}</Link>
+                {cars
+                  .filter((car) => {
+                    return search.toLowerCase() === ""
+                      ? car
+                      : car.title?.toLowerCase().includes(search) ||
+                          car.model?.toLowerCase().includes(search) ||
+                          car.make?.toLowerCase().includes(search) ||
+                          car.color?.toLowerCase().includes(search) ||
+                          car.price?.toString().includes(search) ||
+                          car.mileage?.toLowerCase().includes(search);
+                  })
+                  .map((car) => {
+                    return (
+                      <tr key={car.id}>
+                        <td className="p-2">
+                          <div className="flex items-center">
+                            <svg
+                              className="shrink-0 mr-2 sm:mr-3"
+                              width="36"
+                              height="36"
+                              viewBox="0 0 36 36"
+                            >
+                              <circle fill="#24292E" cx="18" cy="18" r="18" />
+                              <path
+                                d="M18 10.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V24c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z"
+                                fill="#FFF"
+                              />
+                            </svg>
+                            <div className="text-slate-800 dark:text-slate-100">
+                              <Link to={`${car.id}`}>{car.title}</Link>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td className="p-2">
-                        <div className="text-center">{car.model}</div>
-                      </td>
-                      <td className="p-2">
-                        <div className="text-center">{car.year}</div>
-                      </td>
+                        </td>
+                        <td className="p-2">
+                          <div className="text-center">{car.model}</div>
+                        </td>
+                        <td className="p-2">
+                          <div className="text-center">{car.year}</div>
+                        </td>
 
-                      <td className="p-2">
-                        <div className="text-center">{car.color}</div>
-                      </td>
-                      <td className="p-2">
-                        <div className="text-center">
-                          {user.id === car.delala_id && user.name}
-                        </div>
-                      </td>
-                      <td className="p-2">
-                        {car.approval ? (
-                          <span className="text-center hidden xs:block ml-2 text-green-500">
-                            Approved
-                          </span>
-                        ) : (
-                          <span className="text-center hidden xs:block ml-2 text-red-500">
-                            pending ...
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
+                        <td className="p-2">
+                          <div className="text-center">{car.color}</div>
+                        </td>
+                        <td className="p-2">
+                          <div className="text-center">
+                            {user.id === car.delala_id && user.name}
+                          </div>
+                        </td>
+                        <td className="p-2">
+                          {car.approval ? (
+                            <span className="text-center hidden xs:block ml-2 text-green-500">
+                              Approved
+                            </span>
+                          ) : (
+                            <span className="text-center hidden xs:block ml-2 text-red-500">
+                              pending ...
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
 

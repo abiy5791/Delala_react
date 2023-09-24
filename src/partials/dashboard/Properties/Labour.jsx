@@ -7,6 +7,7 @@ import useAuthContext from "../../../context/AuthContext";
 
 const Labour = () => {
   const [Labours, setLabours] = useState([]);
+  const [search, setSearch] = useState("");
   const { user } = useAuthContext();
   const getLabours = async () => {
     await axios.get("api/labour").then((response) => {
@@ -24,6 +25,16 @@ const Labour = () => {
           Labours
         </h2>
       </header>
+      <form onChange={(e) => setSearch(e.target.value)}>
+        <div class="mb-6">
+          <input
+            type="text"
+            id="password"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="search Labours"
+          />
+        </div>
+      </form>
       {Labours.length > 0 ? (
         <div className="p-3">
           {/* Table */}
@@ -56,7 +67,17 @@ const Labour = () => {
               {/* Table body */}
               <tbody className="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
                 {/* Row */}
-                {Labours.map((labour) => {
+                {Labours.filter((labour) => {
+                  return search.toLowerCase() === ""
+                    ? labour
+                    : labour.title?.toLowerCase().includes(search) ||
+                        labour.skills?.toLowerCase().includes(search) ||
+                        labour.name?.toLowerCase().includes(search) ||
+                        labour.salary?.toString().includes(search) ||
+                        labour.age?.toString().includes(search) ||
+                        labour.type?.toLowerCase().includes(search) ||
+                        labour.Gender?.toLowerCase().includes(search);
+                }).map((labour) => {
                   return (
                     <tr key={labour.id}>
                       <td className="p-2">
