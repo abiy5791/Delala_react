@@ -8,7 +8,7 @@ dayjs.extend(relativeTime);
 
 const Home = () => {
   const [props, setProps] = useState([]);
-
+  const [search, setSearch] = useState("");
   const getProps = async () => {
     await axios.get("api/prop").then((response) => {
       setProps(response.data);
@@ -120,17 +120,13 @@ const Home = () => {
           </div>
           <div className="flex flex-row items-center self-center justify-center flex-shrink-0 shadow-md lg:justify-end">
             <div className="flex flex-row">
-              <input
-                type="text"
-                placeholder="Search"
-                className="w-3/5 p-3 rounded-l-lg sm:w-2/3"
-              />
-              <button
-                type="button"
-                className="w-2/5 p-3 font-semibold rounded-r-lg sm:w-1/3 dark:bg-violet-400 dark:text-gray-900"
-              >
-                Search
-              </button>
+              <form onChange={(e) => setSearch(e.target.value)}>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="w-3/5 p-3 rounded-l-lg sm:w-2/3"
+                />
+              </form>
             </div>
           </div>
         </div>
@@ -138,10 +134,31 @@ const Home = () => {
       <div class="py-16">
         <div class="xl:container m-auto px-6 text-gray-600 md:px-12 xl:px-6">
           <div class="grid gap-12 md:gap-6 md:grid-cols-2 lg:gap-12">
-            {props.map((prop) => {
-              return (
-                <div class="group space-y-6 inline-block w-full">
-                  {/* <img
+            {props
+              .filter((prop) => {
+                return search.toLowerCase() === ""
+                  ? prop
+                  : prop.title?.toLowerCase().includes(search) ||
+                      prop.name?.toLowerCase().includes(search) ||
+                      prop.skills?.toLowerCase().includes(search) ||
+                      prop.Gender?.toLowerCase().includes(search) ||
+                      prop.age?.toString().includes(search) ||
+                      prop.price?.toString().includes(search) ||
+                      prop.type?.toString().includes(search) ||
+                      prop.model?.toLowerCase().includes(search) ||
+                      prop.status?.toLowerCase().includes(search) ||
+                      prop.location?.toLowerCase().includes(search) ||
+                      prop.make?.toLowerCase().includes(search) ||
+                      prop.color?.toLowerCase().includes(search) ||
+                      prop.mileage?.toLowerCase().includes(search) ||
+                      prop.salary?.toString().toLowerCase().includes(search);
+
+                // data.mile.toLowerCase().includes(search);
+              })
+              .map((prop) => {
+                return (
+                  <div class="group space-y-6 inline-block w-full">
+                    {/* <img
                       src="https://images.unsplash.com/photo-1620121692029-d088224ddc74?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80"
                       alt="art cover"
                       loading="lazy"
@@ -150,28 +167,30 @@ const Home = () => {
                       class="h-80 w-full rounded-3xl object-cover object-top transition-all duration-500 group-hover:rounded-xl"
                     /> */}
 
-                  {prop.image && (
-                    <img
-                      class="h-40 w-60 rounded-3xl object-cover object-top transition-all duration-500 group-hover:rounded-xl"
-                      loading="lazy"
-                      width="100"
-                      heighimageIndext="667"
-                      src={`http://127.0.0.1:8000/${prop.image.split("|")[0]}`}
-                      alt={`prop Image `}
-                    />
-                  )}
-                  <h3 class="text-3xl font-semibold text-gray-800 dark:text-white">
-                    <Link to={`${prop.model_type}/${prop.id}`}>
-                      {prop.title}
-                    </Link>
-                  </h3>
-                  {/* <p class="text-gray-600 dark:text-gray-300 w-full">
+                    {prop.image && (
+                      <img
+                        class="h-40 w-60 rounded-3xl object-cover object-top transition-all duration-500 group-hover:rounded-xl"
+                        loading="lazy"
+                        width="100"
+                        heighimageIndext="667"
+                        src={`http://127.0.0.1:8000/${
+                          prop.image.split("|")[0]
+                        }`}
+                        alt={`prop Image `}
+                      />
+                    )}
+                    <h3 class="text-3xl font-semibold text-gray-800 dark:text-white">
+                      <Link to={`${prop.model_type}/${prop.id}`}>
+                        {prop.title}
+                      </Link>
+                    </h3>
+                    {/* <p class="text-gray-600 dark:text-gray-300 w-full">
                       Finding the right open source project for your first
                       contribution can feel daunting. It took me years to find a
                       repository that fit my skills and interests.
                     </p> */}
-                  <div class="flex gap-6 items-center">
-                    {/* <a
+                    <div class="flex gap-6 items-center">
+                      {/* <a
                         href="#"
                         class="-ml-1 p-1 rounded-full flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-800"
                       >
@@ -187,27 +206,27 @@ const Home = () => {
                       <span class="w-max block font-light text-gray-500 sm:mt-0">
                        
                       </span> */}
-                    <div class="flex gap-2 items-center text-gray-500">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-5 h-5 text-gray-400 dark:text-gray-600"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <span>Posted: {dayjs(prop.created_at).fromNow()}</span>
+                      <div class="flex gap-2 items-center text-gray-500">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-5 h-5 text-gray-400 dark:text-gray-600"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <span>Posted: {dayjs(prop.created_at).fromNow()}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </div>
       </div>
