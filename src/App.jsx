@@ -18,7 +18,7 @@ import "./css/style.css";
 import "./charts/ChartjsConfig";
 import CarDetails from "./partials/dashboard/Properties/CarDetails";
 import AdminHome from "./pages/AdminHome";
-
+import Text from "./pages/Text";
 import House from "./partials/dashboard/Properties/House";
 import Car from "./partials/dashboard/Properties/Car";
 import Labour from "./partials/dashboard/Properties/Labour";
