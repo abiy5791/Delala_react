@@ -1,334 +1,122 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Stepper } from "react-form-stepper";
+import Step1 from "./Step1";
+import Step2 from "./Step2";
+import Step3 from "./Step3";
 import useAuthContext from "../context/AuthContext";
-import CircularProgress from "../components/CircularProgress";
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [avatar, setAvatar] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
-  const [KebelleId, setKebelleId] = useState("");
-
-  const [password, setPassword] = useState("");
-  const [password_confirmation, setPassword_confirmation] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
 
   const { register, errors, isLoading } = useAuthContext();
 
+  const [userDetail, setUserDetail] = useState({
+    avatar: [],
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+    kebelleId: [],
+    phone: "",
+    address: "",
+  });
+
+  function handlechange(e) {
+    if (e.target.type === "file") {
+      setUserDetail((prevInfo) => ({
+        ...prevInfo,
+        [e.target.name]: e.target.files,
+      }));
+    } else {
+      setUserDetail((prevInfo) => ({
+        ...prevInfo,
+        [e.target.name]: e.target.value,
+      }));
+    }
+  }
+
   const handleRegister = async (event) => {
-    event.preventDefault();
-    register({
-      name,
-      email,
-      password,
-      password_confirmation,
-      avatar,
-      address,
-      phone,
-      KebelleId,
-    });
+    // event.preventDefault();
+    register(userDetail);
   };
+  const steps = [
+    { label: "User Info" },
+    { label: "Password" },
+    { label: "User Detail" },
+  ];
 
+  function getSectionComponent() {
+    switch (activeStep) {
+      case 0:
+        return <Step1 userDetail={userDetail} handlechange={handlechange} />;
+      case 1:
+        return <Step2 userDetail={userDetail} handlechange={handlechange} />;
+      case 2:
+        return <Step3 userDetail={userDetail} handlechange={handlechange} />;
+      default:
+        return null;
+    }
+  }
+  console.log(userDetail);
   return (
-    <section className="bg-[#F4F7FF] py-20 lg:py-[120px] dark:bg-gray-900 dark:text-white">
-      <div className="container mx-auto">
-        <div className="-mx-4 flex flex-wrap">
-          <div className="w-full px-4">
-            <div
-              className="
-              dark:bg-gray-900 dark:text-white
-            relative
-            mx-auto
-            max-w-[525px]
-            overflow-hidden
-            rounded-lg
-            bg-white
-            py-16
-            px-10
-            text-center
-            sm:px-12
-            md:px-[60px]
-          "
-            >
-              <div className="mb-10 text-center md:mb-5">
-                <h1 className="text-3xl font-bold">Register</h1>
-              </div>
-              <form onSubmit={handleRegister} encType="multipart/form-data">
-                <div className="mb-4">
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="
-                  bordder-[#E9EDF4]
-                  w-full
-                  rounded-md
-                  border
-                  bg-[#FCFDFE]
-                  py-3
-                  px-5
-                  text-base text-body-color
-                  placeholder-[#ACB6BE]
-                  outline-none
-                  focus:border-primary
-                  focus-visible:shadow-none
-                "
-                  />
-                  {errors.name && (
-                    <div className="flex">
-                      <span className="text-red-400 text-sm m-2 p-2">
-                        {errors.name[0]}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className="mb-4">
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="
-                  bordder-[#E9EDF4]
-                  w-full
-                  rounded-md
-                  border
-                  bg-[#FCFDFE]
-                  py-3
-                  px-5
-                  text-base text-body-color
-                  placeholder-[#ACB6BE]
-                  outline-none
-                  focus:border-primary
-                  focus-visible:shadow-none
-                "
-                  />
-                  {errors.email && (
-                    <div className="flex">
-                      <span className="text-red-400 text-sm m-2 p-2">
-                        {errors.email[0]}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className="mb-4 relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="
-                  bordder-[#E9EDF4]
-                  w-full
-                  rounded-md
-                  border
-                  bg-[#FCFDFE]
-                  py-3
-                  px-5
-                  text-base text-body-color
-                  placeholder-[#ACB6BE]
-                  outline-none
-                  focus:border-primary
-                  focus-visible:shadow-none
-                "
-                  />
+    <div className="flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg shadow-md w-full lg:max-w-xl">
+        <Stepper
+          steps={steps}
+          activeStep={activeStep}
+          connectorStateColors={true}
+          connectorStyleConfig={{
+            completedColor: "#5A5A5A",
+            activeColor: "#5A5A5A",
+            disabledColor: "#eee",
+          }}
+          styleConfig={{
+            activeBgColor: "#808080",
+            completedBgColor: "#5A5A5A",
+            inactiveBgColor: "#eee",
+            activeTextColor: "#fff",
+            completedTextColor: "#fff",
+            inactiveTextColor: "#5A5A5A",
+          }}
+        />
+        <div style={{ padding: "20px" }}>
+          {getSectionComponent()}
+          <div class="max-w-3xl mx-auto px-4">
+            <div class="flex justify-between">
+              {activeStep !== 0 && (
+                <div class="w-1/2">
                   <button
-                    type="button"
-                    className="absolute top-6 right-3 transform -translate-y-1/2 text-primary focus:outline-none"
-                    onClick={() => setShowPassword(!showPassword)} // Toggle showPassword state
+                    onClick={() => setActiveStep(activeStep - 1)}
+                    class="w-32 focus:outline-none py-2 px-5 rounded-lg shadow-sm text-center text-gray-600 bg-white hover:bg-gray-100 font-medium border"
                   >
-                    {showPassword ? "Hide" : "Show"}
+                    Previous
                   </button>
-                  {errors.password && (
-                    <div className="flex">
-                      <span className="text-red-400 text-sm m-2 p-2">
-                        {errors.password[0]}
-                      </span>
-                    </div>
-                  )}
                 </div>
-                <div className="mb-4 relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Password Confirmation"
-                    value={password_confirmation}
-                    onChange={(e) => setPassword_confirmation(e.target.value)}
-                    className="
-                  bordder-[#E9EDF4]
-                  w-full
-                  rounded-md
-                  border
-                  bg-[#FCFDFE]
-                  py-3
-                  px-5
-                  text-base text-body-color
-                  placeholder-[#ACB6BE]
-                  outline-none
-                  focus:border-primary
-                  focus-visible:shadow-none
-                "
-                  />
+              )}
+              {activeStep !== steps.length - 1 ? (
+                <div class="w-1/2">
+                  <button
+                    onClick={() => setActiveStep(activeStep + 1)}
+                    class="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-gray-500 hover:bg-gray-600 font-medium"
+                  >
+                    Next
+                  </button>
                 </div>
-                <div className="mb-4">
-                  <label htmlFor="">Your Profile Picture</label>
-                  <input
-                    type="file"
-                    placeholder="Profile picture"
-                    onChange={(e) => setAvatar(e.target.files)}
-                    className="
-                  bordder-[#E9EDF4]
-                  w-full
-                  rounded-md
-                  border
-                  bg-[#FCFDFE]
-                  py-3
-                  px-5
-                  text-base text-body-color
-                  placeholder-[#ACB6BE]
-                  outline-none
-                  focus:border-primary
-                  focus-visible:shadow-none
-                "
-                  />
-                  {errors.name && (
-                    <div className="flex">
-                      <span className="text-red-400 text-sm m-2 p-2">
-                        {errors.name[0]}
-                      </span>
-                    </div>
-                  )}
+              ) : (
+                <div class="w-1/2">
+                  <button
+                    class="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-[#5A5A5A] hover:bg-gray-600 font-medium"
+                    onClick={handleRegister}
+                  >
+                    Register
+                  </button>
                 </div>
-
-                <div className="mb-4">
-                  <label htmlFor="">Address</label>
-                  <input
-                    type="text"
-                    placeholder="Address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    className="
-                  bordder-[#E9EDF4]
-                  w-full
-                  rounded-md
-                  border
-                  bg-[#FCFDFE]
-                  py-3
-                  px-5
-                  text-base text-body-color
-                  placeholder-[#ACB6BE]
-                  outline-none
-                  focus:border-primary
-                  focus-visible:shadow-none
-                "
-                  />
-                  {errors.name && (
-                    <div className="flex">
-                      <span className="text-red-400 text-sm m-2 p-2">
-                        {errors.name[0]}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="mb-4">
-                  <label htmlFor="">Insert your kebelle Id</label>
-                  <input
-                    type="file"
-                    placeholder="Kebelle_id"
-                    onChange={(e) => setKebelleId(e.target.files)}
-                    className="
-                  bordder-[#E9EDF4]
-                  w-full
-                  rounded-md
-                  border
-                  bg-[#FCFDFE]
-                  py-3
-                  px-5
-                  text-base text-body-color
-                  placeholder-[#ACB6BE]
-                  outline-none
-                  focus:border-primary
-                  focus-visible:shadow-none
-                "
-                  />
-                  {errors.name && (
-                    <div className="flex">
-                      <span className="text-red-400 text-sm m-2 p-2">
-                        {errors.name[0]}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="mb-4">
-                  <label htmlFor="">Phone Number</label>
-                  <input
-                    type="text"
-                    placeholder="091120..."
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="
-                  bordder-[#E9EDF4]
-                  w-full
-                  rounded-md
-                  border
-                  bg-[#FCFDFE]
-                  py-3
-                  px-5
-                  text-base text-body-color
-                  placeholder-[#ACB6BE]
-                  outline-none
-                  focus:border-primary
-                  focus-visible:shadow-none
-                "
-                  />
-                  {errors.name && (
-                    <div className="flex">
-                      <span className="text-red-400 text-sm m-2 p-2">
-                        {errors.name[0]}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="mb-10">
-                  {isLoading ? (
-                    <div className="flex justify-center">
-                      <CircularProgress />
-                    </div>
-                  ) : (
-                    <button
-                      type="submit"
-                      className="
-                  w-full
-                  px-4
-                  py-3
-                  bg-indigo-500
-                  hover:bg-indigo-700
-                  rounded-md
-                  text-white
-                "
-                    >
-                      Register
-                    </button>
-                  )}
-                </div>
-              </form>
-
-              <p className="text-base text-[#adadad]">
-                Already have an account ?
-                <Link to="/login" className="text-primary hover:underline">
-                  Log In
-                </Link>
-              </p>
+              )}
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

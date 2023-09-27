@@ -30,13 +30,13 @@ const HouseDetails = () => {
 
   const deletehouse = async () => {
     await axios.delete(`api/house/${param.id}`).then((response) => {
-      navigate("/admin_dashboard/house");
+      navigate(-1);
     });
   };
 
   const update_house = async (id) => {
     await axios.put(`api/house/${id}`, approval).then((response) => {
-      navigate("/admin_dashboard/house");
+      navigate(-1);
       console.log(response);
     });
   };

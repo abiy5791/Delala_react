@@ -4,10 +4,18 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import axios from "../api/axios";
+
 dayjs.extend(relativeTime);
 
 const Home = () => {
   const [props, setProps] = useState([]);
+  const [selected, setSelected] = useState({
+    property: "",
+    type: "",
+    budget: "",
+  });
+  const [filtered, setFiltered] = useState([]);
+  const [content, setContent] = useState([]);
 
   const getProps = async () => {
     await axios.get("api/prop").then((response) => {
@@ -18,12 +26,47 @@ const Home = () => {
     getProps();
   }, []);
 
+  const handleSelect = (e) => {
+    setSelected({ ...selected, [e.target.name]: e.target.value });
+  };
+  console.log(selected);
+  const handleFilter = (e) => {
+    const { property, type, budget } = selected;
+    const filtered = props.filter((prop) => {
+      return prop.model_type === property;
+    });
+    const houses = props.filter((prop) => {
+      return prop.model_type === "house";
+    });
+    console.log("houses", houses);
+    const filtered2 = houses.filter((house) => {
+      return house.status === type;
+    });
+    console.log("filtered 2", filtered2);
+    const filtered3 = houses.filter((house) => {
+      return house.price <= budget;
+    });
+    console.log("filerer 3", filtered3);
+    setFiltered([...filtered, ...filtered2, ...filtered3]);
+  };
+  useEffect(() => {
+    if (filtered.length > 0) {
+      setContent(filtered);
+      console.log("filtered", content);
+    } else {
+      setContent(props);
+      console.log("props", content);
+    }
+
+    return () => {};
+  }, [props, filtered]);
+
   return (
     <>
       <section className="py-1 dark:bg-gray-800 dark:text-gray-50">
         <div className="container flex flex-col justify-center p-4 mx-auto space-y-8 md:p-10 lg:space-y-0 lg:space-x-12 lg:flex-row">
           <div className="flex flex-col space-y-4 text-center">
-            <h1 className="text-5xl font-bold leadi">Welcom To Delala.com</h1>
+            <h1 className="text-5xl font-bold leadi">Welcome To Delala.com</h1>
             <p className="text-lg">
               "Effortlessly Find, Rent, or Buy Properties with our Revolutionary
               Broker App"
@@ -39,17 +82,19 @@ const Home = () => {
               for="countries"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
             >
-              Select an option
+              Choose Property Type
             </label>
             <select
               id="countries"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={handleSelect}
+              name="property"
             >
-              <option selected>Choose a country</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
+              <option value=""></option>
+              <option value="house">House</option>
+              <option value="car">Car</option>
+              <option value="labour">Labour</option>
+              <option value="other">Other</option>
             </select>
           </div>
           <div class="w-full sm:w-1/2 md:w-1/4 px-2">
@@ -57,17 +102,17 @@ const Home = () => {
               for="countries"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
             >
-              Select an option
+              Rent or Sale House
             </label>
             <select
               id="countries"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={handleSelect}
+              name="type"
             >
-              <option selected>Choose a country</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
+              <option value=""></option>
+              <option value="sale">Sale</option>
+              <option value="rent">Rent</option>
             </select>
           </div>
           <div class="w-full sm:w-1/2 md:w-1/4 px-2">
@@ -75,36 +120,44 @@ const Home = () => {
               for="countries"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
             >
-              Select an option
+              Your Budget For House
             </label>
             <select
               id="countries"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={handleSelect}
+              name="budget"
             >
-              <option selected>Choose a country</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
+              <option value=""></option>
+              <option value="10000000">up to 10 mil</option>
+              <option value="30000000">up to 30 mil</option>
+              <option value="50000000">up to 50 mil</option>
+              <option value="90000000000000000000">more than 50 mil</option>
             </select>
           </div>
-          <div class="w-full sm:w-1/2 md:w-1/4 px-2">
-            <label
-              for="countries"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
-            >
-              Select an option
-            </label>
-            <select
-              id="countries"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option selected>Choose a country</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
-            </select>
+          <div class="w-full sm:w-1/2 md:w-1/4 px-2 flex items-end justify-center">
+            <div class="bg-grey-500 col-12 mt-3 align-middle justify-content-center flex">
+              <button
+                onClick={handleFilter}
+                class="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-gray-500 hover:bg-gray-600 font-medium"
+              >
+                <div className="flex">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M3.792 2.938A49.069 49.069 0 0112 2.25c2.797 0 5.54.236 8.209.688a1.857 1.857 0 011.541 1.836v1.044a3 3 0 01-.879 2.121l-6.182 6.182a1.5 1.5 0 00-.439 1.061v2.927a3 3 0 01-1.658 2.684l-1.757.878A.75.75 0 019.75 21v-5.818a1.5 1.5 0 00-.44-1.06L3.13 7.938a3 3 0 01-.879-2.121V4.774c0-.897.64-1.683 1.542-1.836z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="px-1">Filter</span>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -138,7 +191,7 @@ const Home = () => {
       <div class="py-16">
         <div class="xl:container m-auto px-6 text-gray-600 md:px-12 xl:px-6">
           <div class="grid gap-12 md:gap-6 md:grid-cols-2 lg:gap-12">
-            {props.map((prop) => {
+            {content.map((prop) => {
               return (
                 <div class="group space-y-6 inline-block w-full">
                   {/* <img

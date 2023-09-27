@@ -19,7 +19,7 @@ const Tab = () => {
                   <Link
                     to="addHouse"
                     onClick={() => handleTabOpen("home")}
-                    className={`rounded-md py-3 px-4 text-sm font-medium md:text-base lg:px-6 hover:bg-gray-500 hover:text-white transition-all delay-75 cursor-pointer ${
+                    className={`rounded-md py-3 px-7 text-sm font-medium md:text-base lg:px-6 hover:bg-gray-500 hover:text-white transition-all delay-75 cursor-pointer ${
                       open === "home" ? "bg-gray-800 text-white" : " "
                     }`}
                   >
@@ -28,7 +28,7 @@ const Tab = () => {
                   <Link
                     to="addCar"
                     onClick={() => handleTabOpen("about")}
-                    className={`rounded-md py-3 px-4 text-sm font-medium md:text-base lg:px-6 hover:bg-gray-500 hover:text-white transition-all delay-75 cursor-pointer ${
+                    className={`rounded-md py-3 px-7 text-sm font-medium md:text-base lg:px-6 hover:bg-gray-500 hover:text-white transition-all delay-75 cursor-pointer ${
                       open === "about" ? "bg-gray-800 text-white" : " "
                     }`}
                   >
@@ -37,7 +37,7 @@ const Tab = () => {
                   <Link
                     to="addLabour"
                     onClick={() => handleTabOpen("team")}
-                    className={`rounded-md py-3 px-4 text-sm font-medium md:text-base lg:px-6 hover:bg-gray-500 hover:text-white transition-all delay-75 cursor-pointer ${
+                    className={`rounded-md py-3 px-7 text-sm font-medium md:text-base lg:px-6 hover:bg-gray-500 hover:text-white transition-all delay-75 cursor-pointer ${
                       open === "team" ? "bg-gray-800 text-white" : " "
                     }`}
                   >
@@ -46,7 +46,7 @@ const Tab = () => {
                   <Link
                     to="addOther"
                     onClick={() => handleTabOpen("company")}
-                    className={`rounded-md py-3 px-4 text-sm font-medium md:text-base lg:px-6 hover:bg-gray-500 hover:text-white transition-all delay-75 cursor-pointer ${
+                    className={`rounded-md py-3 px-7 text-sm font-medium md:text-base lg:px-6 hover:bg-gray-500 hover:text-white transition-all delay-75 cursor-pointer ${
                       open === "company" ? "bg-gray-800 text-white" : " "
                     }`}
                   >

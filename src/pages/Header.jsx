@@ -31,7 +31,7 @@ const Header = () => {
                 <div className="flex items-center">
                   <Link
                     to="/delala_dashboard"
-                    className="relative inline-flex items-center mr-4 px-12 py-3 overflow-hidden text-lg font-medium text-gray-800 border-2 border-gray-800 rounded-full hover:text-white group hover:bg-gray-50"
+                    className="relative inline-flex items-center mr-4 px-12 py-3 overflow-hidden text-lg font-medium text-gray-800 border-2 border-gray-800 rounded-full hover:text-white group hover:bg-[#5A5A5A]"
                   >
                     <span class="absolute left-0 block w-full h-0 transition-all bg-gray-800 opacity-100 group-hover:h-full top-1/2 group-hover:top-0 duration-400 ease"></span>
                     <span class="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
@@ -57,12 +57,10 @@ const Header = () => {
               </li>
             ) : (
               <li className="flex">
-                <Link
-                  rel="noopener noreferrer"
-                  to={"/login"}
-                  className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent font-bold"
-                >
-                  Login
+                <Link to="/login" className="flex items-center justify-center">
+                  <button class="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-gray-500 hover:bg-gray-600 font-medium">
+                    Login
+                  </button>
                 </Link>
               </li>
             )}

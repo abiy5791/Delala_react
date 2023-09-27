@@ -60,7 +60,7 @@ const AddLabour = () => {
       await axios.post("api/labour", formData).then(function (response) {
         console.log(response);
       });
-      navigate("/admin_dashboard/labour");
+      navigate(-1);
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors);

@@ -30,13 +30,13 @@ function CarDetails() {
 
   const deletecar = async () => {
     await axios.delete(`api/car/${param.id}`).then((response) => {
-      navigate("/admin_dashboard/cars");
+      navigate(-1);
     });
   };
 
   const update_car = async (id) => {
     await axios.put(`api/car/${id}`, approval).then((response) => {
-      navigate("/admin_dashboard/cars");
+      navigate(-1);
       console.log(response);
     });
   };

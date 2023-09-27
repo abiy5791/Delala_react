@@ -30,13 +30,13 @@ const LabourDetails = () => {
 
   const deletelabour = async () => {
     await axios.delete(`api/labour/${param.id}`).then((response) => {
-      navigate("/admin_dashboard/labour");
+      navigate(-1);
     });
   };
 
   const update_labour = async (id) => {
     await axios.put(`api/labour/${id}`, approval).then((response) => {
-      navigate("/admin_dashboard/labour");
+      navigate(-1);
       console.log(response);
     });
   };

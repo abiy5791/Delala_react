@@ -56,7 +56,7 @@ const AddHouse = () => {
       await axios.post("api/house", formData).then(function (response) {
         console.log(response);
       });
-      navigate("/admin_dashboard/house");
+      navigate(-1);
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors);
@@ -66,7 +66,6 @@ const AddHouse = () => {
       setIsLoading(false);
     }
   };
-
   return (
     <main>
       <div className="p-10">
@@ -114,7 +113,7 @@ const AddHouse = () => {
               <div className="mb-2">
                 <label>
                   <span className="text-gray-700">Status</span>
-                  <input
+                  <select
                     type="text"
                     name="status"
                     onChange={handlechange}
@@ -132,7 +131,11 @@ const AddHouse = () => {
             focus:ring-opacity-50
           "
                     placeholder="Status"
-                  />
+                  >
+                    <option value=""></option>
+                    <option value="sale">Sale</option>
+                    <option value="rent">Rent</option>
+                  </select>
                 </label>
                 {errors.name && (
                   <div className="flex">

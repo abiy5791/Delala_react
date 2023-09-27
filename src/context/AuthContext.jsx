@@ -48,12 +48,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async ({ ...data }) => {
+  const register = async (data) => {
     await fetchCsrfToken();
     setErrors([]);
     setIsLoading(true);
 
     console.log(data);
+    console.log(data.name);
 
     try {
       const formData = new FormData();
@@ -64,7 +65,7 @@ export const AuthProvider = ({ children }) => {
       formData.append("password_confirmation", data.password_confirmation);
       formData.append("address", data.address);
       formData.append("avatar", data.avatar[0]);
-      formData.append("kebelleId", data.KebelleId[0]);
+      formData.append("kebelleId", data.kebelleId[0]);
       formData.append("phone", data.phone);
 
       console.log(Object.fromEntries(formData));
@@ -104,6 +105,7 @@ export const AuthProvider = ({ children }) => {
     axios.post("/logout").then(() => {
       setUser(null);
     });
+    navigate("/");
   };
 
   useEffect(() => {

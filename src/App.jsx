@@ -40,6 +40,8 @@ import UpdateLabours from "./partials/dashboard/Properties/Update_Labours";
 import MainHome from "./partials/MainHome";
 import Home from "./pages/Home";
 import PropsDetail from "./pages/PropsDetail";
+import Text from "./pages/Text";
+import New from "./pages/New";
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   useEffect(() => {
@@ -124,8 +126,8 @@ const App = () => {
           </Route>
           <Route path="/delala_dashboard" element={<DelalaBoard />}>
             <Route index element={<Text />} />
-            <Route path="addCar" element={<AddCar />} />
             <Route path="addHouse" element={<AddHouse />} />
+            <Route path="addCar" element={<AddCar />} />
             <Route path="addLabour" element={<AddLabour />} />
             <Route path="addOther" element={<AddOthers />} />
           </Route>

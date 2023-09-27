@@ -1,12 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import CircularProgress from "../../../components/CircularProgress";
 import axios from "../../../api/axios";
 import useAuthContext from "../../../context/AuthContext";
 
 const AddCar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuthContext();
   const [errors, setErrors] = useState([]);
@@ -67,7 +68,8 @@ const AddCar = () => {
       await axios.post("api/car", formData).then(function (response) {
         console.log(response);
       });
-      navigate("/admin_dashboard/cars");
+
+      navigate(-1);
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors);
