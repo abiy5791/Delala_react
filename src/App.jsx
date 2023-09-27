@@ -40,8 +40,7 @@ import UpdateLabours from "./partials/dashboard/Properties/Update_Labours";
 import MainHome from "./partials/MainHome";
 import Home from "./pages/Home";
 import PropsDetail from "./pages/PropsDetail";
-import Text from "./pages/Text";
-import New from "./pages/New";
+
 const App = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   useEffect(() => {
