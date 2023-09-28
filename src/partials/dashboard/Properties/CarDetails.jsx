@@ -5,6 +5,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 
 function CarDetails() {
   const [carData, setCarData] = useState({});
+
   const param = useParams();
   const navigate = useNavigate();
   const [approval, setApproval] = useState({ approval: 0 });
@@ -19,11 +20,21 @@ function CarDetails() {
       console.error("Failed to fetch car data:", error);
     }
   };
-  console.log(approval);
 
   useEffect(() => {
     getCarData();
   }, []);
+  const createdDate = new Date(carData.created_at);
+
+  // Format the date
+  const formattedDate = createdDate.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+
+    hour12: true,
+  });
 
   const deletecar = async () => {
     await axios.delete(`api/car/${param.id}`).then((response) => {
@@ -98,6 +109,10 @@ function CarDetails() {
                   </button>
                 )}
               </span>
+            </li>
+            <li className="flex items-center py-3">
+              <span>Posted at:</span>
+              <span className="ml-auto">{formattedDate}</span>
             </li>
           </ul>
         </div>

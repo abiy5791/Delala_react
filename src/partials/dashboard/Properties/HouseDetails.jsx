@@ -24,6 +24,17 @@ const HouseDetails = () => {
     getHouseData();
   }, []);
 
+  const createdDate = new Date(HouseData.created_at);
+
+  // Format the date
+  const formattedDate = createdDate.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+
+    hour12: true,
+  });
   const deletehouse = async () => {
     await axios.delete(`api/house/${param.id}`).then((response) => {
       navigate(-1);
@@ -97,8 +108,8 @@ const HouseDetails = () => {
               </span>
             </li>
             <li className="flex items-center py-3">
-              <span>location</span>
-              <span className="ml-auto">{HouseData.location}</span>
+              <span>Posted at:</span>
+              <span className="ml-auto">{formattedDate}</span>
             </li>
           </ul>
         </div>

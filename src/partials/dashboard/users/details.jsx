@@ -17,6 +17,17 @@ export default function Detail() {
   useEffect(() => {
     getUser();
   }, []);
+  const createdDate = new Date(user.created_at);
+
+  // Format the date
+  const formattedDate = createdDate.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+
+    hour12: true,
+  });
 
   const deleteUser = async (id) => {
     await axios.delete(`api/users/${params.id}`).then((response) => {
@@ -55,9 +66,14 @@ export default function Detail() {
           <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
             {user.name}
           </h1>
-          <h3 className="text-gray-600 font-lg text-semibold leading-6">
-            {user.email}
-          </h3>
+          <a href={`mailto:${user.email}`}>
+            <h3
+              className="text-gray-600 font-lg text-semibold leading-6"
+              style={{ color: "blue" }}
+            >
+              {user.email}
+            </h3>
+          </a>
           <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
             Lorem ipsum dolor sit amet consectetur adipisicing elit.
             Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non
@@ -86,7 +102,7 @@ export default function Detail() {
             </li>
             <li className="flex items-center py-3">
               <span>Member since</span>
-              <span className="ml-auto">{user.created_at}</span>
+              <span className="ml-auto">{formattedDate}</span>
             </li>
           </ul>
         </div>
@@ -127,27 +143,32 @@ export default function Detail() {
               </div>
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Contact No.</div>
-                <div className="px-4 py-2">+11 998001001</div>
+                <div className="px-4 py-2">{user.phone}</div>
               </div>
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Current Address</div>
-                <div className="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
+                <div className="px-4 py-2">{user.address}</div>
               </div>
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Permanant Address</div>
-                <div className="px-4 py-2">Arlington Heights, IL, Illinois</div>
+                <div className="px-4 py-2">{user.address}</div>
               </div>
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Email.</div>
                 <div className="px-4 py-2">
-                  <a className="text-blue-800" href="mailto:jane@example.com">
-                    {user.email}
+                  <a href={`mailto:${user.email}`}>
+                    <h3
+                      className="text-gray-600 font-lg text-semibold leading-6"
+                      style={{ color: "blue" }}
+                    >
+                      {user.email}
+                    </h3>
                   </a>
                 </div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Birthday</div>
-                <div className="px-4 py-2">Feb 06, 1998</div>
+                <div className="px-4 py-2 font-semibold">Member Since</div>
+                <div className="px-4 py-2">{formattedDate}</div>
               </div>
             </div>
           </div>

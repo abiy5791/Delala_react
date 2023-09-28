@@ -23,6 +23,17 @@ const OthersDetail = () => {
   useEffect(() => {
     getOthersData();
   }, []);
+  const createdDate = new Date(OthersData.created_at);
+
+  // Format the date
+  const formattedDate = createdDate.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+
+    hour12: true,
+  });
 
   const deleteothers = async () => {
     await axios.delete(`api/other/${param.id}`).then((response) => {
@@ -95,6 +106,10 @@ const OthersDetail = () => {
                   </button>
                 )}
               </span>
+            </li>
+            <li className="flex items-center py-3">
+              <span>Posted at:</span>
+              <span className="ml-auto">{formattedDate}</span>
             </li>
           </ul>
         </div>

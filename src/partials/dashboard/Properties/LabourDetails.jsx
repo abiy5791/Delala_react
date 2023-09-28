@@ -23,6 +23,17 @@ const LabourDetails = () => {
   useEffect(() => {
     getLabourData();
   }, []);
+  const createdDate = new Date(LabourData.created_at);
+
+  // Format the date
+  const formattedDate = createdDate.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+
+    hour12: true,
+  });
 
   const deletelabour = async () => {
     await axios.delete(`api/labour/${param.id}`).then((response) => {
@@ -95,6 +106,10 @@ const LabourDetails = () => {
                   </button>
                 )}
               </span>
+            </li>
+            <li className="flex items-center py-3">
+              <span>Posted at:</span>
+              <span className="ml-auto">{formattedDate}</span>
             </li>
           </ul>
         </div>
