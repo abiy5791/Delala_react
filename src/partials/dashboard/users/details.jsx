@@ -11,11 +11,7 @@ export default function Detail() {
   const getUser = async () => {
     await axios.get(`api/users/${params.id}`).then((response) => {
       setUser(response.data);
-      if (response.data.status === 0) {
-        setStatus({ status: 1 });
-      } else {
-        setStatus({ status: 0 });
-      }
+      setStatus({ status: response.data.status });
     });
   };
   useEffect(() => {
@@ -29,10 +25,12 @@ export default function Detail() {
   };
 
   const update_user = async (id) => {
-    await axios.put(`api/users/${id}`, status).then((response) => {
-      navigate("/admin_dashboard/users");
-      console.log(response.data);
-    });
+    const approved = status.status === 0 ? 1 : 0;
+    await axios
+      .put(`api/users/${id}`, { status: approved })
+      .then((response) => {
+        setStatus({ status: approved });
+      });
   };
 
   return (
@@ -40,11 +38,18 @@ export default function Detail() {
       <div className="p-10">
         <div className="bg-white p-3 border-t-4 border-blue-300">
           <div className="image overflow-hidden">
-            <img
-              className="h-auto w-full mx-auto"
-              src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
-              alt=""
-            ></img>
+            <div className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 px-2 mb-4 flex">
+              <img
+                className="h-auto w-full mx-2"
+                src={`http://127.0.0.1:8000/${user.avatar}`}
+                alt=""
+              />
+              <img
+                className="h-auto w-full mx-3"
+                src={`http://127.0.0.1:8000/${user.kebelleId}`}
+                alt=""
+              />
+            </div>
           </div>
 
           <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
@@ -62,7 +67,7 @@ export default function Detail() {
             <li className="flex items-center py-3">
               <span>Status</span>
               <span className="ml-auto">
-                {user.status ? (
+                {status.status ? (
                   <button
                     onClick={() => update_user(user.id)}
                     className="bg-green-500 py-1 px-2 rounded text-white text-sm"

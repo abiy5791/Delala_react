@@ -14,11 +14,7 @@ const LabourDetails = () => {
     try {
       const response = await axios.get(`api/labour/${param.id}`);
       setLabourData(response.data);
-      if (response.data.approval === 0) {
-        setApproval({ approval: 1 });
-      } else {
-        setApproval({ approval: 0 });
-      }
+      setApproval({ approval: response.data.approval });
     } catch (error) {
       console.error("Failed to fetch labour data:", error);
     }
@@ -35,10 +31,12 @@ const LabourDetails = () => {
   };
 
   const update_labour = async (id) => {
-    await axios.put(`api/labour/${id}`, approval).then((response) => {
-      navigate(-1);
-      console.log(response);
-    });
+    const approved = approval.approval === 0 ? 1 : 0;
+    await axios
+      .put(`api/labour/${id}`, { approval: approved })
+      .then((response) => {
+        setApproval({ approval: approved });
+      });
   };
   return (
     <main>
@@ -81,7 +79,7 @@ const LabourDetails = () => {
             <li className="flex items-center py-3">
               <span>Approval</span>
               <span className="ml-auto">
-                {LabourData.approval ? (
+                {approval.approval ? (
                   <button
                     onClick={() => update_labour(LabourData.id)}
                     className="bg-green-500 py-1 px-2 rounded text-white text-sm"
@@ -162,7 +160,6 @@ const LabourDetails = () => {
             </div>
           </div>
           <div className="inline-flex">
-
             <Link to={`update`}>
               <button className="block w-full text-blue-800 text-sm font-semibold rounded-sm hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
                 Edit

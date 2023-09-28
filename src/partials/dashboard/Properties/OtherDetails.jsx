@@ -14,11 +14,7 @@ const OthersDetail = () => {
     try {
       const response = await axios.get(`api/other/${param.id}`);
       setOthersData(response.data);
-      if (response.data.approval === 0) {
-        setApproval({ approval: 1 });
-      } else {
-        setApproval({ approval: 0 });
-      }
+      setApproval({ approval: response.data.approval });
     } catch (error) {
       console.error("Failed to fetch labour data:", error);
     }
@@ -35,9 +31,12 @@ const OthersDetail = () => {
   };
 
   const update_others = async (id) => {
-    await axios.put(`api/other/${id}`, approval).then((response) => {
-      navigate(-1);
-    });
+    const approved = approval.approval === 0 ? 1 : 0;
+    await axios
+      .put(`api/other/${id}`, { approval: approved })
+      .then((response) => {
+        setApproval({ approval: approved });
+      });
   };
   return (
     <main>
@@ -80,7 +79,7 @@ const OthersDetail = () => {
             <li className="flex items-center py-3">
               <span>Approval</span>
               <span className="ml-auto">
-                {OthersData.approval ? (
+                {approval.approval ? (
                   <button
                     onClick={() => update_others(OthersData.id)}
                     className="bg-green-500 py-1 px-2 rounded text-white text-sm"

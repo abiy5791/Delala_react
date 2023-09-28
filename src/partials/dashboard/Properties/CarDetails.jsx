@@ -14,15 +14,12 @@ function CarDetails() {
     try {
       const response = await axios.get(`api/car/${param.id}`);
       setCarData(response.data);
-      if (response.data.approval === 0) {
-        setApproval({ approval: 1 });
-      } else {
-        setApproval({ approval: 0 });
-      }
+      setApproval({ approval: response.data.approval });
     } catch (error) {
       console.error("Failed to fetch car data:", error);
     }
   };
+  console.log(approval);
 
   useEffect(() => {
     getCarData();
@@ -35,10 +32,14 @@ function CarDetails() {
   };
 
   const update_car = async (id) => {
-    await axios.put(`api/car/${id}`, approval).then((response) => {
-      navigate(-1);
-      console.log(response);
-    });
+    // console.log(approval);
+    const approved = approval.approval === 0 ? 1 : 0;
+    // console.log(approved);
+    await axios
+      .put(`api/car/${id}`, { approval: approved })
+      .then((response) => {
+        setApproval({ approval: approved });
+      });
   };
 
   return (
@@ -81,12 +82,12 @@ function CarDetails() {
             <li className="flex items-center py-3">
               <span>Approval</span>
               <span className="ml-auto">
-                {carData.approval ? (
+                {approval.approval ? (
                   <button
                     onClick={() => update_car(carData.id)}
                     className="bg-green-500 py-1 px-2 rounded text-white text-sm"
                   >
-                    Approved
+                    approved
                   </button>
                 ) : (
                   <button
@@ -158,13 +159,11 @@ function CarDetails() {
             </div>
           </div>
           <div className="inline-flex">
-
             <Link to={`update`}>
               <button className="block w-full text-blue-800 text-sm font-semibold rounded-sm hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
                 Edit
               </button>
             </Link>
-
 
             <button
               onClick={() => window.my_modal_5.showModal()}
