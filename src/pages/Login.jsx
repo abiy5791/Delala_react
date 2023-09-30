@@ -16,7 +16,7 @@ const Login = () => {
   };
 
   return (
-    <section className="bg-[#F4F7FF] py-20 lg:py-[120px] dark:bg-gray-900 dark:text-white">
+    <section className="bg-[#F4F7FF] py-20 lg:py-[60px] dark:bg-gray-900 dark:text-white">
       <div className="container mx-auto">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">

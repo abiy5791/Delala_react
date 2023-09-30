@@ -1,6 +1,6 @@
 import React from "react";
 
-const Step2 = ({ handlechange, userDetail }) => {
+const Step2 = ({ handlechange, userDetail, errors }) => {
   return (
     <div>
       <form action="">
@@ -28,6 +28,13 @@ const Step2 = ({ handlechange, userDetail }) => {
               onChange={(e) => handlechange(e)}
               value={userDetail.password}
             />
+            {errors && errors.password && (
+              <div className="flex">
+                <span className="text-red-500 text-sm font-bold m-2 p-2">
+                  {errors.password}
+                </span>
+              </div>
+            )}
             <input
               type="password"
               class="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
@@ -36,6 +43,13 @@ const Step2 = ({ handlechange, userDetail }) => {
               onChange={(e) => handlechange(e)}
               value={userDetail.password_confirmation}
             />
+            {errors && errors.password_confirmation && (
+              <div className="flex">
+                <span className="text-red-500 text-sm font-bold m-2 p-2">
+                  {errors.password_confirmation}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </form>

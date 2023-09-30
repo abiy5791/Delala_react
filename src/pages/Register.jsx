@@ -4,11 +4,13 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import useAuthContext from "../context/AuthContext";
+import validateForm from "../Validation/ValidateRegister";
+import CircularProgress from "../components/CircularProgress";
 
 const Register = () => {
   const [activeStep, setActiveStep] = useState(0);
 
-  const { register, errors, isLoading } = useAuthContext();
+  const { register, isLoading } = useAuthContext();
 
   const [userDetail, setUserDetail] = useState({
     avatar: [],
@@ -20,8 +22,25 @@ const Register = () => {
     phone: "",
     address: "",
   });
+  const initialErrors = {
+    avatar: "",
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+    kebelleId: "",
+    phone: "",
+    address: "",
+  };
+  const [errors, setErrors] = useState(initialErrors);
+  const [enable, setEnable] = useState(true);
 
   function handlechange(e) {
+    setErrors((prevInfo) => ({
+      ...prevInfo,
+      [e.target.name]: "",
+    }));
+    setEnable(true);
     if (e.target.type === "file") {
       setUserDetail((prevInfo) => ({
         ...prevInfo,
@@ -35,9 +54,19 @@ const Register = () => {
     }
   }
 
+  const handleNext = () => {
+    const err = validateForm(activeStep, userDetail);
+    setErrors(err);
+    Object.keys(err).length > 0
+      ? setEnable(false)
+      : setActiveStep(activeStep + 1);
+  };
+
   const handleRegister = async (event) => {
-    // event.preventDefault();
-    register(userDetail);
+    //event.preventDefault();
+    const err = validateForm(activeStep, userDetail);
+    setErrors(err);
+    Object.keys(err).length > 0 ? setEnable(false) : register(userDetail);
   };
   const steps = [
     { label: "User Info" },
@@ -48,16 +77,36 @@ const Register = () => {
   function getSectionComponent() {
     switch (activeStep) {
       case 0:
-        return <Step1 userDetail={userDetail} handlechange={handlechange} />;
+        return (
+          <Step1
+            userDetail={userDetail}
+            handlechange={handlechange}
+            errors={errors}
+          />
+        );
       case 1:
-        return <Step2 userDetail={userDetail} handlechange={handlechange} />;
+        return (
+          <Step2
+            userDetail={userDetail}
+            handlechange={handlechange}
+            errors={errors}
+          />
+        );
       case 2:
-        return <Step3 userDetail={userDetail} handlechange={handlechange} />;
+        return (
+          <Step3
+            userDetail={userDetail}
+            handlechange={handlechange}
+            errors={errors}
+          />
+        );
       default:
         return null;
     }
   }
+  console.log(errors);
   console.log(userDetail);
+
   return (
     <div className="flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-md w-full lg:max-w-xl">
@@ -96,20 +145,30 @@ const Register = () => {
               {activeStep !== steps.length - 1 ? (
                 <div class="w-1/2">
                   <button
-                    onClick={() => setActiveStep(activeStep + 1)}
-                    class="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-gray-500 hover:bg-gray-600 font-medium"
+                    onClick={handleNext}
+                    className={`w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white hover:bg-gray-600 font-medium ${
+                      enable
+                        ? " bg-gray-800"
+                        : "cursor-not-allowed disabled bg-gray-600"
+                    } `}
                   >
                     Next
                   </button>
                 </div>
               ) : (
                 <div class="w-1/2">
-                  <button
-                    class="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-[#5A5A5A] hover:bg-gray-600 font-medium"
-                    onClick={handleRegister}
-                  >
-                    Register
-                  </button>
+                  {isLoading ? (
+                    <div className="flex justify-center w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-gray-400 hover:bg-gray-600 font-medium">
+                      <CircularProgress />
+                    </div>
+                  ) : (
+                    <button
+                      class="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-gray-800 hover:bg-gray-600 font-medium"
+                      onClick={handleRegister}
+                    >
+                      Register
+                    </button>
+                  )}
                 </div>
               )}
             </div>
