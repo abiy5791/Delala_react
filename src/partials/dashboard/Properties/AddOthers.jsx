@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import CircularProgress from "../../../components/CircularProgress";
 import axios from "../../../api/axios";
 import useAuthContext from "../../../context/AuthContext";
+import validate from "../../../Validation/ValidateProperty";
 
 const AddOthers = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const AddOthers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuthContext();
   const [errors, setErrors] = useState([]);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState([]);
   const [OthersDetail, setOthersDetail] = useState({
     title: "",
     delala_id: user.id,
@@ -21,7 +22,21 @@ const AddOthers = () => {
     details: "",
   });
 
+  const InitialErrors = {
+    title: "",
+    price: "",
+    details: "",
+    image: "",
+  };
+  const [valErr, setValErr] = useState(InitialErrors);
+  const [enable, setEnable] = useState(true);
+
   function handlechange(e) {
+    setValErr((prevInfo) => ({
+      ...prevInfo,
+      [e.target.name]: "",
+    }));
+    setEnable(true);
     if (e.target.type === "file") {
       const selectedFile = e.target.files;
       setImage(selectedFile);
@@ -35,32 +50,37 @@ const AddOthers = () => {
 
   const Add_New_Other = async (event) => {
     event.preventDefault();
+    const err = validate(OthersDetail, image);
+    setValErr(err);
+    if (Object.keys(err).length > 0) {
+      setEnable(false);
+    } else {
+      setErrors([]);
+      setIsLoading(true);
 
-    setErrors([]);
-    setIsLoading(true);
+      try {
+        const formData = new FormData();
+        // Append fields to formData
+        formData.append("title", OthersDetail.title);
+        formData.append("price", OthersDetail.price);
+        formData.append("delala_id", OthersDetail.delala_id);
+        formData.append("details", OthersDetail.details);
+        for (let i = 0; i < image.length; i++) {
+          formData.append("image[]", image[i]);
+        }
 
-    try {
-      const formData = new FormData();
-      // Append fields to formData
-      formData.append("title", OthersDetail.title);
-      formData.append("price", OthersDetail.price);
-      formData.append("delala_id", OthersDetail.delala_id);
-      formData.append("details", OthersDetail.details);
-      for (let i = 0; i < image.length; i++) {
-        formData.append("image[]", image[i]);
+        await axios.post("api/other", formData).then(function (response) {
+          console.log(response);
+        });
+        navigate(-1);
+      } catch (e) {
+        if (e.response.status === 422) {
+          setErrors(e.response.data.errors);
+        }
+      } finally {
+        // Stop loading
+        setIsLoading(false);
       }
-
-      await axios.post("api/other", formData).then(function (response) {
-        console.log(response);
-      });
-      navigate(-1);
-    } catch (e) {
-      if (e.response.status === 422) {
-        setErrors(e.response.data.errors);
-      }
-    } finally {
-      // Stop loading
-      setIsLoading(false);
     }
   };
 
@@ -100,10 +120,10 @@ const AddOthers = () => {
                     placeholder="Title"
                   />
                 </label>
-                {errors.name && (
+                {valErr.title && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.title}
                     </span>
                   </div>
                 )}
@@ -132,10 +152,10 @@ const AddOthers = () => {
                     placeholder="Price"
                   />
                 </label>
-                {errors.name && (
+                {valErr.price && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.price}
                     </span>
                   </div>
                 )}
@@ -162,10 +182,10 @@ const AddOthers = () => {
           "
                   />
                 </label>
-                {errors.name && (
+                {valErr.image && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.image}
                     </span>
                   </div>
                 )}
@@ -193,6 +213,13 @@ const AddOthers = () => {
                     rows="5"
                   ></textarea>
                 </label>
+                {valErr.details && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.details}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="mb-10">
@@ -203,15 +230,18 @@ const AddOthers = () => {
                 ) : (
                   <button
                     type="submit"
-                    className="
-                  w-full
-                  px-4
-                  py-3
-                  bg-indigo-500
-                  hover:bg-indigo-700
-                  rounded-md
-                  text-white
-                "
+                    className={`
+              w-full
+              px-4
+              py-3
+              rounded-md
+              text-white
+              ${
+                enable
+                  ? " bg-indigo-500 hover:bg-indigo-700"
+                  : "cursor-not-allowed disabled bg-gray-600"
+              }
+            `}
                   >
                     Register
                   </button>
