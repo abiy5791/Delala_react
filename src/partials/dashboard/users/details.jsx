@@ -52,12 +52,12 @@ export default function Detail() {
             <div className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 px-2 mb-4 flex">
               <img
                 className="h-auto w-full mx-2"
-                src={`http://127.0.0.1:8000/${user.avatar}`}
+                src={`http://localhost:8000/${user.avatar}`}
                 alt=""
               />
               <img
                 className="h-auto w-full mx-3"
-                src={`http://127.0.0.1:8000/${user.kebelleId}`}
+                src={`http://localhost:8000/${user.kebelleId}`}
                 alt=""
               />
             </div>
@@ -74,7 +74,7 @@ export default function Detail() {
               {user.email}
             </h3>
           </a>
-{/*           <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
+          {/*           <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
             Lorem ipsum dolor sit amet consectetur adipisicing elit.
             Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non
             deserunt

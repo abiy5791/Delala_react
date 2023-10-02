@@ -4,7 +4,7 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import axios from "../api/axios";
-
+import ImageSlider from "../components/ImageSlider";
 dayjs.extend(relativeTime);
 
 const Home = () => {
@@ -61,6 +61,21 @@ const Home = () => {
     }
   }, [props, filtered]);
 
+  const propertyImages = [
+    {
+      url: "https://c4.wallpaperflare.com/wallpaper/619/464/927/ford-mustang-car-blue-cars-ford-wallpaper-preview.jpg",
+      text: "You can get best car here ! in our website",
+    },
+    {
+      url: "https://plus.unsplash.com/premium_photo-1661908865730-a148ecdb610a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      text: "Elegant bedroom with walk-in closet",
+    },
+    {
+      url: "https://images.unsplash.com/photo-1574120582683-1adf79c5dfd5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
+      text: "Spacious kitchen with modern appliances",
+    },
+  ];
+
   return (
     <>
       <section className="py-1 dark:bg-gray-800 dark:text-gray-50">
@@ -74,8 +89,8 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      <div class="max-w-3xl mx-auto px-5">
+      <ImageSlider images={propertyImages} />
+      <div class="max-w-3xl mx-auto px-5 pt-4">
         <div class="flex flex-wrap -mx-2">
           <div class="w-full sm:w-1/2 md:w-1/4 px-2">
             <label
@@ -177,17 +192,17 @@ const Home = () => {
                 <input
                   type="text"
                   placeholder="Search"
-                  className=" p-3 rounded-l-lg "
+                  className=" p-3 rounded-lg "
                 />
               </form>
             </div>
           </div>
         </div>
       </section>
-      <div class="py-16">
+      <div class="py-5">
         <div class="xl:container m-auto px-6 text-gray-600 md:px-12 xl:px-6">
           {search ? (
-            <div class="grid gap-12 md:gap-6 md:grid-cols-2 lg:gap-12">
+            <div class="grid gap-12 md:gap-6 md:grid-cols-4 lg:gap-12">
               {content
                 .filter((prop) => {
                   return search.toLowerCase() === ""
@@ -218,7 +233,7 @@ const Home = () => {
                           loading="lazy"
                           width="100"
                           heighimageIndext="667"
-                          src={`http://127.0.0.1:8000/${
+                          src={`http://localhost:8000/${
                             prop.image.split("|")[0]
                           }`}
                           alt={`prop Image `}
@@ -256,17 +271,17 @@ const Home = () => {
                 })}
             </div>
           ) : (
-            <div class="grid gap-12 md:gap-6 md:grid-cols-2 lg:gap-12">
+            <div class="grid gap-12 md:gap-6 md:grid-cols-4 lg:gap-12">
               {content.map((prop) => {
                 return (
                   <div class="group space-y-6 inline-block w-full">
                     {prop.image && (
                       <img
-                        class="h-40 w-60 rounded-3xl object-cover object-top transition-all duration-500 group-hover:rounded-xl"
+                        class="h-60 w-60 rounded-2xl object-cover object-top transition-all duration-500 group-hover:rounded-xl"
                         loading="lazy"
                         width="100"
                         heighimageIndext="667"
-                        src={`http://127.0.0.1:8000/${
+                        src={`http://localhost:8000/${
                           prop.image.split("|")[0]
                         }`}
                         alt={`prop Image `}

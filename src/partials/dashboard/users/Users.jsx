@@ -14,6 +14,7 @@ function Users() {
   useEffect(() => {
     getUser();
   }, []);
+  console.log(users.length);
 
   return (
     <div className="col-span-full xl:col-span-8 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
@@ -50,7 +51,7 @@ function Users() {
                 </th>
 
                 <th className="p-2">
-                  <div className="font-semibold text-center">Conversion</div>
+                  <div className="font-semibold text-center">Status</div>
                 </th>
               </tr>
             </thead>

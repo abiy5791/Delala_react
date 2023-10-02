@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LineChart from "../../charts/LineChart01";
 import Icon from "../../images/icon-01.svg";
 import EditMenu from "../../components/DropdownEditMenu";
+import axios from "../../api/axios";
 
 // Import utilities
 import { tailwindConfig, hexToRGB } from "../../utils/Utils";
 
-function DashboardCard01({ users }) {
-  // Get the total number of users
-  const totalUsers = users.length;
+function DashboardCard01() {
+  const [properties, setProps] = useState([]);
+  const getProps = async () => {
+    await axios.get("api/prop").then((response) => {
+      setProps(response.data);
+    });
+  };
+  useEffect(() => {
+    getProps();
+  }, []);
+  const totalproperty = properties.length;
 
   const chartData = {
     labels: [
@@ -123,17 +132,17 @@ function DashboardCard01({ users }) {
           </EditMenu>
         </header>
         <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">
-          Number of Users
+          Number of Properties
         </h2>
         <div className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase mb-1">
-          Total Number Of Users
+          Total Number Of Properties Posted
         </div>
         <div className="flex items-start">
           <div className="text-3xl font-bold text-slate-800 dark:text-slate-100 mr-2">
-            {totalUsers}
+            {totalproperty}
           </div>
           <div className="text-sm font-semibold text-white px-1.5 bg-emerald-500 rounded-full">
-            +12%
+            +25%
           </div>
         </div>
       </div>

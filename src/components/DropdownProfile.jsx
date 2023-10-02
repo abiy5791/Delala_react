@@ -50,7 +50,9 @@ function DropdownProfile({ align }) {
       >
         <img
           className="w-8 h-8 rounded-full"
-          src={user.avatar ? `http://127.0.0.1:8000/${user.avatar}` : UserAvatar}
+          src={
+            user.avatar ? `http://localhost:8000/${user.avatar}` : UserAvatar
+          }
           width="40"
           height="40"
           alt="User"
