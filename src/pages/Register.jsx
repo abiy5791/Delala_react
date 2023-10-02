@@ -36,6 +36,11 @@ const Register = () => {
   const [enable, setEnable] = useState(true);
 
   function handlechange(e) {
+    setValErr((prevInfo) => ({
+      ...prevInfo,
+      [e.target.name]: "",
+    }));
+    setEnable(true);
     setErrors((prevInfo) => ({
       ...prevInfo,
       [e.target.name]: "",
@@ -63,7 +68,7 @@ const Register = () => {
   };
 
   const handleRegister = async (event) => {
-    //event.preventDefault();
+    event.preventDefault();
     const err = validateForm(activeStep, userDetail);
     setErrors(err);
     Object.keys(err).length > 0 ? setEnable(false) : register(userDetail);

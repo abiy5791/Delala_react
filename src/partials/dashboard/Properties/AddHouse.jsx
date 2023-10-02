@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import CircularProgress from "../../../components/CircularProgress";
 import axios from "../../../api/axios";
 import useAuthContext from "../../../context/AuthContext";
+import validate from "../../../Validation/ValidateProperty";
 
 const AddHouse = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuthContext();
   const [errors, setErrors] = useState([]);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState([]);
   const [HouseDetails, setHouseDetails] = useState({
     title: "",
     delala_id: user.id,
@@ -21,7 +22,24 @@ const AddHouse = () => {
     details: "",
   });
 
+  const InitialErrors = {
+    title: "",
+    status: "",
+    price: "",
+    area: "",
+    location: "",
+    details: "",
+    image: "",
+  };
+  const [valErr, setValErr] = useState(InitialErrors);
+  const [enable, setEnable] = useState(true);
+
   function handlechange(e) {
+    setValErr((prevInfo) => ({
+      ...prevInfo,
+      [e.target.name]: "",
+    }));
+    setEnable(true);
     if (e.target.type === "file") {
       const selectedFile = e.target.files;
       setImage(selectedFile);
@@ -35,35 +53,40 @@ const AddHouse = () => {
 
   const Add_New_House = async (event) => {
     event.preventDefault();
+    const err = validate(HouseDetails, image);
+    setValErr(err);
+    if (Object.keys(err).length > 0) {
+      setEnable(false);
+    } else {
+      setErrors([]);
+      setIsLoading(true);
 
-    setErrors([]);
-    setIsLoading(true);
+      try {
+        const formData = new FormData();
+        // Append fields to formData
+        formData.append("title", HouseDetails.title);
+        formData.append("status", HouseDetails.status);
+        formData.append("price", HouseDetails.price);
+        formData.append("delala_id", HouseDetails.delala_id);
+        formData.append("area", HouseDetails.area);
+        formData.append("location", HouseDetails.location);
+        formData.append("details", HouseDetails.details);
+        for (let i = 0; i < image.length; i++) {
+          formData.append("image[]", image[i]);
+        }
 
-    try {
-      const formData = new FormData();
-      // Append fields to formData
-      formData.append("title", HouseDetails.title);
-      formData.append("status", HouseDetails.status);
-      formData.append("price", HouseDetails.price);
-      formData.append("delala_id", HouseDetails.delala_id);
-      formData.append("area", HouseDetails.area);
-      formData.append("location", HouseDetails.location);
-      formData.append("details", HouseDetails.details);
-      for (let i = 0; i < image.length; i++) {
-        formData.append("image[]", image[i]);
+        await axios.post("api/house", formData).then(function (response) {
+          console.log(response);
+        });
+        navigate(-1);
+      } catch (e) {
+        if (e.response.status === 422) {
+          setErrors(e.response.data.errors);
+        }
+      } finally {
+        // Stop loading
+        setIsLoading(false);
       }
-
-      await axios.post("api/house", formData).then(function (response) {
-        console.log(response);
-      });
-      navigate(-1);
-    } catch (e) {
-      if (e.response.status === 422) {
-        setErrors(e.response.data.errors);
-      }
-    } finally {
-      // Stop loading
-      setIsLoading(false);
     }
   };
   return (
@@ -102,10 +125,10 @@ const AddHouse = () => {
                     placeholder="Title"
                   />
                 </label>
-                {errors.name && (
+                {valErr.title && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.title}
                     </span>
                   </div>
                 )}
@@ -137,10 +160,10 @@ const AddHouse = () => {
                     <option value="rent">Rent</option>
                   </select>
                 </label>
-                {errors.name && (
+                {valErr.status && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.status}
                     </span>
                   </div>
                 )}
@@ -168,10 +191,10 @@ const AddHouse = () => {
                     placeholder="Area Size"
                   />
                 </label>
-                {errors.name && (
+                {valErr.area && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.area}
                     </span>
                   </div>
                 )}
@@ -199,10 +222,10 @@ const AddHouse = () => {
                     placeholder="Location of the house"
                   />
                 </label>
-                {errors.name && (
+                {valErr.location && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.location}
                     </span>
                   </div>
                 )}
@@ -230,10 +253,10 @@ const AddHouse = () => {
                     placeholder="Price"
                   />
                 </label>
-                {errors.name && (
+                {valErr.price && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.price}
                     </span>
                   </div>
                 )}
@@ -260,10 +283,10 @@ const AddHouse = () => {
           "
                   />
                 </label>
-                {errors.name && (
+                {valErr.image && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.image}
                     </span>
                   </div>
                 )}
@@ -291,6 +314,13 @@ const AddHouse = () => {
                     rows="5"
                   ></textarea>
                 </label>
+                {valErr.details && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.details}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="mb-10">
@@ -301,15 +331,18 @@ const AddHouse = () => {
                 ) : (
                   <button
                     type="submit"
-                    className="
-                  w-full
-                  px-4
-                  py-3
-                  bg-indigo-500
-                  hover:bg-indigo-700
-                  rounded-md
-                  text-white
-                "
+                    className={`
+                w-full
+                px-4
+                py-3
+                rounded-md
+                text-white
+                ${
+                  enable
+                    ? " bg-indigo-500 hover:bg-indigo-700"
+                    : "cursor-not-allowed disabled bg-gray-600"
+                }
+              `}
                   >
                     Register
                   </button>

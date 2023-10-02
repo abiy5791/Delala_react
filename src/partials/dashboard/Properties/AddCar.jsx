@@ -4,14 +4,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import CircularProgress from "../../../components/CircularProgress";
 import axios from "../../../api/axios";
 import useAuthContext from "../../../context/AuthContext";
+import validate from "../../../Validation/ValidateProperty";
 
 const AddCar = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuthContext();
   const [errors, setErrors] = useState([]);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState([]);
   const [CarDetails, setCarDetails] = useState({
     title: "",
     make: "",
@@ -25,7 +25,27 @@ const AddCar = () => {
     details: "",
   });
 
+  const InitialErrors = {
+    title: "",
+    make: "",
+    model: "",
+    year: "",
+    mileage: "",
+    fueltype: "",
+    color: "",
+    price: "",
+    details: "",
+    image: "",
+  };
+  const [valErr, setValErr] = useState(InitialErrors);
+  const [enable, setEnable] = useState(true);
+
   function handlechange(e) {
+    setValErr((prevInfo) => ({
+      ...prevInfo,
+      [e.target.name]: "",
+    }));
+    setEnable(true);
     if (e.target.type === "file") {
       const selectedFile = e.target.files;
       setImage(selectedFile);
@@ -39,44 +59,45 @@ const AddCar = () => {
 
   const add_new_car = async (event) => {
     event.preventDefault();
+    const err = validate(CarDetails, image);
+    setValErr(err);
+    if (Object.keys(err).length > 0) {
+      setEnable(false);
+    } else {
+      setErrors([]);
+      setIsLoading(true);
 
-    setErrors([]);
-    setIsLoading(true);
+      try {
+        const formData = new FormData();
+        // Append fields to formData
+        formData.append("title", CarDetails.title);
+        formData.append("make", CarDetails.make);
+        formData.append("model", CarDetails.model);
+        formData.append("delala_id", CarDetails.delala_id);
+        formData.append("year", CarDetails.year);
+        formData.append("mileage", CarDetails.mileage);
+        formData.append("fueltype", CarDetails.fueltype);
+        formData.append("color", CarDetails.color);
+        formData.append("price", CarDetails.price);
+        formData.append("details", CarDetails.details);
+        for (let i = 0; i < image.length; i++) {
+          formData.append("image[]", image[i]);
+        }
 
-    try {
-      const formData = new FormData();
-      // Append fields to formData
-      formData.append("title", CarDetails.title);
-      formData.append("make", CarDetails.make);
-      formData.append("model", CarDetails.model);
-      formData.append("delala_id", CarDetails.delala_id);
-      formData.append("year", CarDetails.year);
-      formData.append("mileage", CarDetails.mileage);
-      formData.append("fueltype", CarDetails.fueltype);
-      formData.append("color", CarDetails.color);
-      formData.append("price", CarDetails.price);
-      formData.append("details", CarDetails.details);
-      // formData.append("image[]", image);
-      for (let i = 0; i < image.length; i++) {
-        formData.append("image[]", image[i]);
+        console.log(Object.fromEntries(formData));
+        await axios.post("api/car", formData).then(function (response) {
+          console.log(response);
+        });
+
+        navigate(-1);
+      } catch (e) {
+        if (e.response.status === 422) {
+          setErrors(e.response.data.errors);
+        }
+      } finally {
+        // Stop loading
+        setIsLoading(false);
       }
-
-      // for (const value of formData.values()) {
-      //   console.log(typeof value);
-      // }
-
-      await axios.post("api/car", formData).then(function (response) {
-        console.log(response);
-      });
-
-      navigate(-1);
-    } catch (e) {
-      if (e.response.status === 422) {
-        setErrors(e.response.data.errors);
-      }
-    } finally {
-      // Stop loading
-      setIsLoading(false);
     }
   };
 
@@ -116,10 +137,10 @@ const AddCar = () => {
                     placeholder="Title"
                   />
                 </label>
-                {errors.name && (
+                {valErr.title && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.title}
                     </span>
                   </div>
                 )}
@@ -147,10 +168,10 @@ const AddCar = () => {
                     placeholder="Make"
                   />
                 </label>
-                {errors.name && (
+                {valErr.make && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.make}
                     </span>
                   </div>
                 )}
@@ -178,10 +199,10 @@ const AddCar = () => {
                     placeholder="Model"
                   />
                 </label>
-                {errors.name && (
+                {valErr.model && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.model}
                     </span>
                   </div>
                 )}
@@ -209,10 +230,10 @@ const AddCar = () => {
                     placeholder="Year"
                   />
                 </label>
-                {errors.name && (
+                {valErr.year && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.year}
                     </span>
                   </div>
                 )}
@@ -240,10 +261,10 @@ const AddCar = () => {
                     placeholder="Mileage"
                   />
                 </label>
-                {errors.name && (
+                {valErr.mileage && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.mileage}
                     </span>
                   </div>
                 )}
@@ -271,10 +292,10 @@ const AddCar = () => {
                     placeholder="Fueltype"
                   />
                 </label>
-                {errors.name && (
+                {valErr.fueltype && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.fueltype}
                     </span>
                   </div>
                 )}
@@ -302,10 +323,10 @@ const AddCar = () => {
                     placeholder="Car Color"
                   />
                 </label>
-                {errors.name && (
+                {valErr.color && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.color}
                     </span>
                   </div>
                 )}
@@ -333,10 +354,10 @@ const AddCar = () => {
                     placeholder="Price"
                   />
                 </label>
-                {errors.name && (
+                {valErr.price && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.price}
                     </span>
                   </div>
                 )}
@@ -363,10 +384,11 @@ const AddCar = () => {
           "
                   />
                 </label>
-                {errors.name && (
-                  <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+
+                {valErr.image && (
+                  <div className="flex-col">
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.image}
                     </span>
                   </div>
                 )}
@@ -394,6 +416,13 @@ const AddCar = () => {
                     rows="5"
                   ></textarea>
                 </label>
+                {valErr.details && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.details}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="mb-10">
@@ -404,15 +433,18 @@ const AddCar = () => {
                 ) : (
                   <button
                     type="submit"
-                    className="
+                    className={`
                   w-full
                   px-4
                   py-3
-                  bg-indigo-500
-                  hover:bg-indigo-700
                   rounded-md
                   text-white
-                "
+                  ${
+                    enable
+                      ? " bg-indigo-500 hover:bg-indigo-700"
+                      : "cursor-not-allowed disabled bg-gray-600"
+                  }
+                `}
                   >
                     Register
                   </button>

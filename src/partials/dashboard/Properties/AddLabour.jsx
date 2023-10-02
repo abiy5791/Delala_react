@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import CircularProgress from "../../../components/CircularProgress";
 import axios from "../../../api/axios";
 import useAuthContext from "../../../context/AuthContext";
+import validate from "../../../Validation/ValidateProperty";
 
 const AddLabour = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuthContext();
   const [errors, setErrors] = useState([]);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState([]);
   const [LabourDetails, setLabourDetails] = useState({
     title: "",
     delala_id: user.id,
@@ -23,7 +24,26 @@ const AddLabour = () => {
     age: "",
   });
 
+  const InitialErrors = {
+    title: "",
+    name: "",
+    skills: "",
+    type: "",
+    salary: "",
+    details: "",
+    Gender: "",
+    age: "",
+    image: "",
+  };
+  const [valErr, setValErr] = useState(InitialErrors);
+  const [enable, setEnable] = useState(true);
+
   function handlechange(e) {
+    setValErr((prevInfo) => ({
+      ...prevInfo,
+      [e.target.name]: "",
+    }));
+    setEnable(true);
     if (e.target.type === "file") {
       const selectedFile = e.target.files;
       setImage(selectedFile);
@@ -37,37 +57,42 @@ const AddLabour = () => {
 
   const Add_New_Labour = async (event) => {
     event.preventDefault();
+    const err = validate(LabourDetails, image);
+    setValErr(err);
+    if (Object.keys(err).length > 0) {
+      setEnable(false);
+    } else {
+      setErrors([]);
+      setIsLoading(true);
 
-    setErrors([]);
-    setIsLoading(true);
+      try {
+        const formData = new FormData();
+        // Append fields to formData
+        formData.append("title", LabourDetails.title);
+        formData.append("name", LabourDetails.name);
+        formData.append("skills", LabourDetails.skills);
+        formData.append("delala_id", LabourDetails.delala_id);
+        formData.append("type", LabourDetails.type);
+        formData.append("salary", LabourDetails.salary);
+        formData.append("details", LabourDetails.details);
+        formData.append("Gender", LabourDetails.Gender);
+        formData.append("age", LabourDetails.age);
+        for (let i = 0; i < image.length; i++) {
+          formData.append("image[]", image[i]);
+        }
 
-    try {
-      const formData = new FormData();
-      // Append fields to formData
-      formData.append("title", LabourDetails.title);
-      formData.append("name", LabourDetails.name);
-      formData.append("skills", LabourDetails.skills);
-      formData.append("delala_id", LabourDetails.delala_id);
-      formData.append("type", LabourDetails.type);
-      formData.append("salary", LabourDetails.salary);
-      formData.append("details", LabourDetails.details);
-      formData.append("Gender", LabourDetails.Gender);
-      formData.append("age", LabourDetails.age);
-      for (let i = 0; i < image.length; i++) {
-        formData.append("image[]", image[i]);
+        await axios.post("api/labour", formData).then(function (response) {
+          console.log(response);
+        });
+        navigate(-1);
+      } catch (e) {
+        if (e.response.status === 422) {
+          setErrors(e.response.data.errors);
+        }
+      } finally {
+        // Stop loading
+        setIsLoading(false);
       }
-
-      await axios.post("api/labour", formData).then(function (response) {
-        console.log(response);
-      });
-      navigate(-1);
-    } catch (e) {
-      if (e.response.status === 422) {
-        setErrors(e.response.data.errors);
-      }
-    } finally {
-      // Stop loading
-      setIsLoading(false);
     }
   };
   // console.log(LabourDetails);
@@ -107,10 +132,10 @@ const AddLabour = () => {
                     placeholder="Title"
                   />
                 </label>
-                {errors.name && (
+                {valErr.title && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.title}
                     </span>
                   </div>
                 )}
@@ -138,10 +163,10 @@ const AddLabour = () => {
                     placeholder="FullName"
                   />
                 </label>
-                {errors.name && (
+                {valErr.name && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.name}
                     </span>
                   </div>
                 )}
@@ -169,10 +194,10 @@ const AddLabour = () => {
                     placeholder="age"
                   />
                 </label>
-                {errors.name && (
+                {valErr.age && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.age}
                     </span>
                   </div>
                 )}
@@ -201,10 +226,10 @@ const AddLabour = () => {
                     placeholder="Gender"
                   />
                 </label>
-                {errors.name && (
+                {valErr.Gender && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.Gender}
                     </span>
                   </div>
                 )}
@@ -232,10 +257,10 @@ const AddLabour = () => {
                     placeholder="Type of the labour"
                   />
                 </label>
-                {errors.name && (
+                {valErr.type && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.type}
                     </span>
                   </div>
                 )}
@@ -263,10 +288,10 @@ const AddLabour = () => {
                     placeholder="salary of the labour"
                   />
                 </label>
-                {errors.name && (
+                {valErr.salary && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.salary}
                     </span>
                   </div>
                 )}
@@ -294,10 +319,10 @@ const AddLabour = () => {
                     placeholder="Skills"
                   />
                 </label>
-                {errors.name && (
+                {valErr.skills && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.skills}
                     </span>
                   </div>
                 )}
@@ -324,10 +349,10 @@ const AddLabour = () => {
           "
                   />
                 </label>
-                {errors.name && (
+                {valErr.image && (
                   <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.image}
                     </span>
                   </div>
                 )}
@@ -355,6 +380,13 @@ const AddLabour = () => {
                     rows="5"
                   ></textarea>
                 </label>
+                {valErr.details && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.details}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="mb-10">
@@ -365,15 +397,18 @@ const AddLabour = () => {
                 ) : (
                   <button
                     type="submit"
-                    className="
-                  w-full
-                  px-4
-                  py-3
-                  bg-indigo-500
-                  hover:bg-indigo-700
-                  rounded-md
-                  text-white
-                "
+                    className={`
+              w-full
+              px-4
+              py-3
+              rounded-md
+              text-white
+              ${
+                enable
+                  ? " bg-indigo-500 hover:bg-indigo-700"
+                  : "cursor-not-allowed disabled bg-gray-600"
+              }
+            `}
                   >
                     Register
                   </button>

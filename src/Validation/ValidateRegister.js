@@ -69,3 +69,4 @@ export default function validateForm(activeStep, formData) {
   console.log(errors);
   return errors;
 }
+
