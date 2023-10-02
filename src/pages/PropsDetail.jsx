@@ -45,7 +45,7 @@ const PropsDetail = () => {
                   >
                     <img
                       className="w-full h-40 object-cover rounded-lg shadow-md"
-                      src={`http://127.0.0.1:8000/${imageUrl}`}
+                      src={`http://localhost:8000/${imageUrl}`}
                       alt={`propsdata Image ${imageIndex}`}
                     />
                   </div>
@@ -126,13 +126,13 @@ const PropsDetail = () => {
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="px-4 py-2 font-semibold">FuleType</div>
-                  <div className="px-4 py-2">{propsdata.fuleType}</div>
+                  <div className="px-4 py-2">{propsdata.fueltype}</div>
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="px-4 py-2 font-semibold">Price</div>
                   <div className="px-4 py-2">
                     <a className="text-blue-800" href="mailto:jane@example.com">
-                      {propsdata.price}
+                      {propsdata.price} Birr
                     </a>
                   </div>
                 </div>
@@ -187,7 +187,7 @@ const PropsDetail = () => {
                   >
                     <img
                       className="w-full h-40 object-cover rounded-lg shadow-md"
-                      src={`http://127.0.0.1:8000/${imageUrl}`}
+                      src={`http://localhost:8000/${imageUrl}`}
                       alt={`propsdata Image ${imageIndex}`}
                     />
                   </div>
@@ -260,7 +260,7 @@ const PropsDetail = () => {
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="px-4 py-2 font-semibold">Price</div>
-                  <div className="px-4 py-2">{propsdata.price}</div>
+                  <div className="px-4 py-2">{propsdata.price} Birr</div>
                 </div>
                 {/* <div className="grid grid-cols-2">
                   <div className="px-4 py-2 font-semibold">Current Address</div>
@@ -334,7 +334,7 @@ const PropsDetail = () => {
                   >
                     <img
                       className="w-full h-40 object-cover rounded-lg shadow-md"
-                      src={`http://127.0.0.1:8000/${imageUrl}`}
+                      src={`http://localhost:8000/${imageUrl}`}
                       alt={`propsdata Image ${imageIndex}`}
                     />
                   </div>
@@ -395,7 +395,7 @@ const PropsDetail = () => {
               <div className="grid md:grid-cols-2 text-sm">
                 <div className="grid grid-cols-2">
                   <div className="px-4 py-2 font-semibold">Price</div>
-                  <div className="px-4 py-2">{propsdata.price}</div>
+                  <div className="px-4 py-2">{propsdata.price} Birr</div>
                 </div>
                 {/* <div className="grid grid-cols-2">
                   <div className="px-4 py-2 font-semibold">Last Name</div>
@@ -481,7 +481,7 @@ const PropsDetail = () => {
                   >
                     <img
                       className="w-full h-40 object-cover rounded-lg shadow-md"
-                      src={`http://127.0.0.1:8000/${imageUrl}`}
+                      src={`http://localhost:8000/${imageUrl}`}
                       alt={`propsdata Image ${imageIndex}`}
                     />
                   </div>
@@ -546,15 +546,11 @@ const PropsDetail = () => {
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="px-4 py-2 font-semibold">Salary</div>
-                  <div className="px-4 py-2">{propsdata.salary} </div>
+                  <div className="px-4 py-2">{propsdata.salary} Birr </div>
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="px-4 py-2 font-semibold">Gender</div>
                   <div className="px-4 py-2">{propsdata.Gender}</div>
-                </div>
-                <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Contact No</div>
-                  <div className="px-4 py-2">{propsdata.contact}</div>
                 </div>
 
                 <div className="grid grid-cols-2">

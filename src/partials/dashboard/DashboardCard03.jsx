@@ -1,63 +1,92 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import LineChart from '../../charts/LineChart01';
-import Icon from '../../images/icon-03.svg';
-import EditMenu from '../../components/DropdownEditMenu';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import LineChart from "../../charts/LineChart01";
+import Icon from "../../images/icon-03.svg";
+import EditMenu from "../../components/DropdownEditMenu";
 
 // Import utilities
-import { tailwindConfig, hexToRGB } from '../../utils/Utils';
+import { tailwindConfig, hexToRGB } from "../../utils/Utils";
 
-function DashboardCard03() {
-
+function DashboardCard03({ users }) {
+  const [totaldelala, setTotalDelala] = useState();
+  useEffect(() => {
+    // Filter the users array based on the role "admin"
+    const delalaUsers = users.filter((user) => user.role === "delala");
+    // Get the total number of admin users
+    const totalDelalaUsers = delalaUsers.length;
+    setTotalDelala(totalDelalaUsers);
+    // console.log("Total number of admin users:", totalAdminUsers);
+  }, [users]);
   const chartData = {
     labels: [
-      '12-01-2020', '01-01-2021', '02-01-2021',
-      '03-01-2021', '04-01-2021', '05-01-2021',
-      '06-01-2021', '07-01-2021', '08-01-2021',
-      '09-01-2021', '10-01-2021', '11-01-2021',
-      '12-01-2021', '01-01-2022', '02-01-2022',
-      '03-01-2022', '04-01-2022', '05-01-2022',
-      '06-01-2022', '07-01-2022', '08-01-2022',
-      '09-01-2022', '10-01-2022', '11-01-2022',
-      '12-01-2022', '01-01-2023',
+      "12-01-2020",
+      "01-01-2021",
+      "02-01-2021",
+      "03-01-2021",
+      "04-01-2021",
+      "05-01-2021",
+      "06-01-2021",
+      "07-01-2021",
+      "08-01-2021",
+      "09-01-2021",
+      "10-01-2021",
+      "11-01-2021",
+      "12-01-2021",
+      "01-01-2022",
+      "02-01-2022",
+      "03-01-2022",
+      "04-01-2022",
+      "05-01-2022",
+      "06-01-2022",
+      "07-01-2022",
+      "08-01-2022",
+      "09-01-2022",
+      "10-01-2022",
+      "11-01-2022",
+      "12-01-2022",
+      "01-01-2023",
     ],
     datasets: [
       // Indigo line
       {
         data: [
-          540, 466, 540, 466, 385, 432, 334,
-          334, 289, 289, 200, 289, 222, 289,
-          289, 403, 554, 304, 289, 270, 134,
-          270, 829, 344, 388, 364,
+          540, 466, 540, 466, 385, 432, 334, 334, 289, 289, 200, 289, 222, 289,
+          289, 403, 554, 304, 289, 270, 134, 270, 829, 344, 388, 364,
         ],
         fill: true,
-        backgroundColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.blue[500])}, 0.08)`,
+        backgroundColor: `rgba(${hexToRGB(
+          tailwindConfig().theme.colors.blue[500]
+        )}, 0.08)`,
         borderColor: tailwindConfig().theme.colors.indigo[500],
         borderWidth: 2,
         tension: 0,
         pointRadius: 0,
         pointHoverRadius: 3,
-          pointBackgroundColor: tailwindConfig().theme.colors.indigo[500],
-          pointHoverBackgroundColor: tailwindConfig().theme.colors.indigo[500],
-          pointBorderWidth: 0,
-          pointHoverBorderWidth: 0,          
-          clip: 20,
+        pointBackgroundColor: tailwindConfig().theme.colors.indigo[500],
+        pointHoverBackgroundColor: tailwindConfig().theme.colors.indigo[500],
+        pointBorderWidth: 0,
+        pointHoverBorderWidth: 0,
+        clip: 20,
       },
       // Gray line
       {
         data: [
-          689, 562, 477, 477, 477, 477, 458,
-          314, 430, 378, 430, 498, 642, 350,
-          145, 145, 354, 260, 188, 188, 300,
-          300, 282, 364, 660, 554,
+          689, 562, 477, 477, 477, 477, 458, 314, 430, 378, 430, 498, 642, 350,
+          145, 145, 354, 260, 188, 188, 300, 300, 282, 364, 660, 554,
         ],
-        borderColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.slate[500])}, 0.25)`,
+        borderColor: `rgba(${hexToRGB(
+          tailwindConfig().theme.colors.slate[500]
+        )}, 0.25)`,
         borderWidth: 2,
         tension: 0,
         pointRadius: 0,
         pointHoverRadius: 3,
-        pointBackgroundColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.slate[500])}, 0.25)`,
-        pointHoverBackgroundColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.slate[500])}, 0.25)`,
+        pointBackgroundColor: `rgba(${hexToRGB(
+          tailwindConfig().theme.colors.slate[500]
+        )}, 0.25)`,
+        pointHoverBackgroundColor: `rgba(${hexToRGB(
+          tailwindConfig().theme.colors.slate[500]
+        )}, 0.25)`,
         pointBorderWidth: 0,
         pointHoverBorderWidth: 0,
         clip: 20,
@@ -74,27 +103,44 @@ function DashboardCard03() {
           {/* Menu button */}
           <EditMenu align="right" className="relative inline-flex">
             <li>
-              <Link className="font-medium text-sm text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-200 flex py-1 px-3" to="#0">
+              <Link
+                className="font-medium text-sm text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-200 flex py-1 px-3"
+                to="#0"
+              >
                 Option 1
               </Link>
             </li>
             <li>
-              <Link className="font-medium text-sm text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-200 flex py-1 px-3" to="#0">
+              <Link
+                className="font-medium text-sm text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-200 flex py-1 px-3"
+                to="#0"
+              >
                 Option 2
               </Link>
             </li>
             <li>
-              <Link className="font-medium text-sm text-rose-500 hover:text-rose-600 flex py-1 px-3" to="#0">
+              <Link
+                className="font-medium text-sm text-rose-500 hover:text-rose-600 flex py-1 px-3"
+                to="#0"
+              >
                 Remove
               </Link>
             </li>
           </EditMenu>
         </header>
-        <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">Acme Professional</h2>
-        <div className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase mb-1">Sales</div>
+        <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">
+          Number Of Delalas
+        </h2>
+        <div className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase mb-1">
+          Total Number Of Delalas
+        </div>
         <div className="flex items-start">
-          <div className="text-3xl font-bold text-slate-800 dark:text-slate-100 mr-2">$9,962</div>
-          <div className="text-sm font-semibold text-white px-1.5 bg-emerald-500 rounded-full">+49%</div>
+          <div className="text-3xl font-bold text-slate-800 dark:text-slate-100 mr-2">
+            {totaldelala}
+          </div>
+          <div className="text-sm font-semibold text-white px-1.5 bg-emerald-500 rounded-full">
+            +7%
+          </div>
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}

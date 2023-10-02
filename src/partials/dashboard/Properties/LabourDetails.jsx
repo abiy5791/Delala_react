@@ -77,7 +77,7 @@ const LabourDetails = () => {
                 >
                   <img
                     className="w-full h-40 object-cover rounded-lg shadow-md"
-                    src={`http://127.0.0.1:8000/${imageUrl}`}
+                    src={`http://localhost:8000/${imageUrl}`}
                     alt={`LabourData Image ${imageIndex}`}
                   />
                 </div>
