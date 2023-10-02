@@ -63,16 +63,16 @@ const Home = () => {
 
   const propertyImages = [
     {
+      url: "https://images.unsplash.com/photo-1574120582683-1adf79c5dfd5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
+      text: "Spacious kitchen with modern appliances",
+    },
+    {
       url: "https://c4.wallpaperflare.com/wallpaper/619/464/927/ford-mustang-car-blue-cars-ford-wallpaper-preview.jpg",
       text: "You can get best car here ! in our website",
     },
     {
       url: "https://plus.unsplash.com/premium_photo-1661908865730-a148ecdb610a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
       text: "Elegant bedroom with walk-in closet",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1574120582683-1adf79c5dfd5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
-      text: "Spacious kitchen with modern appliances",
     },
   ];
 
@@ -90,6 +90,38 @@ const Home = () => {
         </div>
       </section>
       <ImageSlider images={propertyImages} />
+      <section class="dark:bg-gray-900">
+        <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
+          <div class="max-w-screen-md grid grid-cols-2 gap-4 items-center">
+            <div>
+              <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+                Find Your Perfect Match Today!
+              </h2>
+              <p class="mb-8 font-light text-gray-500 sm:text-md dark:text-gray-400">
+                Looking for the ideal property, car, skilled labor, or other
+                services? Our dedicated team of brokers is here to connect you
+                with the best options available in the market. Whether you're
+                searching for a dream home, a reliable car, skilled
+                professionals, or any other service, we have a wide range of
+                choices to meet your unique needs.
+              </p>
+            </div>
+            <div class="flex flex-col justify-center items-end">
+              <div class="mt-4">
+                <p class="text-gray-500 font-light dark:text-gray-400 text-xl">
+                  Call us at:
+                  <a
+                    href="tel:1234567890"
+                    class="text-gray-900 dark:text-white font-bold  "
+                  >
+                    123-456-7890
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <div class="max-w-3xl mx-auto px-5 pt-4">
         <div class="flex flex-wrap -mx-2">
           <div class="w-full sm:w-1/2 md:w-1/4 px-2">

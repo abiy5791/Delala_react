@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Step2 = ({ handlechange, userDetail, errors }) => {
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <div>
       <form action="">
@@ -21,13 +22,20 @@ const Step2 = ({ handlechange, userDetail, errors }) => {
 
           <div class="relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               class="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium mb-5"
               placeholder="Your strong password..."
               name="password"
               onChange={(e) => handlechange(e)}
               value={userDetail.password}
             />
+            <button
+              type="button"
+              className="absolute top-6 right-3 transform -translate-y-1/2 text-primary focus:outline-none"
+              onClick={() => setShowPassword(!showPassword)} // Toggle showPassword state
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
             {errors && errors.password && (
               <div className="flex">
                 <span className="text-red-500 text-sm font-bold m-2 p-2">
@@ -36,13 +44,20 @@ const Step2 = ({ handlechange, userDetail, errors }) => {
               </div>
             )}
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               class="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
               placeholder="Confirm Your Password"
               name="password_confirmation"
               onChange={(e) => handlechange(e)}
               value={userDetail.password_confirmation}
             />
+            <button
+              type="button"
+              className="absolute top-6 right-3 transform -translate-y-1/2 text-primary focus:outline-none"
+              onClick={() => setShowPassword(!showPassword)} // Toggle showPassword state
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
             {errors && errors.password_confirmation && (
               <div className="flex">
                 <span className="text-red-500 text-sm font-bold m-2 p-2">

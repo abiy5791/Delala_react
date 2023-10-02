@@ -53,12 +53,12 @@ export default function Detail() {
               <img
                 className="h-auto w-full mx-2"
                 src={`http://localhost:8000/${user.avatar}`}
-                alt=""
+                alt="user image"
               />
               <img
                 className="h-auto w-full mx-3"
                 src={`http://localhost:8000/${user.kebelleId}`}
-                alt=""
+                alt="user kebelleId"
               />
             </div>
           </div>
