@@ -1,6 +1,6 @@
 import React from "react";
 
-const Step3 = ({ handlechange, userDetail }) => {
+const Step3 = ({ handlechange, userDetail, errors }) => {
   return (
     <div>
       <form action="" encType="multipart/form-data">
@@ -16,6 +16,13 @@ const Step3 = ({ handlechange, userDetail }) => {
             onChange={(e) => handlechange(e)}
             value={userDetail.address}
           />
+          {errors && errors.address && (
+            <div className="flex">
+              <span className="text-red-500 text-sm font-bold m-2 p-2">
+                {errors.address}
+              </span>
+            </div>
+          )}
         </div>
         <div class="mb-5">
           <label for="profession" class="font-bold mb-1 text-gray-700 block">
@@ -29,6 +36,13 @@ const Step3 = ({ handlechange, userDetail }) => {
             onChange={(e) => handlechange(e)}
             value={userDetail.phone}
           />
+          {errors && errors.phone && (
+            <div className="flex">
+              <span className="text-red-500 text-sm font-bold m-2 p-2">
+                {errors.phone}
+              </span>
+            </div>
+          )}
         </div>
         <div class="mb-5">
           <label for="profession" class="font-bold mb-1 text-gray-700 block">
@@ -40,6 +54,13 @@ const Step3 = ({ handlechange, userDetail }) => {
             name="kebelleId"
             onChange={(e) => handlechange(e)}
           />
+          {errors && errors.kebelleId && (
+            <div className="flex">
+              <span className="text-red-500 text-sm font-bold m-2 p-2">
+                {errors.kebelleId}
+              </span>
+            </div>
+          )}
         </div>
       </form>
     </div>

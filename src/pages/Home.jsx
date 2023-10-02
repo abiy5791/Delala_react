@@ -23,6 +23,7 @@ const Home = () => {
       setProps(response.data);
     });
   };
+
   useEffect(() => {
     getProps();
   }, []);
@@ -30,7 +31,7 @@ const Home = () => {
   const handleSelect = (e) => {
     setSelected({ ...selected, [e.target.name]: e.target.value });
   };
-  console.log(selected);
+
   const handleFilter = (e) => {
     const { property, type, budget } = selected;
     const filtered = props.filter((prop) => {
@@ -39,29 +40,25 @@ const Home = () => {
     const houses = props.filter((prop) => {
       return prop.model_type === "house";
     });
-    console.log("houses", houses);
+
     const filtered2 = houses.filter((house) => {
       return house.status === type;
     });
-    console.log("filtered 2", filtered2);
+
     const filtered3 = houses.filter((house) => {
       return house.price <= budget;
     });
-    console.log("filerer 3", filtered3);
     let arr = [...filtered, ...filtered2, ...filtered3];
     let mergedArr = [...new Set(arr)];
     setFiltered(mergedArr);
   };
+
   useEffect(() => {
     if (filtered.length > 0) {
       setContent(filtered);
-      console.log("filtered", content);
     } else {
       setContent(props);
-      console.log("props", content);
     }
-
-    return () => {};
   }, [props, filtered]);
 
   const propertyImages = [
