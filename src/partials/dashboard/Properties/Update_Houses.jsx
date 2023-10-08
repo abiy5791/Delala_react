@@ -42,6 +42,10 @@ export default function UpdateHouses() {
       formData.append("area", houseinfos.area);
       formData.append("location", houseinfos.location);
       formData.append("details", houseinfos.details);
+      formData.append("bathrooms", houseinfos.bathrooms);
+      formData.append("bedrooms", houseinfos.bedrooms);
+      formData.append("parking", houseinfos.parking);
+      formData.append("type", houseinfos.type);
       formData.append("_method", "put");
 
       if (image !== null) {
@@ -49,7 +53,9 @@ export default function UpdateHouses() {
           formData.append("image[]", image[i]);
         }
       }
-
+      for (var value of formData.values()) {
+        console.log(value);
+      }
       await axios.post(`api/house/${params.id}`, formData).then(() => {
         navigate(-1);
       });
@@ -107,10 +113,11 @@ export default function UpdateHouses() {
                   </div>
                 )}
               </div>
+
               <div className="mb-2">
                 <label>
                   <span className="text-gray-700">Status</span>
-                  <input
+                  <select
                     type="text"
                     name="status"
                     onChange={handlechange}
@@ -128,15 +135,12 @@ export default function UpdateHouses() {
             focus:ring-opacity-50
           "
                     placeholder="Status"
-                  />
+                  >
+                    <option value=""></option>
+                    <option value="sale">Sale</option>
+                    <option value="rent">Rent</option>
+                  </select>
                 </label>
-                {errors.name && (
-                  <div className="flex">
-                    <span className="text-red-400 text-sm m-2 p-2">
-                      {errors.name[0]}
-                    </span>
-                  </div>
-                )}
               </div>
               <div className="mb-2">
                 <label>
@@ -200,6 +204,76 @@ export default function UpdateHouses() {
                   </div>
                 )}
               </div>
+
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Type</span>
+                  <select
+                    type="text"
+                    name="type"
+                    onChange={handlechange}
+                    value={houseinfos.type}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Type"
+                  >
+                    <option value=""></option>
+                    <option value="apartment">APARTMENT</option>
+                    <option value="condominium">CONDOMINIUM</option>
+                    <option value="villa">VILLA</option>
+                    <option value="shop">SHOP</option>
+                    <option value="studio">STUDIO</option>
+                    <option value="office">OFFICE</option>
+                    <option value="land">LAND</option>
+                    <option value="commercial">COMMERCIAL</option>
+                    <option value="single_family_home">
+                      SINGLE FAMILY HOME
+                    </option>
+                    <option value="residential">RESIDENTIAL</option>
+                  </select>
+                </label>
+              </div>
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Bathrooms</span>
+                  <input
+                    type="number"
+                    name="bathrooms"
+                    onChange={handlechange}
+                    value={houseinfos.bathrooms}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Bathrooms"
+                  />
+                </label>
+                {errors.name && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.name[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
               <div className="mb-2">
                 <label>
                   <span className="text-gray-700">Price</span>
@@ -220,7 +294,69 @@ export default function UpdateHouses() {
             focus:ring-indigo-200
             focus:ring-opacity-50
           "
-                    placeholder="Price"
+                    placeholder="price"
+                  />
+                </label>
+                {errors.name && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.name[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Bedrooms</span>
+                  <input
+                    type="number"
+                    name="bedrooms"
+                    onChange={handlechange}
+                    value={houseinfos.bedrooms}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Bedrooms"
+                  />
+                </label>
+                {errors.name && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm m-2 p-2">
+                      {errors.name[0]}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Parking</span>
+                  <input
+                    type="number"
+                    name="parking"
+                    onChange={handlechange}
+                    value={houseinfos.parking}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Parking"
                   />
                 </label>
                 {errors.name && (

@@ -1,88 +1,280 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DropdownProfile from "../components/DropdownProfile";
 import useAuthContext from "../context/AuthContext";
-
-const Header = () => {
+import axios from "../api/axios";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
+const Header = ({ houseRef, carRef, othersRef, labourRef }) => {
   const { user } = useAuthContext();
+
+  // const handleNav = (e) => {
+
+  // };
+
+  // const [props, setProps] = useState([]);
+  // const [search, setSearch] = useState("");
+  // const [content, setContent] = useState([]);
+  // const [filtered, setFiltered] = useState([]);
+
+  // const getProps = async () => {
+  //   await axios.get("api/prop").then((response) => {
+  //     setProps(response.data);
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   getProps();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (filtered.length > 0) {
+  //     setContent(filtered);
+  //   } else {
+  //     setContent(props);
+  //   }
+  // }, [props, filtered]);
+  // function truncateText(text, maxLength) {
+  //   if (text.length > maxLength) {
+  //     return text.substring(0, maxLength) + "...";
+  //   }
+  //   return text;
+  // }
   return (
     <>
-      <header className="p-4">
-        <div className="container flex justify-between h-16 mx-auto">
-          <Link
-            rel="noopener noreferrer"
-            to="/"
-            aria-label="Back to homepage"
-            className="flex items-center p-2"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 32 32"
-              className="w-8 h-8 dark:text-violet-400"
-            >
-              <path d="M27.912 7.289l-10.324-5.961c-0.455-0.268-1.002-0.425-1.588-0.425s-1.133 0.158-1.604 0.433l0.015-0.008-10.324 5.961c-0.955 0.561-1.586 1.582-1.588 2.75v11.922c0.002 1.168 0.635 2.189 1.574 2.742l0.016 0.008 10.322 5.961c0.455 0.267 1.004 0.425 1.59 0.425 0.584 0 1.131-0.158 1.602-0.433l-0.014 0.008 10.322-5.961c0.955-0.561 1.586-1.582 1.588-2.75v-11.922c-0.002-1.168-0.633-2.189-1.573-2.742zM27.383 21.961c0 0.389-0.211 0.73-0.526 0.914l-0.004 0.002-10.324 5.961c-0.152 0.088-0.334 0.142-0.53 0.142s-0.377-0.053-0.535-0.145l0.005 0.002-10.324-5.961c-0.319-0.186-0.529-0.527-0.529-0.916v-11.922c0-0.389 0.211-0.73 0.526-0.914l0.004-0.002 10.324-5.961c0.152-0.090 0.334-0.143 0.53-0.143s0.377 0.053 0.535 0.144l-0.006-0.002 10.324 5.961c0.319 0.185 0.529 0.527 0.529 0.916z"></path>
-              <path d="M22.094 19.451h-0.758c-0.188 0-0.363 0.049-0.515 0.135l0.006-0.004-4.574 2.512-5.282-3.049v-6.082l5.282-3.051 4.576 2.504c0.146 0.082 0.323 0.131 0.508 0.131h0.758c0.293 0 0.529-0.239 0.529-0.531v-0.716c0-0.2-0.11-0.373-0.271-0.463l-0.004-0.002-5.078-2.777c-0.293-0.164-0.645-0.26-1.015-0.26-0.39 0-0.756 0.106-1.070 0.289l0.010-0.006-5.281 3.049c-0.636 0.375-1.056 1.055-1.059 1.834v6.082c0 0.779 0.422 1.461 1.049 1.828l0.009 0.006 5.281 3.049c0.305 0.178 0.67 0.284 1.061 0.284 0.373 0 0.723-0.098 1.027-0.265l-0.012 0.006 5.080-2.787c0.166-0.091 0.276-0.265 0.276-0.465v-0.716c0-0.293-0.238-0.529-0.529-0.529z"></path>
-            </svg>
-          </Link>
-          <ul className="items-stretch hidden space-x-3 md:flex">
-            {user ? (
-              <li>
-                <div className="flex items-center">
-                  <Link
-                    to="/delala_dashboard"
-                    className="relative inline-flex items-center mr-4 px-12 py-3 overflow-hidden text-lg font-medium text-gray-800 border-2 border-gray-800 rounded-full hover:text-white group hover:bg-[#5A5A5A]"
-                  >
-                    <span class="absolute left-0 block w-full h-0 transition-all bg-gray-800 opacity-100 group-hover:h-full top-1/2 group-hover:top-0 duration-400 ease"></span>
-                    <span class="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
+      <header class="relative bg-white">
+        <p class="flex h-10 items-center justify-center bg-slate-200 px-4 text-sm text-black font-bold sm:px-6 lg:px-8">
+          Get free delivery on orders over $100
+        </p>
+
+        <nav aria-label="Top" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="border-b border-gray-200">
+            <div class="flex h-16 items-center">
+              <div class="ml-4 flex lg:ml-0">
+                <Link to="/">
+                  <span class="sr-only">Company website</span>
+                  <h1 className="font-bold text-3xl dark:text-blue-300">
+                    Delala.com
+                  </h1>
+                </Link>
+              </div>
+
+              <nav class="flex m-auto">
+                <a
+                  class="cursor-pointer font-bold inline-flex whitespace-nowrap border-b-2 border-transparent py-2 px-3 text-sm  text-gray-600 transition-all duration-200 ease-in-out hover:border-b-purple-600 hover:text-purple-600"
+                  onClick={(e) => {
+                    houseRef.current.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  Houses
+                </a>
+
+                <a
+                  class="cursor-pointer inline-flex whitespace-nowrap border-b-2 border-transparent py-2 px-3 text-sm font-bold text-gray-600 transition-all duration-200 ease-in-out hover:border-b-purple-600 hover:text-purple-600"
+                  onClick={(e) => {
+                    carRef.current.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  Cars
+                </a>
+
+                <a
+                  class="cursor-pointer inline-flex whitespace-nowrap border-b-2 border-transparent py-2 px-3 text-sm font-bold text-gray-600 transition-all duration-200 ease-in-out hover:border-b-purple-600 hover:text-purple-600"
+                  onClick={(e) => {
+                    labourRef.current.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  Labours
+                </a>
+
+                <a
+                  class="cursor-pointer inline-flex whitespace-nowrap border-b-2 border-transparent py-2 px-3 text-sm font-bold text-gray-600 transition-all duration-200 ease-in-out hover:border-b-purple-600 hover:text-purple-600"
+                  onClick={(e) => {
+                    othersRef.current.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  Others
+                </a>
+              </nav>
+
+              {/* <div class="m-10 w-screen max-w-screen-md">
+                <div class="flex flex-col">
+                  <form onChange={(e) => setSearch(e.target.value)}>
+                    <div class="relative w-full flex  items-center justify-between rounded-md">
                       <svg
-                        className="w-5 h-5"
+                        class="absolute left-2 block h-5 w-5 text-gray-400"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                       >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        ></path>
+                        <circle cx="11" cy="11" r="8" class=""></circle>
+                        <line
+                          x1="21"
+                          y1="21"
+                          x2="16.65"
+                          y2="16.65"
+                          class=""
+                        ></line>
                       </svg>
-                    </span>
-                    <span class="relative">Post Property</span>
-                  </Link>
-                  <DropdownProfile />
+                      <input
+                        type="name"
+                        name="search"
+                        class="h-12 w-full cursor-text rounded-md border border-gray-100 bg-slate-200 py-4 pr-4 pl-12 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                        placeholder="Search by name, type, location, etc"
+                      />
+                    </div>
+                  </form>
                 </div>
-              </li>
-            ) : (
-              <li className="flex">
-                <Link to="/login" className="flex items-center justify-center">
-                  <button class="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-gray-500 hover:bg-gray-600 font-medium">
-                    Login
-                  </button>
-                </Link>
-              </li>
-            )}
-          </ul>
-          <button className="flex justify-end p-4 md:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              ></path>
-            </svg>
-          </button>
-        </div>
+              </div> */}
+
+              <ul className="items-stretch hidden space-x-3 md:flex">
+                {user ? (
+                  <li>
+                    <div className="flex items-center">
+                      <Link to="/delala_dashboard" className="mr-5">
+                        <div class="group flex w-full cursor-pointer items-center justify-center rounded-md bg-blue-400 px-6 py-2 text-white transition">
+                          <span class="group flex w-full items-center justify-center rounded py-1 text-center font-bold">
+                            Post
+                          </span>
+                          <svg
+                            class="flex-0 ml-4 h-6 w-6 transition-all group-hover:ml-8"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M14 5l7 7m0 0l-7 7m7-7H3"
+                            />
+                          </svg>
+                        </div>
+                      </Link>
+
+                      <DropdownProfile />
+                    </div>
+                  </li>
+                ) : (
+                  <li className="flex">
+                    <Link
+                      to="/login"
+                      className="flex items-center justify-center"
+                    >
+                      <button class="w-32 focus:outline-none border border-transparent py-2 px-5 rounded-lg shadow-sm text-center text-white bg-gray-500 hover:bg-gray-600 font-medium">
+                        Login
+                      </button>
+                    </Link>
+                  </li>
+                )}
+              </ul>
+            </div>
+          </div>
+        </nav>
       </header>
+      {/* <div class="py-5">
+        <div class="xl:container m-auto px-6 text-gray-600 md:px-12 xl:px-6">
+          {search ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+              {content
+                .filter((prop) => {
+                  return search.toLowerCase() === ""
+                    ? prop
+                    : prop.title?.toLowerCase().includes(search) ||
+                        prop.name?.toLowerCase().includes(search) ||
+                        prop.skills?.toLowerCase().includes(search) ||
+                        prop.Gender?.toLowerCase().includes(search) ||
+                        prop.age?.toString().includes(search) ||
+                        prop.price?.toString().includes(search) ||
+                        prop.type?.toString().includes(search) ||
+                        prop.model?.toLowerCase().includes(search) ||
+                        prop.status?.toLowerCase().includes(search) ||
+                        prop.location?.toLowerCase().includes(search) ||
+                        prop.make?.toLowerCase().includes(search) ||
+                        prop.color?.toLowerCase().includes(search) ||
+                        prop.mileage?.toLowerCase().includes(search) ||
+                        prop.salary?.toString().toLowerCase().includes(search);
+
+                  // data.mile.toLowerCase().includes(search);
+                })
+                .map((prop) => {
+                  return (
+                    <div>
+                      <Link to={`${prop.model_type}/${prop.id}`}>
+                        <div class="cursor-pointer rounded-xl bg-white p-3 shadow-lg hover:shadow-xl">
+                          <div class="relative flex items-end overflow-hidden rounded-xl h-64">
+                            {prop.image && (
+                              <img
+                                className="object-cover w-full h-full"
+                                loading="lazy"
+                                heighimageIndext="667"
+                                src={`http://localhost:8000/${
+                                  prop.image.split("|")[0]
+                                }`}
+                                alt={`prop Image `}
+                              />
+                            )}
+
+                            <div class="absolute bottom-3 left-3 inline-flex items-center rounded-lg bg-slate-50 p-2 shadow-md">
+                              <span class="ml-1 text-sm text-black">
+                                Posted: {dayjs(prop.created_at).fromNow()}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div class="mt-1 p-2">
+                            <h2 class="text-slate-700 uppercase font-bold">
+                              {truncateText(prop.title, 15)}
+                            </h2>
+                            <p class="mt-1 text-sm text-slate-400">
+                              {prop.location}
+                              {prop.name}
+                              {prop.make}
+                            </p>
+
+                            <div class="mt-3 flex items-end justify-between">
+                              <p>
+                                <span class="text-lg font-bold text-orange-500">
+                                  {prop.price}
+                                  {prop.salary}
+                                </span>
+                                <span class="text-sm text-slate-400">
+                                  {" "}
+                                  Birr
+                                </span>
+                              </p>
+
+                              <div class="group inline-flex rounded-xl bg-orange-100 p-2 hover:bg-orange-200">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="h-4 w-4 text-orange-400 group-hover:text-orange-500"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })}
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+      </div> */}
     </>
   );
 };

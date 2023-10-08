@@ -36,11 +36,11 @@ const Register = () => {
   const [enable, setEnable] = useState(true);
 
   function handlechange(e) {
-    setValErr((prevInfo) => ({
-      ...prevInfo,
-      [e.target.name]: "",
-    }));
-    setEnable(true);
+    // setValErr((prevInfo) => ({
+    //   ...prevInfo,
+    //   [e.target.name]: "",
+    // }));
+    // setEnable(true);
     setErrors((prevInfo) => ({
       ...prevInfo,
       [e.target.name]: "",

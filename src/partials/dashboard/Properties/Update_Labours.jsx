@@ -41,8 +41,10 @@ export default function UpdateLabours() {
       formData.append("title", labourinfos.title);
       formData.append("name", labourinfos.name);
       formData.append("skills", labourinfos.skills);
+      formData.append("Gender", labourinfos.Gender);
       formData.append("delala_id", labourinfos.delala_id);
       formData.append("type", labourinfos.type);
+      formData.append("age", labourinfos.age);
       formData.append("salary", labourinfos.salary);
       formData.append("details", labourinfos.details);
       formData.append("_method", "put");
@@ -146,6 +148,59 @@ export default function UpdateLabours() {
                   </div>
                 )}
               </div>
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Age</span>
+                  <input
+                    type="number"
+                    name="age"
+                    onChange={handlechange}
+                    value={labourinfos.age}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="age"
+                  />
+                </label>
+              </div>
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Gender</span>
+                  <select
+                    type="text"
+                    name="Gender"
+                    onChange={handlechange}
+                    value={labourinfos.Gender}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Gender"
+                  >
+                    <option value=""></option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </label>
+              </div>
+
               <div className="mb-2">
                 <label>
                   <span className="text-gray-700">Type</span>

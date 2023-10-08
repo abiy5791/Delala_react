@@ -20,6 +20,10 @@ const AddHouse = () => {
     area: "",
     location: "",
     details: "",
+    bathrooms: "",
+    bedrooms: "",
+    parking: "",
+    type: "",
   });
 
   const InitialErrors = {
@@ -30,6 +34,10 @@ const AddHouse = () => {
     location: "",
     details: "",
     image: "",
+    bathrooms: "",
+    bedrooms: "",
+    parking: "",
+    type: "",
   };
   const [valErr, setValErr] = useState(InitialErrors);
   const [enable, setEnable] = useState(true);
@@ -71,6 +79,10 @@ const AddHouse = () => {
         formData.append("area", HouseDetails.area);
         formData.append("location", HouseDetails.location);
         formData.append("details", HouseDetails.details);
+        formData.append("bathrooms", HouseDetails.bathrooms);
+        formData.append("bedrooms", HouseDetails.bedrooms);
+        formData.append("parking", HouseDetails.parking);
+        formData.append("type", HouseDetails.type);
         for (let i = 0; i < image.length; i++) {
           formData.append("image[]", image[i]);
         }
@@ -168,6 +180,53 @@ const AddHouse = () => {
                   </div>
                 )}
               </div>
+
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Type</span>
+                  <select
+                    type="text"
+                    name="type"
+                    onChange={handlechange}
+                    value={HouseDetails.type}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Type"
+                  >
+                    <option value=""></option>
+                    <option value="apartment">APARTMENT</option>
+                    <option value="condominium">CONDOMINIUM</option>
+                    <option value="villa">VILLA</option>
+                    <option value="shop">SHOP</option>
+                    <option value="studio">STUDIO</option>
+                    <option value="office">OFFICE</option>
+                    <option value="land">LAND</option>
+                    <option value="commercial">COMMERCIAL</option>
+                    <option value="single_family_home">
+                      SINGLE FAMILY HOME
+                    </option>
+                    <option value="residential">RESIDENTIAL</option>
+                  </select>
+                </label>
+                {valErr.status && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.status}
+                    </span>
+                  </div>
+                )}
+              </div>
+
               <div className="mb-2">
                 <label>
                   <span className="text-gray-700">Area</span>
@@ -199,6 +258,103 @@ const AddHouse = () => {
                   </div>
                 )}
               </div>
+
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Number Of Bathrooms</span>
+                  <input
+                    type="number"
+                    name="bathrooms"
+                    onChange={handlechange}
+                    value={HouseDetails.bathrooms}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Number of bathrooms in the house"
+                  />
+                </label>
+                {valErr.bathrooms && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.bathrooms}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Number Of Bedrooms</span>
+                  <input
+                    type="number"
+                    name="bedrooms"
+                    onChange={handlechange}
+                    value={HouseDetails.bedrooms}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="Number of bedrooms in the house"
+                  />
+                </label>
+                {valErr.bedrooms && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.bedrooms}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="mb-2">
+                <label>
+                  <span className="text-gray-700">Parking</span>
+                  <input
+                    type="number"
+                    name="parking"
+                    onChange={handlechange}
+                    value={HouseDetails.parking}
+                    className="
+
+            w-full
+            block px-2 py-2 mt-2
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+                    placeholder="How many cars can park"
+                  />
+                </label>
+                {valErr.parking && (
+                  <div className="flex">
+                    <span className="text-red-400 text-sm font-bold p-2">
+                      {valErr.parking}
+                    </span>
+                  </div>
+                )}
+              </div>
+
               <div className="mb-2">
                 <label>
                   <span className="text-gray-700">Location</span>
@@ -261,6 +417,7 @@ const AddHouse = () => {
                   </div>
                 )}
               </div>
+
               <div className="mb-2">
                 <label>
                   <span className="text-gray-700">House Images</span>

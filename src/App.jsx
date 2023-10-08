@@ -42,6 +42,7 @@ import Home from "./pages/Home";
 import PropsDetail from "./pages/PropsDetail";
 
 const App = () => {
+  const [show, setShow] = useState(true);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   useEffect(() => {
     // Add an event listener to update the online status
@@ -75,7 +76,7 @@ const App = () => {
         <Route exact path="/" element={<MainHome />}>
           <Route index element={<Home />} />
           <Route path=":model_type/:id" element={<ProLayout />}>
-            <Route index element={<PropsDetail />} />
+            <Route index element={<PropsDetail show={show} />} />
           </Route>
         </Route>
         <Route element={<AuthLayout />}>

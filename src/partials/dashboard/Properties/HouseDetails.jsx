@@ -145,33 +145,32 @@ const HouseDetails = () => {
                 <div className="px-4 py-2">{HouseData.location}</div>
               </div>
               <div className="grid grid-cols-2">
+                <div className="px-4 py-2 font-semibold">Type</div>
+                <div className="px-4 py-2">{HouseData.type}</div>
+              </div>
+              <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Status</div>
                 <div className="px-4 py-2">{HouseData.status}</div>
               </div>
               <div className="grid grid-cols-2">
                 <div className="px-4 py-2 font-semibold">Price</div>
-                <div className="px-4 py-2">{HouseData.price}</div>
+                <div className="px-4 py-2">{HouseData.price} Birr</div>
               </div>
-              {/* <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Current Address</div>
-                <div className="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
+
+              <div className="grid grid-cols-2">
+                <div className="px-4 py-2 font-semibold">Bathrooms</div>
+                <div className="px-4 py-2">{HouseData.bathrooms} Bathrooms</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Permanant Address</div>
-                <div className="px-4 py-2">Arlington Heights, IL, Illinois</div>
+                <div className="px-4 py-2 font-semibold">Bedrooms</div>
+                <div className="px-4 py-2">{HouseData.bedrooms} Bedrooms</div>
               </div>
               <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Email.</div>
+                <div className="px-4 py-2 font-semibold">Parking</div>
                 <div className="px-4 py-2">
-                  <a className="text-blue-800" href="mailto:jane@example.com">
-                    {HouseData.price}
-                  </a>
+                  {HouseData.parking} Car can park
                 </div>
               </div>
-              <div className="grid grid-cols-2">
-                <div className="px-4 py-2 font-semibold">Birthday</div>
-                <div className="px-4 py-2">Feb 06, 1998</div>
-              </div> */}
             </div>
           </div>
           <div className="inline-flex">

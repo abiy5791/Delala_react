@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import SearchModal from '../components/ModalSearch';
-import Notifications from '../components/DropdownNotifications';
-import Help from '../components/DropdownHelp';
-import UserMenu from '../components/DropdownProfile';
-import ThemeToggle from '../components/ThemeToggle';
+import SearchModal from "../components/ModalSearch";
+import Notifications from "../components/DropdownNotifications";
+import Help from "../components/DropdownHelp";
+import UserMenu from "../components/DropdownProfile";
+import ThemeToggle from "../components/ThemeToggle";
+import { Link } from "react-router-dom";
 
 function Header({ sidebarOpen, setSidebarOpen }) {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
@@ -26,7 +27,11 @@ function Header({ sidebarOpen, setSidebarOpen }) {
               }}
             >
               <span className="sr-only">Open sidebar</span>
-              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                className="w-6 h-6 fill-current"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <rect x="4" y="5" width="16" height="2" />
                 <rect x="4" y="11" width="16" height="2" />
                 <rect x="4" y="17" width="16" height="2" />
@@ -36,10 +41,29 @@ function Header({ sidebarOpen, setSidebarOpen }) {
 
           {/* Header: Right side */}
           <div className="flex items-center space-x-3">
+            <Link to="/">
+              <div className="cursor-pointer w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600/80 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                  />
+                </svg>
+              </div>
+            </Link>
+
             <div>
               <button
-                className={`w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600/80 rounded-full ml-3 ${
-                  searchModalOpen && 'bg-slate-200'
+                className={`w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600/80 rounded-full ${
+                  searchModalOpen && "bg-slate-200"
                 }`}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -48,7 +72,11 @@ function Header({ sidebarOpen, setSidebarOpen }) {
                 aria-controls="search-modal"
               >
                 <span className="sr-only">Search</span>
-                <svg className="w-4 h-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  className="w-4 h-4"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     className="fill-current text-slate-500 dark:text-slate-400"
                     d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z"
@@ -59,8 +87,14 @@ function Header({ sidebarOpen, setSidebarOpen }) {
                   />
                 </svg>
               </button>
-              <SearchModal id="search-modal" searchId="search" modalOpen={searchModalOpen} setModalOpen={setSearchModalOpen} />
+              <SearchModal
+                id="search-modal"
+                searchId="search"
+                modalOpen={searchModalOpen}
+                setModalOpen={setSearchModalOpen}
+              />
             </div>
+
             <Notifications align="right" />
             <Help align="right" />
             <ThemeToggle />

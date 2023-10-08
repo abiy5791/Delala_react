@@ -206,7 +206,7 @@ const AddLabour = () => {
               <div className="mb-2">
                 <label>
                   <span className="text-gray-700">Gender</span>
-                  <input
+                  <select
                     type="text"
                     name="Gender"
                     onChange={handlechange}
@@ -224,16 +224,21 @@ const AddLabour = () => {
             focus:ring-opacity-50
           "
                     placeholder="Gender"
-                  />
+                  >
+                    <option value=""></option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
                 </label>
-                {valErr.Gender && (
+                {valErr.status && (
                   <div className="flex">
                     <span className="text-red-400 text-sm font-bold p-2">
-                      {valErr.Gender}
+                      {valErr.status}
                     </span>
                   </div>
                 )}
               </div>
+
               <div className="mb-2">
                 <label>
                   <span className="text-gray-700">Type</span>
